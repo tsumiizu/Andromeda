@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANDROMEDA — Informatização de Negócios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<!-- ── CURSOR GALÁXIA ── -->
+<div class="cursor-galaxy" id="cursorGalaxy">
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- 4-point nebula star — eixo vertical mais longo -->
+    <path d="M20 1.5 C20.9 10,21.3 15.5,20 20 C18.7 15.5,19.1 10,20 1.5Z" fill="url(#cg1)"/>
+    <path d="M20 38.5 C19.1 30,18.7 24.5,20 20 C21.3 24.5,20.9 30,20 38.5Z" fill="url(#cg2)"/>
+    <path d="M1.5 20 C10 20.9,15.5 21.3,20 20 C15.5 18.7,10 19.1,1.5 20Z" fill="url(#cg3)"/>
+    <path d="M38.5 20 C30 19.1,24.5 18.7,20 20 C24.5 21.3,30 20.9,38.5 20Z" fill="url(#cg4)"/>
+    <circle cx="20" cy="20" r="2.8" fill="white" opacity="0.95"/>
+    <circle cx="20" cy="20" r="5.5" fill="rgba(0,212,255,0.18)"/>
+    <defs>
+      <linearGradient id="cg1" x1="20" y1="1.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+      <linearGradient id="cg2" x1="20" y1="38.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.65"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+      <linearGradient id="cg3" x1="1.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+      <linearGradient id="cg4" x1="38.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── STARS ── -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- ── MODAL LOGIN ── -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="corner-deco tl"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M0 22L0 0L22 0" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/></svg></div>
+    <div class="corner-deco br"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M0 22L0 0L22 0" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/></svg></div>
+    <div class="modal-tag">Acesso Seguro</div>
+    <div class="modal-title">ENTRAR</div>
+    <div class="modal-desc">Acesse o painel de controle Andromeda</div>
+    <form class="modal-form" id="loginForm" onsubmit="handleLogin(event)">
+      <div id="loginError" class="login-error">Credenciais inválidas. Tente novamente.</div>
+      <div class="form-group"><label>E-mail</label><input type="email" id="loginEmail" placeholder="seu@email.com" autocomplete="email"></div>
+      <div class="form-group"><label>Senha</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="btn-primary" type="submit" style="width:100%;justify-content:center;margin-top:.5rem">Acessar Painel ✦</button>
+    </form>
+    <div class="modal-divider"><span>ou</span></div>
+    <div class="modal-footer-link">Não tem conta? <a href="mailto:contato@andromeda.com.br">Entre em contato</a></div>
+  </div>
+</div>
+
+<!-- ── NAVBAR ── -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <!--
+      🖼️ LOGO PNG — coloque seu arquivo aqui:
+      <div class="nav-logo-img"><img src="sua-logo.png" alt="Andromeda"></div>
+      Enquanto não tiver imagem, o ✦ animado aparece.
+    -->
+    <div class="nav-logo-img">
+      <!-- <img src="sua-logo.png" alt="Logo Andromeda"> -->
+    </div>
+    ANDROMEDA
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Início</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#processo">Processo</a></li>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#contato">Contato</a></li>
+    <li><button class="btn-login-nav" onclick="openModal()">⬡ Login</button></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════
+     HERO — constelação centralizada
+══════════════════════════════════ -->
+<section id="home">
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+
+  <div class="hero-inner">
+
+    <!-- CONSTELAÇÃO / ORBIT SYSTEM — centro da tela -->
+    <div class="orbit-wrap fade-in">
+      <div class="orbit-system">
+        <div class="orbit-core">ANDRO<br>MEDA</div>
+
+        <div class="orbit-ring orbit-ring-1">
+          <div class="orbit-dot"></div>
+          <div class="orbit-label">SITES</div>
+          <div class="snode" style="right:-2px;top:50%;transform:translateY(-50%)"></div>
+        </div>
+
+        <div class="orbit-ring orbit-ring-2">
+          <div class="orbit-dot od-blue"></div>
+          <div class="orbit-label" style="top:20px">SISTEMAS</div>
+          <div class="snode" style="right:-2px;top:50%;transform:translateY(-50%)"></div>
+          <div class="snode" style="left:-2px;top:50%;transform:translateY(-50%)"></div>
+        </div>
+
+        <div class="orbit-ring orbit-ring-3">
+          <div class="orbit-dot od-white"></div>
+          <div class="orbit-label" style="top:22px">DIGITAL</div>
+          <div class="snode" style="bottom:-2px;left:50%;transform:translateX(-50%)"></div>
+          <div class="snode" style="right:-2px;top:28%;"></div>
+        </div>
+
+        <!-- badges flutuantes -->
+        <div class="orbit-badge ob1">Web Dev</div>
+        <div class="orbit-badge ob2">UX / UI</div>
+        <div class="orbit-badge ob3">E-commerce</div>
+      </div>
+    </div>
+
+    <!-- TEXTO HERO -->
+    <div class="hero-content fade-in fade-in-delay-1">
+      <div class="hero-tag">Informatização de Negócios</div>
+      <h1>ANDRO<br>MEDA</h1>
+      <div class="hero-sub">Websites · Sistemas · Transformação Digital</div>
+      <p class="hero-text">Levamos sua empresa para o universo digital. Da presença online ao sistema completo — transformamos negócios físicos em referências digitais eficientes e modernas.</p>
+      <div class="hero-btns">
+        <a href="#servicos" class="btn-primary">Explorar Serviços ✦</a>
+        <a href="#contato" class="btn-secondary">Falar Conosco →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CARROSSEL DEPOIMENTOS
+══════════════════════════════════ -->
+<div id="reviews-carousel">
+  <div class="reviews-header">
+    <div class="reviews-label">O que nossos clientes dizem</div>
+    <div class="reviews-title">GALÁXIA DE OPINIÕES</div>
+  </div>
+  <div class="reviews-track-outer">
+    <div class="reviews-track" id="reviewsTrack"></div>
+  </div>
+</div>
+
+<!-- ── SOBRE ── -->
+<section id="sobre">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Quem Somos</div>
+      <h2 class="section-title">SOBRE</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="sobre-grid fade-in">
+      <div class="sobre-text">
+        <p>A Andromeda nasceu da convicção de que todo negócio — pequeno ou médio — merece uma presença digital à altura da sua qualidade. Assim como a galáxia de Andrômeda brilha além do horizonte visível, nossa missão é levar sua empresa para além dos limites do convencional.</p>
+        <p>Somos especialistas em informatização de negócios: construímos sites, sistemas e experiências digitais que realmente funcionam para o dia a dia da sua empresa.</p>
+        <p>Com atendimento próximo e soluções sob medida, transformamos complexidade em simplicidade — e fazemos com que a tecnologia trabalhe para você, não contra você.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card fade-in fade-in-delay-1"><div class="stat-num">200+</div><div class="stat-label">Projetos Entregues</div></div>
+        <div class="stat-card fade-in fade-in-delay-2"><div class="stat-num">98%</div><div class="stat-label">Clientes Satisfeitos</div></div>
+        <div class="stat-card fade-in fade-in-delay-3"><div class="stat-num">5⭐</div><div class="stat-label">Avaliação Média</div></div>
+        <div class="stat-card fade-in"><div class="stat-num">4+</div><div class="stat-label">Anos de Mercado</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESSO ── -->
+<section id="processo">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Como Trabalhamos</div>
+      <h2 class="section-title">PROCESSO</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="processo-steps">
+      <div class="step-card fade-in fade-in-delay-1"><div class="step-num">01</div><div class="step-title">Diagnóstico</div><p class="step-desc">Entendemos seu negócio a fundo — o que você faz, quem é seu cliente e o que precisa melhorar com a tecnologia.</p></div>
+      <div class="step-card fade-in fade-in-delay-2"><div class="step-num">02</div><div class="step-title">Planejamento</div><p class="step-desc">Desenhamos a solução ideal: quais ferramentas, páginas e funcionalidades vão fazer a diferença real para sua empresa.</p></div>
+      <div class="step-card fade-in fade-in-delay-3"><div class="step-num">03</div><div class="step-title">Execução</div><p class="step-desc">Desenvolvemos com rapidez e qualidade, mantendo você atualizado em cada etapa com total transparência.</p></div>
+      <div class="step-card fade-in"><div class="step-num">04</div><div class="step-title">Lançamento</div><p class="step-desc">Entregamos, treinamos sua equipe e damos suporte contínuo para que tudo funcione perfeitamente no dia a dia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVIÇOS ── -->
+<section id="servicos">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">O Que Fazemos</div>
+      <h2 class="section-title">SERVIÇOS</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="servicos-grid">
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-img-container"><img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80" alt="Criação de Sites"></div>
+        <div class="service-body"><div class="service-icon">🌐</div><div class="service-title">Criação de Sites</div><p class="service-desc">Do portfólio ao site institucional completo — páginas rápidas, bonitas e otimizadas para aparecer no Google.</p><div class="service-tag">Mais Pedido</div></div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-img-container"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="Lojas Virtuais"></div>
+        <div class="service-body"><div class="service-icon">🛒</div><div class="service-title">Lojas Virtuais</div><p class="service-desc">E-commerce completo com carrinho, pagamentos integrados e gestão de estoque. Venda online com segurança.</p><div class="service-tag">E-commerce</div></div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-img-container"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80" alt="Sistemas de Gestão"></div>
+        <div class="service-body"><div class="service-icon">⚙️</div><div class="service-title">Sistemas de Gestão</div><p class="service-desc">Painéis internos personalizados para controle de clientes, pedidos, finanças e equipes — tudo centralizado.</p><div class="service-tag">Sob Medida</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTATO ── -->
+<section id="contato">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Fale Conosco</div>
+      <h2 class="section-title">CONTATO</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contato-wrapper fade-in">
+      <div class="contato-info">
+        <p>Pronto para levar seu negócio para o universo digital? Entre em contato e vamos juntos planejar sua transformação sem complicação.</p>
+        <div class="contact-item"><span class="contact-icon">📸</span><div><div class="contact-label">Instagram</div><div class="contact-value">@andromeda.digital</div></div></div>
+        <div class="contact-item"><span class="contact-icon">✉️</span><div><div class="contact-label">E-mail</div><div class="contact-value">contato@andromeda.com.br</div></div></div>
+        <div class="contact-item"><span class="contact-icon">📱</span><div><div class="contact-label">WhatsApp</div><div class="contact-value">+55 (11) 99999-0000</div></div></div>
+      </div>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group"><label>Nome</label><input type="text" placeholder="Seu nome completo"></div>
+        <div class="form-group"><label>E-mail</label><input type="email" placeholder="seu@email.com"></div>
+        <div class="form-group"><label>Assunto</label><input type="text" placeholder="Ex: Quero criar um site para minha empresa"></div>
+        <div class="form-group"><label>Mensagem</label><textarea placeholder="Conta pra gente sobre seu projeto..."></textarea></div>
+        <button class="btn-send" type="submit">Enviar Mensagem ✦</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-logo">
+        <!--
+          🖼️ LOGO PNG no footer — mesmo esquema da navbar.
+          <div class="footer-logo-img"><img src="sua-logo.png" alt="Logo Andromeda"></div>
+        -->
+        <div class="footer-logo-img">
+          <!-- <img src="sua-logo.png" alt="Logo Andromeda"> -->
+        </div>
+        <div class="footer-brand-name">ANDROMEDA</div>
+      </div>
+      <p class="footer-brand-desc">Informatizamos negócios pequenos e médios, transformando ideias em presença digital de alto impacto.</p>
+      <div class="footer-social">
+        <a href="#" title="Instagram">📸</a>
+        <a href="#" title="WhatsApp">📱</a>
+        <a href="#" title="E-mail">✉️</a>
+        <a href="#" title="LinkedIn">💼</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Navegação</div>
+      <ul>
+        <li><a href="#home">Início</a></li>
+        <li><a href="#sobre">Sobre nós</a></li>
+        <li><a href="#processo">Processo</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Serviços</div>
+      <ul>
+        <li><a href="#servicos">Criação de Sites</a></li>
+        <li><a href="#servicos">Lojas Virtuais</a></li>
+        <li><a href="#servicos">Sistemas de Gestão</a></li>
+        <li><a href="#servicos">Landing Pages</a></li>
+        <li><a href="#servicos">Identidade Visual</a></li>
+        <li><a href="#servicos">SEO &amp; Performance</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Contato</div>
+      <div class="footer-contact-item"><span class="icon">📍</span><span>São Paulo, SP — Brasil</span></div>
+      <div class="footer-contact-item"><span class="icon">✉️</span><span>contato@andromeda.com.br</span></div>
+      <div class="footer-contact-item"><span class="icon">📱</span><span>+55 (11) 99999-0000</span></div>
+      <div class="footer-contact-item"><span class="icon">🕐</span><span>Seg – Sex, 9h às 18h</span></div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Andromeda — Todos os direitos reservados</div>
+    <div class="footer-legal"><a href="#">Privacidade</a><a href="#">Termos de Uso</a><a href="#">Cookies</a></div>
+  </div>
+</footer>
+</body>
+</html>
