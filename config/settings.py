@@ -115,10 +115,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'  # <-- Garanta que tem a barra antes e depois
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Certifique-se de que essa lista aponta para a sua pasta de estáticos
 STATICFILES_DIRS = [
-    BASE_DIR / 'static', 
+    BASE_DIR / 'static',  # <-- Aponta para a sua pasta original
 ]
