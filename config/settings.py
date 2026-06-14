@@ -115,10 +115,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = '/static/'  # <-- Garanta que tem a barra antes e depois
-
+SSTATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Esta linha diz para o WhiteNoise onde ler os arquivos originais
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # <-- Aponta para a sua pasta original
+    BASE_DIR / 'static',
 ]
+
+# Esta linha obriga o WhiteNoise a servir os arquivos em produção
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
