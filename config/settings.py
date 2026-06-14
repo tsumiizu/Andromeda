@@ -115,13 +115,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-SSTATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+import os
 
-# Esta linha diz para o WhiteNoise onde ler os arquivos originais
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Forçando o caminho manual para o Django não se perder na raiz do Render
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    os.path.join(BASE_DIR, 'andromeda', 'static'),
 ]
 
-# Esta linha obriga o WhiteNoise a servir os arquivos em produção
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
