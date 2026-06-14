@@ -117,3 +117,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Certifique-se de que essa lista aponta para a sua pasta de estáticos
+STATICFILES_DIRS = [
+    BASE_DIR / 'static', 
+]
