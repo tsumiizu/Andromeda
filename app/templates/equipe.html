@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ══ PAGE HERO ══ -->
+<section id="page-hero">
+  <div class="page-hero-deco">
+    <div class="glow-blob blob-h1"></div>
+    <div class="glow-blob blob-h2"></div>
+  </div>
+  <div class="page-hero-inner fade-in">
+    <div class="page-hero-tag">Conheça quem está por trás</div>
+    <h1 class="page-hero-title">EQUIPE</h1>
+    <p class="page-hero-sub">Uma constelação de pessoas dedicadas a transformar ideias em soluções digitais. Conheça quem faz o universo Andromeda funcionar.</p>
+    <div class="page-hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">Integrantes</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">4+</span><span class="hero-stat-label">Anos de Mercado</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">50+</span><span class="hero-stat-label">Projetos Entregues</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<!-- ══ EQUIPE ══ -->
+<section id="team-section">
+  <div class="team-container">
+
+    <div class="fade-in" style="text-align:center;margin-bottom:3rem">
+      <div class="section-subtitle" style="justify-content:center">Nosso Time</div>
+      <h2 class="section-title">QUEM SOMOS</h2>
+      <div class="section-line" style="margin:0 auto 0"></div>
+    </div>
+
+    <div class="team-grid">
+
+      <!--
+        🖼️ FOTO DO MEMBRO — troque o link do <img> abaixo pela foto real
+        de cada integrante (recomendado: imagem quadrada, mín. 600x600px).
+      -->
+
+      <!-- Membro 01 -->
+      <div class="team-card fade-in fade-in-delay-1">
+        <div class="team-photo">
+          <img src="{% static 'media/zion.webp' %}" alt="Nome do Membro 1">
+        </div>
+        <div class="team-body">
+          <div class="team-num">— 01</div>
+          <div class="team-name">Zion</div>
+          <div class="team-role">PROGRAMADOR</div>
+          <p class="team-desc">Breve descrição sobre a pessoa: sua experiência, área de atuação dentro da Andromeda e o que ela traz de diferente para o time.</p>
+          <div class="team-social">
+            <a href="#" title="tsumiizu">📸</a>
+            <a href="#" title="Zion Vieira">💼</a>
+            <a href="#" title="zion.vieira.inf@gmail.com">✉️</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membro 02 -->
+      <div class="team-card fade-in fade-in-delay-2">
+        <div class="team-photo">
+          <img src="{% static 'media/enzo.webp' %}" alt="Nome do Membro 2">
+        </div>
+        <div class="team-body">
+          <div class="team-num">— 02</div>
+          <div class="team-name">Enzo</div>
+          <div class="team-role">PROGRAMADOR</div>
+          <p class="team-desc">Breve descrição sobre a pessoa: sua experiência, área de atuação dentro da Andromeda e o que ela traz de diferente para o time.</p>
+          <div class="team-social">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="LinkedIn">💼</a>
+            <a href="#" title="E-mail">✉️</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membro 03 -->
+      <div class="team-card fade-in fade-in-delay-3">
+        <div class="team-photo">
+          <img src="{% static 'media/victor.webp' %}" alt="Nome do Membro 3">
+        </div>
+        <div class="team-body">
+          <div class="team-num">— 03</div>
+          <div class="team-name">Victor</div>
+          <div class="team-role">ANALISTA</div>
+          <p class="team-desc">Breve descrição sobre a pessoa: sua experiência, área de atuação dentro da Andromeda e o que ela traz de diferente para o time.</p>
+          <div class="team-social">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="LinkedIn">💼</a>
+            <a href="#" title="E-mail">✉️</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membro 04 -->
+      <div class="team-card fade-in">
+        <div class="team-photo">
+          <img src="{% static 'media/marlon.webp' %}" alt="Nome do Membro 4">
+        </div>
+        <div class="team-body">
+          <div class="team-num">— 04</div>
+          <div class="team-name">Marlon</div>
+          <div class="team-role">DESIGNER</div>
+          <p class="team-desc">Breve descrição sobre a pessoa: sua experiência, área de atuação dentro da Andromeda e o que ela traz de diferente para o time.</p>
+          <div class="team-social">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="LinkedIn">💼</a>
+            <a href="#" title="E-mail">✉️</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membro 05 -->
+      <div class="team-card fade-in fade-in-delay-1">
+        <div class="team-photo">
+          <img src="{% static 'media/matheus.webp' %}" alt="Nome do Membro 5">
+        </div>
+        <div class="team-body">
+          <div class="team-num">— 05</div>
+          <div class="team-name">Matheus</div>
+          <div class="team-role">MARKETING</div>
+          <p class="team-desc">Breve descrição sobre a pessoa: sua experiência, área de atuação dentro da Andromeda e o que ela traz de diferente para o time.</p>
+          <div class="team-social">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="LinkedIn">💼</a>
+            <a href="#" title="E-mail">✉️</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Membro 06 -->
+      <div class="team-card fade-in fade-in-delay-2">
+        <div class="team-photo">
+          <img src="{% static 'media/esther.webp' %}" alt="Nome do Membro 6">
+        </div>
+        <div class="team-body">
+          <div class="team-num">— 06</div>
+          <div class="team-name">Esther</div>
+          <div class="team-role">MARKETING</div>
+          <p class="team-desc">Breve descrição sobre a pessoa: sua experiência, área de atuação dentro da Andromeda e o que ela traz de diferente para o time.</p>
+          <div class="team-social">
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="LinkedIn">💼</a>
+            <a href="#" title="E-mail">✉️</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<!-- ══ CTA BANNER ══ -->
+<section id="cta">
+  <div class="cta-border-left"></div>
+  <div class="cta-border-right"></div>
+  <div class="glow-blob" style="width:600px;height:400px;background:rgba(0,212,255,.04);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="cta-inner fade-in">
+    <div class="cta-tag">✦ Vamos Trabalhar Juntos?</div>
+    <h2 class="cta-title">FALE COM A NOSSA EQUIPE</h2>
+    <p class="cta-sub">Tem um projeto em mente? Nossa equipe está pronta para transformar sua ideia em uma solução digital de alto impacto.</p>
+    <div class="cta-btns">
+      <a href="{% url 'home' %}#contato" class="btn-primary">Solicitar Proposta ✦</a>
+      <a href="https://wa.me/5521998260278" class="btn-secondary">Chamar no WhatsApp →</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

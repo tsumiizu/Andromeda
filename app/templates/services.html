@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ══ PAGE HERO ══ -->
+<section id="page-hero">
+  <div class="page-hero-deco">
+    <div class="glow-blob blob-h1"></div>
+    <div class="glow-blob blob-h2"></div>
+  </div>
+  <div class="page-hero-inner fade-in">
+    <div class="page-hero-tag">Catálogo Completo</div>
+    <h1 class="page-hero-title">SERVIÇOS</h1>
+    <p class="page-hero-sub">As soluções digitais perfeitas para transformar o seu negócio além do convencional. Cada projeto sempre possui uma variedade de possibilidades.</p>
+    <div class="page-hero-stats">
+      <div class="hero-stat"><span class="hero-stat-num">8</span><span class="hero-stat-label">Categorias</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">40+</span><span class="hero-stat-label">Projetos Entregues</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">98%</span><span class="hero-stat-label">Satisfação</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<!-- ── FILTER BAR ── -->
+<div id="filter-section">
+  <div class="filter-bar">
+    <span class="filter-label">Filtrar:</span>
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="web">Web</button>
+    <button class="filter-btn" data-filter="sistema">Sistemas</button>
+    <button class="filter-btn" data-filter="marketing">Marketing</button>
+    <button class="filter-btn" data-filter="design">Design</button>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<section id="servicos-main">
+  <div class="services-container">
+
+    <!-- FEATURED: CRIAÇÃO DE SITES -->
+    <div class="featured-service fade-in" data-category="web">
+      <div class="featured-img">
+        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=900&q=80" alt="Criação de Sites">
+        <div class="featured-img-overlay"></div>
+      </div>
+      <div class="featured-body">
+        <div class="featured-tag">Mais Solicitado</div>
+        <div class="service-number">— 01</div>
+        <span class="service-icon-large">🌐</span>
+        <h2 class="featured-title">CRIAÇÃO DE SITES</h2>
+        <p class="featured-desc">Do portfólio ao site institucional. Com páginas rápidas, bonitas, otimizadas e designs modernos para não só fazer o site aparecer no Google, como também converter visitantes em clientes. 
+</p>
+        <ul class="service-features">
+          <li>Design responsivo para todos os dispositivos</li>
+          <li>Otimização SEO desde o zero</li>
+          <li>Velocidade de carregamento otimizada</li>
+          <li>Painel de administração intuitivo</li>
+          <li>Integração com WhatsApp e redes sociais</li>
+        </ul>
+        <div class="service-price-range">
+          <span class="price-from">A partir de</span>
+          <span class="price-val">R$ 1.800</span>
+          <span class="price-note">— entrega em até 2 semanas</span>
+        </div>
+        <a href="index.html#contato" class="btn-primary">Solicitar Orçamento ✦</a>
+      </div>
+    </div>
+
+    <!-- GRID 3 COLUNAS -->
+    <div class="services-grid-3">
+
+      <!-- Lojas Virtuais -->
+      <div class="service-card-v2 fade-in fade-in-delay-1" data-category="web">
+        <div class="card-num">— 02</div>
+        <span class="card-icon">🛒</span>
+        <h3 class="card-title">LOJAS VIRTUAIS</h3>
+        <p class="card-desc">E-commerce completo com pagamentos integrados e gestão de estoque.</p>
+        <div class="card-tags">
+          <span class="tag">WooCommerce</span>
+          <span class="tag">Shopify</span>
+          <span class="tag">Custom</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 3.500</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+      <!-- Sistemas de Gestão -->
+      <div class="service-card-v2 fade-in fade-in-delay-2" data-category="sistema">
+        <div class="card-num">— 03</div>
+        <span class="card-icon">⚙️</span>
+        <h3 class="card-title">SISTEMAS DE GESTÃO</h3>
+        <p class="card-desc">Integração completa para controle de clientes, pedidos, finanças e equipes.</p>
+        <div class="card-tags">
+          <span class="tag">CRM</span>
+          <span class="tag">ERP</span>
+          <span class="tag">Dashboard</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 5.000</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+      <!-- Landing Pages -->
+      <div class="service-card-v2 fade-in fade-in-delay-3" data-category="marketing">
+        <div class="card-num">— 04</div>
+        <span class="card-icon">🚀</span>
+        <h3 class="card-title">LANDING PAGES</h3>
+        <p class="card-desc">Páginas de alta conversão feitas para transformar seus visitantes em leads ou clientes.</p>
+        <div class="card-tags">
+          <span class="tag">Alta Conversão</span>
+          <span class="tag">A/B Test</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 900</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+    </div>
+
+    <!-- GRID 2 COLUNAS -->
+    <div class="services-grid-2">
+
+      <!-- Portfólios Digitais -->
+      <div class="service-card-v2 fade-in" data-category="web">
+        <div class="card-num">— 05</div>
+        <span class="card-icon">🎨</span>
+        <h3 class="card-title">PORTFÓLIOS DIGITAIS</h3>
+        <p class="card-desc">Demonstre seu trabalho com puro estilo. Com portfólios personalizados para qualquer profissional que queira impressionar.</p>
+        <div class="card-tags">
+          <span class="tag">Fotografia</span>
+          <span class="tag">Design</span>
+          <span class="tag">Arquitetura</span>
+          <span class="tag">Arte</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 1.200</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+      <!-- Automação de Processos -->
+      <div class="service-card-v2 fade-in fade-in-delay-1" data-category="sistema">
+        <div class="card-num">— 06</div>
+        <span class="card-icon">🤖</span>
+        <h3 class="card-title">AUTOMAÇÃO DE PROCESSOS <span class="badge-novo">Novo</span></h3>
+        <p class="card-desc">Realize tarefas repetitivas e que requerem muito esforço. Integraremos seus sistemas para que trabalhem no automático de forma inteligente.</p>
+        <div class="card-tags">
+          <span class="tag">Zapier</span>
+          <span class="tag">Make</span>
+          <span class="tag">API</span>
+          <span class="tag">Webhooks</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 2.200</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+    </div>
+
+    <!-- GRID 3 COLUNAS — linha final -->
+    <div class="services-grid-3" style="margin-top:1.5px">
+
+      <!-- Identidade Visual -->
+      <div class="service-card-v2 fade-in" data-category="design">
+        <div class="card-num">— 07</div>
+        <span class="card-icon">✨</span>
+        <h3 class="card-title">IDENTIDADE VISUAL</h3>
+        <p class="card-desc">Conjunto completo de elementos gráficos, cores e tipografias para sua marca ser reconhecida e lembrada.</p>
+        <div class="card-tags">
+          <span class="tag">Logo</span>
+          <span class="tag">Branding</span>
+          <span class="tag">Style Guide</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 800</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+      <!-- SEO & Performance -->
+      <div class="service-card-v2 fade-in fade-in-delay-1" data-category="marketing">
+        <div class="card-num">— 08</div>
+        <span class="card-icon">📈</span>
+        <h3 class="card-title">SEO & PERFORMANCE</h3>
+        <p class="card-desc">Apareça no google e carregue rápido sem travar. Otimização técnica e de conteúdo que seu site precisa para rodar 24h por dia sem queda de desempenho. 
+</p>
+        <div class="card-tags">
+          <span class="tag">On-Page</span>
+          <span class="tag">Core Web Vitals</span>
+          <span class="tag">Analytics</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 600</span><span class="price-note">/mês</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+      <!-- Manutenção & Suporte -->
+      <div class="service-card-v2 fade-in fade-in-delay-2" data-category="sistema">
+        <div class="card-num">— 09</div>
+        <span class="card-icon">🛡️</span>
+        <h3 class="card-title">MANUTENÇÃO & SUPORTE</h3>
+        <p class="card-desc">Mantenha seu site no ar, seguro e atualizado. Planos mensais com monitoramento, backups e um atendimento prioritário.</p>
+        <div class="card-tags">
+          <span class="tag">Backups</span>
+          <span class="tag">Segurança</span>
+          <span class="tag">Atualizações</span>
+        </div>
+        <div class="service-price-range" style="margin-bottom:1rem">
+          <span class="price-from">De</span>
+          <span class="price-val" style="font-size:1.1rem">R$ 350</span><span class="price-note">/mês</span>
+        </div>
+        <a href="index.html#contato" class="card-link">Saiba Mais</a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<!-- ── PROCESSO ── -->
+<section id="processo">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Como Trabalhamos</div>
+      <h2 class="section-title">PROCESSO</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="processo-steps">
+      <div class="step-card fade-in fade-in-delay-1"><div class="step-num">01</div><div class="step-title">Diagnóstico</div><p class="step-desc">Entendemos seu negócio a fundo, o que você faz, quem é seu cliente e o que precisa melhorar com a tecnologia.</p></div>
+      <div class="step-card fade-in fade-in-delay-2"><div class="step-num">02</div><div class="step-title">Planejamento</div><p class="step-desc">Desenhamos a solução ideal: quais ferramentas, páginas e funcionalidades vão fazer a diferença real para sua empresa.</p></div>
+      <div class="step-card fade-in fade-in-delay-3"><div class="step-num">03</div><div class="step-title">Execução</div><p class="step-desc">Desenvolvemos com rapidez e qualidade, mantendo você atualizado em cada etapa com total transparência.</p></div>
+      <div class="step-card fade-in"><div class="step-num">04</div><div class="step-title">Lançamento</div><p class="step-desc">Entregamos e damos suporte contínuo para que tudo funcione perfeitamente no dia a dia.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<!-- ══ FAQ ══ -->
+<section id="faq">
+  <div class="faq-container">
+    <div class="fade-in" style="text-align:center;margin-bottom:3rem">
+      <div class="section-subtitle" style="justify-content:center">Dúvidas Frequentes</div>
+      <h2 class="section-title">PERGUNTAS</h2>
+      <div class="section-line" style="margin:0 auto 0"></div>
+    </div>
+
+    <div class="faq-item fade-in">
+      <div class="faq-question">Quanto tempo leva para entregar um projeto? <div class="faq-icon">+</div></div>
+      <div class="faq-answer">Depende da complexidade. Landing pages ficam prontas em 3–5 dias. Sites institucionais de 1 a 2 semanas. Lojas virtuais e sistemas de gestão geralmente levam de 3 a 6 semanas. Sempre informamos o prazo real na proposta antes de iniciar.</div>
+    </div>
+
+    <div class="faq-item fade-in">
+      <div class="faq-question">Como funciona o pagamento? <div class="faq-icon">+</div></div>
+      <div class="faq-answer">Trabalhamos com 50% de entrada para iniciar o projeto e 50% na entrega final. Para projetos maiores, parcelamos em etapas conforme entregas. Aceitamos PIX, transferência e cartão de crédito.</div>
+    </div>
+
+    <div class="faq-item fade-in">
+      <div class="faq-question">Preciso ter um domínio e hospedagem? <div class="faq-icon">+</div></div>
+      <div class="faq-answer">Não precisa se preocupar com isso. Cuidamos de tudo: registramos o domínio, configuramos a hospedagem e SSL. Se já tiver um domínio, também aproveitamos — sem problemas.</div>
+    </div>
+
+    <div class="faq-item fade-in">
+      <div class="faq-question">Posso atualizar o site sozinho depois? <div class="faq-icon">+</div></div>
+      <div class="faq-answer">Sim. Entregamos todos os sites com um painel de administração intuitivo e fazemos um treinamento completo para que você consiga editar textos, imagens e produtos sem depender de ninguém.</div>
+    </div>
+
+    <div class="faq-item fade-in">
+      <div class="faq-question">Vocês atendem fora de São Paulo? <div class="faq-icon">+</div></div>
+      <div class="faq-answer">Sim! Atendemos clientes de todo o Brasil de forma 100% remota. Todo o processo — reuniões, aprovações e entregas — é feito online com total eficiência.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ CTA BANNER ══ -->
+<section id="cta">
+  <div class="cta-border-left"></div>
+  <div class="cta-border-right"></div>
+  <div class="glow-blob" style="width:600px;height:400px;background:rgba(0,212,255,.04);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="cta-inner fade-in">
+    <div class="cta-tag">✦ Pronto para Começar?</div>
+    <h2 class="cta-title">VAMOS LEVAR SEU NEGÓCIO ALÉM</h2>
+    <p class="cta-sub">Inicie uma conversa sem compromissos, conte sobre seu projeto e receba uma proposta personalizada em até 24h.</p>
+    <div class="cta-btns">
+      <a href="{% url 'home' %}" class="btn-primary">Solicitar Proposta ✦</a>
+      <a href="https://wa.me/5521987477900" class="btn-secondary">Chamar no WhatsApp →</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

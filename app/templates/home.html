@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- ══════════════════════════════════
+     HERO — constelação centralizada
+══════════════════════════════════ -->
+<section id="home">
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+
+  <div class="hero-inner">
+
+    <!-- CONSTELAÇÃO / ORBIT SYSTEM — centro da tela -->
+    <div class="orbit-wrap fade-in">
+      <div class="orbit-system">
+        <div class="orbit-core">ANDRO<br>MEDA</div>
+
+        <div class="orbit-ring orbit-ring-1">
+          <div class="orbit-dot"></div>
+          <div class="orbit-label">SITES</div>
+          <div class="snode" style="right:-2px;top:50%;transform:translateY(-50%)"></div>
+        </div>
+
+        <div class="orbit-ring orbit-ring-2">
+          <div class="orbit-dot od-blue"></div>
+          <div class="orbit-label" style="top:20px">SISTEMAS</div>
+          <div class="snode" style="right:-2px;top:50%;transform:translateY(-50%)"></div>
+          <div class="snode" style="left:-2px;top:50%;transform:translateY(-50%)"></div>
+        </div>
+
+        <div class="orbit-ring orbit-ring-3">
+          <div class="orbit-dot od-white"></div>
+          <div class="orbit-label" style="top:22px">DIGITAL</div>
+          <div class="snode" style="bottom:-2px;left:50%;transform:translateX(-50%)"></div>
+          <div class="snode" style="right:-2px;top:28%;"></div>
+        </div>
+
+        <!-- badges flutuantes -->
+        <div class="orbit-badge ob1">Web Dev</div>
+        <div class="orbit-badge ob2">UX / UI</div>
+        <div class="orbit-badge ob3">E-commerce</div>
+      </div>
+    </div>
+
+    <!-- TEXTO HERO -->
+    <div class="hero-content fade-in fade-in-delay-1">
+      <div class="hero-tag">Informatização de Negócios</div>
+      <h1>ANDRO<br>MEDA</h1>
+      <div class="hero-sub">Websites · Sistemas · Transformação Digital</div>
+      <p class="hero-text">Informatizando empresas por meio de sistemas e soluções digitais, transformando negócios físicos em referências modernas, eficientes e conectadas ao universo digital.</p>
+      <div class="hero-btns">
+        <a href="#servicos" class="btn-primary">Explorar Serviços ✦</a>
+        <a href="#contato" class="btn-secondary">Falar Conosco →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CARROSSEL DEPOIMENTOS
+══════════════════════════════════ -->
+<div id="reviews-carousel">
+  <div class="reviews-header">
+    <div class="reviews-label">O que nossos clientes dizem</div>
+    <div class="reviews-title">GALÁXIA DE OPINIÕES</div>
+  </div>
+  <div class="reviews-track-outer">
+    <div class="reviews-track" id="reviewsTrack"></div>
+  </div>
+</div>
+
+<!-- ── SOBRE ── -->
+<section id="sobre">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Quem Somos</div>
+      <h2 class="section-title">SOBRE</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="sobre-grid fade-in">
+      <div class="sobre-text">
+        <p>A nossa equipe Andromeda foi criada com o objetivo de informatizar outros negócios e criar sites para outras empresas.
+
+Somos uma equipe pequena com dedicação ao nosso serviço para outros negócios. Com isso, nossa equipe promete entregar resultados de alta qualidade em um curto período de tempo.</p>
+        <p>Somos especialistas em informatização de negócios: construímos sites, sistemas e experiências digitais que realmente funcionam para o dia a dia da sua empresa.</p>
+        <p>Com atendimento próximo e soluções sob medida, transformamos complexidade em simplicidade e fazemos com que a tecnologia trabalhe para você, não contra você.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card fade-in fade-in-delay-1"><div class="stat-num">50+</div><div class="stat-label">Projetos Entregues</div></div>
+        <div class="stat-card fade-in fade-in-delay-2"><div class="stat-num">98%</div><div class="stat-label">Clientes Satisfeitos</div></div>
+        <div class="stat-card fade-in fade-in-delay-3"><div class="stat-num">5⭐</div><div class="stat-label">Avaliação Média</div></div>
+        <div class="stat-card fade-in"><div class="stat-num">4+</div><div class="stat-label">Anos de Mercado</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESSO ── -->
+<section id="processo">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Como Trabalhamos</div>
+      <h2 class="section-title">PROCESSO</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="processo-steps">
+      <div class="step-card fade-in fade-in-delay-1"><div class="step-num">01</div><div class="step-title">Diagnóstico</div><p class="step-desc">Entendemos seu negócio a fundo, o que você faz, quem é seu cliente e o que precisa melhorar com a tecnologia.</p></div>
+      <div class="step-card fade-in fade-in-delay-2"><div class="step-num">02</div><div class="step-title">Planejamento</div><p class="step-desc">Desenhamos a solução ideal: quais ferramentas, páginas e funcionalidades vão fazer a diferença real para sua empresa.</p></div>
+      <div class="step-card fade-in fade-in-delay-3"><div class="step-num">03</div><div class="step-title">Execução</div><p class="step-desc">Desenvolvemos com rapidez e qualidade, mantendo você atualizado em cada etapa com total transparência.</p></div>
+      <div class="step-card fade-in"><div class="step-num">04</div><div class="step-title">Lançamento</div><p class="step-desc">Entregamos e damos suporte contínuo para que tudo funcione perfeitamente no dia a dia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVIÇOS ── -->
+<section id="servicos">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">O Que Fazemos</div>
+      <h2 class="section-title">SERVIÇOS</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="servicos-grid">
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-img-container"><img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80" alt="Criação de Sites"></div>
+        <div class="service-body"><div class="service-icon">🌐</div><div class="service-title">Criação de Sites</div><p class="service-desc">Do portfólio ao site institucional completo — páginas rápidas, bonitas e otimizadas para aparecer no Google.</p><div class="service-tag">Mais Pedido</div></div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-img-container"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="Lojas Virtuais"></div>
+        <div class="service-body"><div class="service-icon">🛒</div><div class="service-title">Lojas Virtuais</div><p class="service-desc">E-commerce completo com carrinho, pagamentos integrados e gestão de estoque. Venda online com segurança.</p><div class="service-tag">E-commerce</div></div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-img-container"><img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&q=80" alt="Sistemas de Gestão"></div>
+        <div class="service-body"><div class="service-icon">⚙️</div><div class="service-title">Sistemas de Gestão</div><p class="service-desc">Painéis internos personalizados para controle de clientes, pedidos, finanças e equipes — tudo centralizado.</p><div class="service-tag">Sob Medida</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTATO ── -->
+<section id="contato">
+  <div style="width:100%">
+    <div class="fade-in">
+      <div class="section-subtitle">Fale Conosco</div>
+      <h2 class="section-title">CONTATO</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="contato-wrapper fade-in">
+      <div class="contato-info">
+        <p>Pronto para transformar seu negócio em uma referência moderna eficiente e conectada ao universo digital? Entre em contato e juntos iremos planejar essa transformação!</p>
+        <div class="contact-item"><span class="contact-icon">📸</span><div><div class="contact-label">Instagram</div><div class="contact-value">@ky.andromeda</div></div></div>
+        <div class="contact-item"><span class="contact-icon">✉️</span><div><div class="contact-label">E-mail</div><div class="contact-value">ky.andromeda@gmail.com</div></div></div>
+        <div class="contact-item"><span class="contact-icon">📱</span><div><div class="contact-label">WhatsApp</div><div class="contact-value">+55 (21) 99826-0278</div></div></div>
+      </div>
+      <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+  
+  <input type="hidden" name="access_key" value="2d5fd815-4287-4555-be88-0abc27b96c66">
+  <input type="hidden" name="redirect" value="{% url 'home' %}">
+
+  <div class="form-group">
+    <label>Nome</label>
+    <input type="text" name="name" placeholder="Seu nome completo" required>
+  </div>
+  
+  <div class="form-group">
+    <label>E-mail</label>
+    <input type="email" name="email" placeholder="seu@email.com" required>
+  </div>
+  
+  <div class="form-group">
+    <label>Assunto</label>
+    <input type="text" name="subject" placeholder="Ex: Quero criar um site para minha empresa">
+  </div>
+  
+  <div class="form-group">
+    <label>Mensagem</label>
+    <textarea name="message" placeholder="Conta pra gente sobre seu projeto..." required></textarea>
+  </div>
+  
+  <button class="btn-send" type="submit">Enviar Mensagem ✦</button>
+  
+</form>
+    </div>
+  </div>
+</section>
+
+<div id="toastNotification" class="toast-galaxy">
+  <div class="toast-icon">✓</div>
+  <div class="toast-content">
+    <h4>Mensagem enviada!</h4>
+    <p>Sua mensagem foi enviada com sucesso.</p>
+  </div>
+  <button type="button" class="toast-close" onclick="closeToast()">×</button>
+</div>
+{% endblock %}

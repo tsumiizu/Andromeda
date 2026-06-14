@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Andromeda</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'media/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'media/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'media/favicon/favicon-16x16.png' %}">
+    <link rel="shortcut icon" href="{% static 'media/favicon/favicon.ico' %}" type="image/x-icon">
+    <link rel="manifest" href="{% static 'media/favicon/site.webmanifest' %}">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="{% static 'script.js' %}" defer></script>
+</head>
+<body>
+
+
+
+
+<!-- ── CURSOR ── -->
+<div class="cursor-galaxy" id="cursorGalaxy">
+  <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 1.5 C20.9 10,21.3 15.5,20 20 C18.7 15.5,19.1 10,20 1.5Z" fill="url(#cg1)"/>
+    <path d="M20 38.5 C19.1 30,18.7 24.5,20 20 C21.3 24.5,20.9 30,20 38.5Z" fill="url(#cg2)"/>
+    <path d="M1.5 20 C10 20.9,15.5 21.3,20 20 C15.5 18.7,10 19.1,1.5 20Z" fill="url(#cg3)"/>
+    <path d="M38.5 20 C30 19.1,24.5 18.7,20 20 C24.5 21.3,30 20.9,38.5 20Z" fill="url(#cg4)"/>
+    <circle cx="20" cy="20" r="2.8" fill="white" opacity="0.95"/>
+    <circle cx="20" cy="20" r="5.5" fill="rgba(0,212,255,0.18)"/>
+    <defs>
+      <linearGradient id="cg1" x1="20" y1="1.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+      <linearGradient id="cg2" x1="20" y1="38.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.65"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+      <linearGradient id="cg3" x1="1.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+      <linearGradient id="cg4" x1="38.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
+        <stop offset="100%" stop-color="#00d4ff"/>
+      </linearGradient>
+    </defs>
+  </svg>
+</div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ── STARS ── -->
+<canvas id="stars-canvas"></canvas>
+
+
+    <!-- NAV BAR -->
+    <nav>
+  <a href="{% url 'home' %}" class="nav-logo">
+    <div class="nav-logo-img">
+    </div>
+    ANDROMEDA
+  </a>
+  <ul class="nav-links">
+    <li><a href="{% url 'home' %}">Início</a></li>
+    <li><a href="{% url 'services' %}">Serviços</a></li>
+    <li><a href="{% url 'equipe' %}">Equipe</a></li>
+    <li><a href="#portfólio">Portfólio</a></li>
+    <li><button class="btn-login-nav" onclick="openModal()">⬡ Login</button></li>
+  </ul>
+</nav>
+    {% block content %}
+    {% endblock %}
+
+    <!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-logo">
+
+        <div class="footer-logo-img">
+          <!-- <img src="sua-logo.png" alt="Logo Andromeda"> -->
+        </div>
+        <div class="footer-brand-name">ANDROMEDA</div>
+      </div>
+      <p class="footer-brand-desc">Informatizamos negócios pequenos e médios, transformando ideias em presença digital de alto impacto.</p>
+      <div class="footer-social">
+        <a href="#" title="@ky.andromeda">📸</a>
+        <a href="#" title="(21) 99826-0278">📱</a>
+        <a href="#" title="ky.andromeda@gmail.com">✉️</a>
+        <a href="#" title="LinkedIn">💼</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Navegação</div>
+      <ul>
+        <li><a href="{% url 'home' %}">Início</a></li>
+        <li><a href="{% url 'services' %}">Serviços</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Serviços</div>
+      <ul>
+        <li><a href="{% url 'services' %}">Criação de Sites</a></li>
+        <li><a href="{% url 'services' %}">Lojas Virtuais</a></li>
+        <li><a href="{% url 'services' %}">Sistemas de Gestão</a></li>
+        <li><a href="{% url 'services' %}">Landing Pages</a></li>
+        <li><a href="{% url 'services' %}">Identidade Visual</a></li>
+        <li><a href="{% url 'services' %}">SEO &amp; Performance</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Contato</div>
+      <div class="footer-contact-item"><span class="icon">📍</span><span>Rio de Janeiro, RJ — Brasil</span></div>
+      <div class="footer-contact-item"><span class="icon">✉️</span><span>ky.andromeda@gmail.com</span></div>
+      <div class="footer-contact-item"><span class="icon">📱</span><span>+55 (21) 99826-0278</span></div>
+      <div class="footer-contact-item"><span class="icon">🕐</span><span>Seg – Sex, 9h às 18h</span></div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Andromeda — Todos os direitos reservados</div>
+    <div class="footer-legal"><a href="#">Privacidade</a><a href="#">Termos de Uso</a><a href="#">Cookies</a></div>
+  </div>
+</footer>
+<!-- ── MODAL LOGIN ── -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="corner-deco tl"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M0 22L0 0L22 0" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/></svg></div>
+    <div class="corner-deco br"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M0 22L0 0L22 0" fill="none" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/></svg></div>
+    <div class="modal-tag">Acesso Seguro</div>
+    <div class="modal-title">ENTRAR</div>
+    <div class="modal-desc">Acesse o painel de controle Andromeda</div>
+    <form class="modal-form" id="loginForm" onsubmit="handleLogin(event)">
+      <div id="loginError" class="login-error">Credenciais inválidas. Tente novamente.</div>
+      <div class="form-group"><label>E-mail</label><input type="email" id="loginEmail" placeholder="seu@email.com" autocomplete="email"></div>
+      <div class="form-group"><label>Senha</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="btn-primary" type="submit" style="width:100%;justify-content:center;margin-top:.5rem">Acessar Painel ✦</button>
+    </form>
+    <div class="modal-divider"><span>ou</span></div>
+    <div class="modal-footer-link">Não tem conta? <a href="mailto:contato@andromeda.com.br">Entre em contato</a></div>
+  </div>
+</div>
+</body>
+</html>
