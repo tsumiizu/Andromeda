@@ -119,10 +119,4 @@ import os
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Forçando o caminho manual para o Django não se perder na raiz do Render
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'andromeda', 'static'),
-]
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
