@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--)r$23tgx4$m!u%x%gdoum2&wgx@0cv=2+$!ctx0atb!p8l3th
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['andromeda-jsnt.onrender.com']
+ALLOWED_HOSTS = ['andromeda-qhdo.onrender.com']
 #  ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] endereço local 
 
 # Application definition
