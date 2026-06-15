@@ -402,3 +402,85 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
 function closeToast() {
   document.getElementById('toastNotification').classList.remove('show');
 }
+
+/* ══════════════════════════════════════════════════════════════
+   11. CADASTRO DE CLIENTE
+   — Máscaras de CPF, telefone e CEP
+   — Busca automática de endereço via CEP (ViaCEP)
+   — Mostrar/ocultar senha
+══════════════════════════════════════════════════════════════ */
+
+// — Máscara de CPF: 000.000.000-00 —
+const cpfInput = document.getElementById('clienteCpf');
+cpfInput?.addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d)/, '$1.$2');
+  v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  e.target.value = v;
+});
+
+// — Máscara de telefone: (00) 00000-0000 ou (00) 0000-0000 —
+const telInput = document.getElementById('clienteTelefone');
+telInput?.addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+  if (v.length > 10) {
+    v = v.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+  } else if (v.length > 5) {
+    v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+  } else if (v.length > 2) {
+    v = v.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+  } else if (v.length > 0) {
+    v = v.replace(/(\d{0,2})/, '($1');
+  }
+  e.target.value = v.replace(/-$/, '').replace(/\)\s$/, ')');
+});
+
+// — Máscara de CEP + busca automática de endereço (ViaCEP) —
+const cepInput   = document.getElementById('clienteCep');
+const cepStatus  = document.getElementById('cepStatus');
+const enderecoInput = document.getElementById('clienteEndereco');
+const bairroInput   = document.getElementById('clienteBairro');
+
+cepInput?.addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g, '').slice(0, 8);
+  v = v.replace(/(\d{5})(\d{1,3})/, '$1-$2');
+  e.target.value = v;
+
+  cepStatus.classList.remove('show', 'error');
+
+  const digits = v.replace(/\D/g, '');
+  if (digits.length === 8) {
+    cepStatus.textContent = 'Buscando...';
+    cepStatus.classList.add('show');
+
+    fetch(`https://viacep.com.br/ws/${digits}/json/`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.erro) {
+          cepStatus.textContent = 'CEP não encontrado';
+          cepStatus.classList.add('error');
+          return;
+        }
+        if (enderecoInput) enderecoInput.value = data.logradouro || enderecoInput.value;
+        if (bairroInput)   bairroInput.value   = data.bairro || bairroInput.value;
+        cepStatus.textContent = 'Endereço encontrado ✓';
+        setTimeout(() => cepStatus.classList.remove('show'), 2500);
+      })
+      .catch(() => {
+        cepStatus.textContent = 'Erro ao buscar CEP';
+        cepStatus.classList.add('error');
+      });
+  }
+});
+
+// — Mostrar / ocultar senha —
+document.querySelectorAll('.password-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = document.getElementById(btn.dataset.target);
+    if (!input) return;
+    const isHidden = input.type === 'password';
+    input.type = isHidden ? 'text' : 'password';
+    btn.textContent = isHidden ? '🙈' : '👁️';
+  });
+});

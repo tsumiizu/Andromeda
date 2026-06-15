@@ -1109,3 +1109,68 @@ footer { position: relative; z-index: 1; overflow: hidden; }
   #team-section  { padding: 2rem 1.5rem 4rem; }
   .team-grid     { grid-template-columns: 1fr; }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   27. CADASTRO DE CLIENTE
+══════════════════════════════════════════════════════════════ */
+#cadastro-form-section { position: relative; z-index: 1; padding: 5rem 6rem 7rem; }
+.cadastro-container { max-width: 1000px; margin: 0 auto; }
+
+.cadastro-form { display: flex; flex-direction: column; gap: 2.5rem; }
+
+.form-fieldset {
+  background: rgba(6,13,30,.6); border: 1px solid rgba(59,158,255,.14);
+  padding: 2.2rem 2.4rem; position: relative;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+}
+.form-fieldset::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--cyan), transparent 70%);
+}
+
+.fieldset-title {
+  font-family: 'Orbitron', sans-serif; font-size: .68rem; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 1.6rem;
+  padding-bottom: .9rem; border-bottom: 1px solid rgba(59,158,255,.14);
+  display: flex; align-items: center; gap: 12px;
+}
+.fieldset-title::before { content: '✦'; font-size: .6rem; }
+
+.form-row { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-bottom: 1.2rem; }
+.form-row:last-child { margin-bottom: 0; }
+.form-row-2 { grid-template-columns: 1fr 1fr; }
+.form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.form-hint { font-size: .72rem; color: rgba(232,244,255,.3); margin-top: 4px; letter-spacing: .5px; }
+
+/* — Campo de senha com botão de visibilidade — */
+.password-field { position: relative; }
+.password-field input { padding-right: 48px; }
+.password-toggle {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  background: transparent; border: none; cursor: pointer;
+  width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+  color: rgba(232,244,255,.35); font-size: 1rem; transition: color .25s;
+}
+.password-toggle:hover { color: var(--cyan); }
+
+/* — Indicador de busca de CEP — */
+.cep-field { position: relative; }
+.cep-status {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: .68rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--cyan); opacity: 0; transition: opacity .25s; pointer-events: none;
+}
+.cep-status.show { opacity: .8; }
+.cep-status.error { color: #ff6b6b; }
+
+/* — Responsivo — */
+@media (max-width: 1100px) {
+  #cadastro-form-section { padding: 3rem 3rem 5rem; }
+  .form-fieldset { padding: 1.8rem 1.6rem; }
+}
+@media (max-width: 700px) {
+  #cadastro-form-section { padding: 2rem 1.5rem 4rem; }
+  .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
+}
