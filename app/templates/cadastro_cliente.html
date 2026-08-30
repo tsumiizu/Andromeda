@@ -52,10 +52,19 @@
             <input type="email" id="clienteEmail" name="email" placeholder="cliente@email.com" required>
           </div>
         </div>
+
+        <div class="form-row form-row-2">
+          <div class="form-group password-field">
+            <label for="clienteSenha">Senha</label>
+            <input type="password" id="clienteSenha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
+            <button type="button" class="password-toggle" data-target="clienteSenha" aria-label="Mostrar senha">👁️</button>
+          </div>
       </div>
 
-      <!-- ── ENDEREÇO ── -->
-      <div class="form-fieldset">
+      </div>
+
+      <!-- ── ENDEREÇO, botar ele nas configurações de perfil já que não faz sentido estar aqui ── -->
+      <!-- <div class="form-fieldset">
         <div class="fieldset-title">Endereço</div>
 
         <div class="form-row form-row-2">
@@ -87,26 +96,7 @@
             <input type="text" id="clienteComplemento" name="complemento" placeholder="Apto, bloco, referência... (opcional)">
           </div>
         </div>
-      </div>
-
-      <!-- ── ACESSO AO SISTEMA ── -->
-      <div class="form-fieldset">
-        <div class="fieldset-title">Acesso ao Sistema</div>
-
-        <div class="form-row form-row-2">
-          <div class="form-group">
-            <label for="clienteLogin">Login</label>
-            <input type="text" id="clienteLogin" name="login" placeholder="Nome de usuário" autocomplete="username" required>
-          </div>
-          <div class="form-group password-field">
-            <label for="clienteSenha">Senha</label>
-            <input type="password" id="clienteSenha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
-            <button type="button" class="password-toggle" data-target="clienteSenha" aria-label="Mostrar senha">👁️</button>
-          </div>
-        </div>
-        <div class="form-hint">A senha será usada pelo cliente para acessar o painel Andromeda.</div>
-      </div>
-
+      </div> -->
       <button class="btn-send" type="submit">Cadastrar Cliente ✦</button>
     </form>
 
