@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Cliente | Andromeda</title>
+
+  <!-- Fontes e CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="{% static 'script.js' %}" defer></script>
+
+  <style>
+    /* Força as animações a rodarem no carregamento, já que a página não tem scroll */
+    .fade-in {
+      animation: fadeInUp 1s ease forwards !important;
+      opacity: 0;
+    }
+    .delay-1 { animation-delay: 0.2s !important; }
+  </style>
+</head>
+<body>
+
+  <!-- ── CURSOR E EFEITOS (Obrigatório para o script.js não quebrar) ── -->
+  <div class="cursor-galaxy" id="cursorGalaxy">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 1.5 C20.9 10,21.3 15.5,20 20 C18.7 15.5,19.1 10,20 1.5Z" fill="url(#cg1)"/>
+      <path d="M20 38.5 C19.1 30,18.7 24.5,20 20 C21.3 24.5,20.9 30,20 38.5Z" fill="url(#cg2)"/>
+      <path d="M1.5 20 C10 20.9,15.5 21.3,20 20 C15.5 18.7,10 19.1,1.5 20Z" fill="url(#cg3)"/>
+      <path d="M38.5 20 C30 19.1,24.5 18.7,20 20 C24.5 21.3,30 20.9,38.5 20Z" fill="url(#cg4)"/>
+      <circle cx="20" cy="20" r="2.8" fill="white" opacity="0.95"/>
+      <circle cx="20" cy="20" r="5.5" fill="rgba(0,212,255,0.18)"/>
+      <defs>
+        <linearGradient id="cg1" x1="20" y1="1.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="cg2" x1="20" y1="38.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.65"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="cg3" x1="1.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="cg4" x1="38.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- ══ PAGE HERO ══ -->
+  <section id="page-hero" style="padding-top: 80px;">
+    <div class="page-hero-deco">
+      <div class="glow-blob blob-h1"></div>
+      <div class="glow-blob blob-h2"></div>
+    </div>
+    <div class="page-hero-inner fade-in">
+      <div class="page-hero-tag">SE CADASTRE</div>
+      <h1 class="page-hero-title">NOVO CLIENTE</h1>
+      <p class="page-hero-sub">Se cadastre com os seus dados pessoais, endereço e as credenciais para acessar o catálogo da Andromeda.</p>
+    </div>
+  </section>
+
+  <div class="h-divider"></div>
+
+  <!-- ══ FORMULÁRIO DE CADASTRO ══ -->
+  <section id="cadastro-form-section">
+    <div class="cadastro-container">
+
+      <form class="cadastro-form fade-in delay-1" id="cadastroClienteForm" method="POST" action="{% url 'cadastro' %}">
+        {% csrf_token %}
+
+        <!-- ── DADOS PESSOAIS ── -->
+        <div class="form-fieldset">
+          <div class="fieldset-title">Dados Pessoais</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clienteNome">Nome Completo <span style="color: var(--cyan); font-size: 1.2rem;">*</span></label>
+              <input type="text" id="clienteNome" name="nome_completo" placeholder="Nome completo do cliente" required>
+            </div>
+          </div>
+
+          <div class="form-row form-row-2">
+            <div class="form-group">
+              <label for="clienteCpf">CPF/CPNJ</label>
+              <input type="text" id="clienteCpf" name="cpf" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
+            </div>
+            <div class="form-group">
+              <label for="clienteTelefone">Telefone</label>
+              <input type="text" id="clienteTelefone" name="telefone" placeholder="(00) 00000-0000" inputmode="numeric" maxlength="15">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clienteEmail">E-mail <span style="color: var(--cyan); font-size: 1.2rem;">*</span></label>
+              <input type="email" id="clienteEmail" name="email" placeholder="cliente@email.com" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group password-field">
+              <label for="clienteSenha">Senha <span style="color: var(--cyan); font-size: 1.2rem;">*</span></label>
+              <input type="password" id="clienteSenha" name="senha" placeholder="••••••••" autocomplete="new-password" required>
+              
+              <button type="button" class="password-toggle" style="z-index: 10; cursor: pointer;" aria-label="Mostrar senha" onclick="const input = document.getElementById('clienteSenha'); input.type = input.type === 'password' ? 'text' : 'password';">👁️</button>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn-send" type="submit">Cadastrar Cliente ✦</button>
+        <div class="cadastro-footer-link">
+        Já tem conta? <a href="{% url 'login' %}">Faça login já</a>
+      </div>
+      </form>
+
+    </div>
+  </section>
+
+</body>
+</html>

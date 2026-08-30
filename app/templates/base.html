@@ -67,30 +67,23 @@
     <li><a href="{% url 'home' %}">Início</a></li>
     <li><a href="{% url 'services' %}">Serviços</a></li>
     <li><a href="{% url 'equipe' %}">Equipe</a></li>
-    <li><button class="btn-login-nav" onclick="openModal()">⬡ Login</button></li>
+    <li><a href="{% url 'cadastro' %}">Login</a></li>
   </ul>
 </nav>
     {% block content %}
     {% endblock %}
 
-    <!-- ── FOOTER ── -->
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-top">
     <div>
       <div class="footer-brand-logo">
-        <div class="footer-logo-img">
-          <!-- <img src="sua-logo.png" alt="Logo Andromeda"> -->
-        </div>
+        <div class="footer-logo-img"></div>
         <div class="footer-brand-name">ANDROMEDA</div>
       </div>
       <p class="footer-brand-desc">Informatizamos negócios pequenos e médios, transformando ideias em presença digital de alto impacto.</p>
-      <div class="footer-social">
-        <a href="#" title="@ky.andromeda">📸</a>
-        <a href="#" title="(21) 99826-0278">📱</a>
-        <a href="#" title="ky.andromeda@gmail.com">✉️</a>
-        <a href="#" title="LinkedIn">💼</a>
-      </div>
     </div>
+    
     <div class="footer-col">
       <div class="footer-col-title">Navegação</div>
       <ul>
@@ -98,7 +91,9 @@
         <li><a href="{% url 'services' %}">Serviços</a></li>
       </ul>
     </div>
-    <div class="footer-col">
+    
+    <!-- Adicionada a classe 'servicos-col' para dividir os itens em 2 colunas no CSS -->
+    <div class="footer-col servicos-col">
       <div class="footer-col-title">Serviços</div>
       <ul>
         <li><a href="{% url 'services' %}">Criação de Sites</a></li>
@@ -109,6 +104,7 @@
         <li><a href="{% url 'services' %}">SEO &amp; Performance</a></li>
       </ul>
     </div>
+    
     <div class="footer-col">
       <div class="footer-col-title">Contato</div>
       <div class="footer-contact-item"><span class="icon">📍</span><span>Rio de Janeiro, RJ — Brasil</span></div>
@@ -117,7 +113,9 @@
       <div class="footer-contact-item"><span class="icon">🕐</span><span>Seg – Sex, 9h às 18h</span></div>
     </div>
   </div>
+  
   <div class="footer-divider"></div>
+  
   <div class="footer-bottom">
     <div class="footer-copy">© 2025 Andromeda — Todos os direitos reservados</div>
     <div class="footer-legal"><a href="#">Privacidade</a><a href="#">Termos de Uso</a><a href="#">Cookies</a></div>

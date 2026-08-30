@@ -323,7 +323,7 @@ nav {
 ══════════════════════════════════════════════════════════════ */
 section {
   position: relative; z-index: 1;
-  min-height: 100vh; display: flex; align-items: center; overflow: hidden;
+  display: flex; align-items: center; overflow: hidden;
 }
 
 
@@ -331,6 +331,7 @@ section {
    10. HERO — PÁGINA HOME
 ══════════════════════════════════════════════════════════════ */
 #home {
+  min-height: 100vh;
   padding: 0; justify-content: center;
   background: radial-gradient(ellipse 75% 80% at 50% 42%, rgba(26,111,212,.11) 0%, transparent 65%);
 }
@@ -454,7 +455,8 @@ h1 {
 ══════════════════════════════════════════════════════════════ */
 #reviews-carousel {
   position: relative; z-index: 2; width: 100%; min-height: auto; display: block;
-  padding: 80px 0 90px; overflow: hidden;
+  padding: 40px 0 50px; /* Reduzido de 80px 0 90px */
+  overflow: hidden;
   background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,70,150,.09) 0%, transparent 70%);
 }
 #reviews-carousel::before {
@@ -524,7 +526,7 @@ h1 {
    13. SOBRE
 ══════════════════════════════════════════════════════════════ */
 #sobre {
-  padding: 100px 6rem;
+  padding: 60px 6rem; /* Reduzido de 100px */
   background: linear-gradient(180deg, transparent, rgba(13,42,94,.15) 50%, transparent);
 }
 .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
@@ -548,9 +550,18 @@ h1 {
 /* ══════════════════════════════════════════════════════════════
    14. SERVIÇOS — HOME (cards simples)
 ══════════════════════════════════════════════════════════════ */
-#servicos { padding: 100px 6rem; background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(26,111,212,.05) 0%, transparent 70%); }
-.servicos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-
+#servicos {
+  padding: 60px 6rem; /* Reduzido de 100px */
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, rgba(26,111,212,.05) 0%, transparent 70%);
+}
+.servicos-grid {
+  display: grid; 
+  /* Força os cards a ficarem lado a lado com tamanho mínimo de 300px */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  gap: 1.5rem; 
+  max-width: 1200px; /* Impede que os cards fiquem gigantes e gordos */
+  margin: 0 auto;    /* Centraliza os cards na tela */
+}
 .service-card {
   background: rgba(3,10,30,.85); border: 1px solid rgba(59,158,255,.13);
   padding: 0; position: relative; overflow: hidden; display: flex; flex-direction: column;
@@ -578,14 +589,17 @@ h1 {
 /* ══════════════════════════════════════════════════════════════
    15. PROCESSO — HOME
 ══════════════════════════════════════════════════════════════ */
-#processo { padding: 100px 6rem; background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(0,212,255,.04) 0%, transparent 70%); }
-.processo-steps {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; position: relative;
+#processo {
+  padding: 60px 6rem; 
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(0,212,255,.04) 0%, transparent 70%);
 }
-.processo-steps::before {
-  content: ''; position: absolute; top: 42px; z-index: 0;
-  left: calc(12.5% + 22px); width: calc(75% - 44px); height: 1px;
-  background: linear-gradient(90deg, var(--blue), var(--cyan), var(--blue));
+.processo-steps {
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+  gap: 1.2rem; 
+  position: relative;
+  max-width: 1200px; 
+  margin: 0 auto;    
 }
 
 .step-card {
@@ -604,12 +618,13 @@ h1 {
 }
 .step-title { font-family: 'Orbitron', sans-serif; font-size: .78rem; letter-spacing: 2px; color: var(--blue-bright); margin-bottom: .8rem; text-transform: uppercase; }
 .step-desc  { font-size: .87rem; line-height: 1.75; color: rgba(232,244,255,.54); }
-
-
 /* ══════════════════════════════════════════════════════════════
    16. CONTATO — HOME
 ══════════════════════════════════════════════════════════════ */
-#contato { padding: 100px 6rem; background: linear-gradient(180deg, transparent, rgba(13,42,94,.25)); }
+#contato {
+  padding: 60px 6rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(13,42,94,.25) 50%, transparent 100%);
+}
 .contato-wrapper { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start; }
 .contato-info p  { font-size: .95rem; line-height: 1.8; color: rgba(232,244,255,.58); margin-bottom: 2rem; }
 
@@ -654,8 +669,9 @@ h1 {
    17. HERO — PÁGINA SERVIÇOS
 ══════════════════════════════════════════════════════════════ */
 #page-hero {
-  position: relative; z-index: 1; min-height: 52vh; display: flex; align-items: flex-end;
-  overflow: hidden; padding: 120px 6rem 5rem;
+  position: relative; z-index: 1; min-height: auto; display: flex; align-items: center;
+  overflow: hidden; 
+  padding: 100px 6rem 2rem; /* Valores reduzidos: 100px topo, 6rem laterais, 2rem baixo */
   background: radial-gradient(ellipse 80% 90% at 50% 100%, rgba(26,111,212,.14) 0%, transparent 65%);
 }
 .page-hero-deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
@@ -672,10 +688,17 @@ h1 {
 .page-hero-tag::after { content: ''; width: 24px; height: 1px; background: var(--cyan); }
 
 .page-hero-title {
-  font-family: 'Orbitron', sans-serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900;
-  letter-spacing: 6px; line-height: 1; margin-bottom: 1.5rem;
+  font-family: 'Orbitron', sans-serif;
+  /* Tamanho reduzido: vai de 2rem no celular até o máximo de 3.5rem no PC */
+  font-size: clamp(2rem, 4vw, 3.5rem); 
+  font-weight: 900;
+  letter-spacing: 4px; /* Diminuí um pouco o espaçamento das letras para compensar */
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
   background: linear-gradient(135deg, var(--white) 0%, var(--cyan) 50%, var(--blue-bright) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+  background-clip: text;
 }
 .page-hero-sub {
   font-size: 1.05rem; color: rgba(232,244,255,.5); line-height: 1.8; max-width: 600px;
@@ -926,8 +949,10 @@ h1 {
 footer { position: relative; z-index: 1; overflow: hidden; }
 
 .footer-top {
-  padding: 5rem 6rem 3.5rem;
-  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4rem;
+  padding: 3rem 6rem 2rem; /* Espaçamento vertical reduzido */
+  display: grid; 
+  grid-template-columns: 1.2fr 0.8fr 1.6fr 1fr; /* Proporções reajustadas */
+  gap: 2rem; /* Distância entre colunas reduzida */
   border-top: 1px solid rgba(59,158,255,.12); position: relative;
 }
 .footer-top::before {
@@ -936,7 +961,6 @@ footer { position: relative; z-index: 1; overflow: hidden; }
               radial-gradient(ellipse 30% 80% at 92% 30%, rgba(0,212,255,.04) 0%, transparent 60%);
 }
 
-/* Logo do rodapé — aceita <img> ou ícone fallback */
 .footer-logo-img {
   width: 32px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
@@ -947,42 +971,38 @@ footer { position: relative; z-index: 1; overflow: hidden; }
 
 .footer-brand-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
 .footer-brand-name { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 900; letter-spacing: 4px; color: var(--white); }
-.footer-brand-desc { font-size: .84rem; line-height: 1.8; color: rgba(232,244,255,.34); margin-bottom: 1.6rem; max-width: 250px; }
+.footer-brand-desc { font-size: .84rem; line-height: 1.8; color: rgba(232,244,255,.34); max-width: 250px; }
+
+.footer-col-title { font-family: 'Orbitron', sans-serif; font-size: .63rem; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 1rem; padding-bottom: .4rem; border-bottom: 1px solid rgba(59,158,255,.14); }
+.footer-col ul   { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.footer-col ul a { font-size: .83rem; color: rgba(232,244,255,.36); text-decoration: none; letter-spacing: .5px; transition: color .3s, padding-left .3s; display: flex; align-items: center; gap: 6px; }
+.footer-col ul a::before     { content: '›'; color: var(--blue); transition: color .3s; }
+.footer-col ul a:hover       { color: var(--white); padding-left: 4px; }
+.footer-col ul a:hover::before { color: var(--cyan); }
+
+/* Compactação dos serviços em 2 colunas */
+.servicos-col ul { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem 1rem; }
+
+.footer-contact-item       { display: flex; align-items: flex-start; gap: 10px; margin-bottom: .6rem; }
+.footer-contact-item .icon { font-size: .9rem; margin-top: 2px; flex-shrink: 0; }
+.footer-contact-item span  { font-size: .81rem; color: rgba(232,244,255,.34); line-height: 1.4; }
+
+.footer-divider { height: 1px; margin: 0 6rem; background: linear-gradient(90deg, transparent, rgba(59,158,255,.15) 25%, rgba(0,212,255,.22) 50%, rgba(59,158,255,.15) 75%, transparent); }
+.footer-bottom  { padding: 1.2rem 6rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.footer-copy    { font-size: .68rem; letter-spacing: 1.5px; color: rgba(232,244,255,.2); }
 
 .footer-social   { display: flex; gap: 10px; }
 .footer-social a {
-  width: 36px; height: 36px; border: 1px solid rgba(59,158,255,.18);
+  width: 32px; height: 32px; border: 1px solid rgba(59,158,255,.18);
   display: flex; align-items: center; justify-content: center;
   font-size: .85rem; color: rgba(232,244,255,.36); text-decoration: none;
   transition: all .3s; clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);
 }
 .footer-social a:hover { background: rgba(59,158,255,.1); border-color: var(--cyan); color: var(--cyan); }
 
-.footer-col-title { font-family: 'Orbitron', sans-serif; font-size: .63rem; letter-spacing: 3px; text-transform: uppercase; color: var(--cyan); margin-bottom: 1.4rem; padding-bottom: .6rem; border-bottom: 1px solid rgba(59,158,255,.14); }
-.footer-col ul   { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
-.footer-col ul a { font-size: .83rem; color: rgba(232,244,255,.36); text-decoration: none; letter-spacing: .5px; transition: color .3s, padding-left .3s; display: flex; align-items: center; gap: 6px; }
-.footer-col ul a::before     { content: '›'; color: var(--blue); transition: color .3s; }
-.footer-col ul a:hover       { color: var(--white); padding-left: 4px; }
-.footer-col ul a:hover::before { color: var(--cyan); }
-
-.footer-contact-item      { display: flex; align-items: flex-start; gap: 10px; margin-bottom: .9rem; }
-.footer-contact-item .icon { font-size: .9rem; margin-top: 2px; flex-shrink: 0; }
-.footer-contact-item span  { font-size: .81rem; color: rgba(232,244,255,.34); line-height: 1.6; }
-
-.footer-divider { height: 1px; margin: 0 6rem; background: linear-gradient(90deg, transparent, rgba(59,158,255,.15) 25%, rgba(0,212,255,.22) 50%, rgba(59,158,255,.15) 75%, transparent); }
-.footer-bottom  { padding: 1.6rem 6rem; display: flex; align-items: center; justify-content: space-between; }
-.footer-copy    { font-size: .68rem; letter-spacing: 1.5px; color: rgba(232,244,255,.2); }
 .footer-legal   { display: flex; gap: 2rem; }
 .footer-legal a { font-size: .68rem; letter-spacing: 1.5px; color: rgba(232,244,255,.2); text-decoration: none; transition: color .3s; text-transform: uppercase; }
 .footer-legal a:hover { color: rgba(232,244,255,.5); }
-
-
-
-
-
- 
-
-
 
 /* ══════════════════════════════════════════════════════════════
    25. RESPONSIVO
@@ -1003,7 +1023,7 @@ footer { position: relative; z-index: 1; overflow: hidden; }
 }
 
 @media (max-width: 900px) {
-  #home, #sobre, #servicos, #contato, #processo { padding: 100px 2rem 80px; }
+  #home, #sobre, #servicos, #contato, #processo { padding: 80px 2rem; }
   #home           { padding: 80px 2rem 40px; }
   .orbit-wrap     { width: 300px; height: 300px; }
   .orbit-ring-1   { width: 130px; height: 130px; }
@@ -1011,8 +1031,6 @@ footer { position: relative; z-index: 1; overflow: hidden; }
   .orbit-ring-3   { width: 280px; height: 280px; }
   .orbit-core     { width: 68px; height: 68px; }
   .sobre-grid, .contato-wrapper { grid-template-columns: 1fr; gap: 2rem; }
-  .servicos-grid  { grid-template-columns: 1fr; }
-  .processo-steps { grid-template-columns: 1fr 1fr; }
   .processo-steps::before { display: none; }
   nav             { padding: 0 1.5rem; }
   .nav-links      { gap: 1rem; }
@@ -1121,7 +1139,10 @@ footer { position: relative; z-index: 1; overflow: hidden; }
 /* ══════════════════════════════════════════════════════════════
    27. CADASTRO DE CLIENTE
 ══════════════════════════════════════════════════════════════ */
-#cadastro-form-section { position: relative; z-index: 1; padding: 5rem 6rem 7rem; }
+#cadastro-form-section { 
+  position: relative; z-index: 1; 
+  padding: 2rem 6rem 5rem; /* O primeiro valor passou de 5rem para 2rem */
+}
 .cadastro-container { max-width: 1000px; margin: 0 auto; }
 
 .cadastro-form { display: flex; flex-direction: column; gap: 2.5rem; }
@@ -1159,6 +1180,7 @@ footer { position: relative; z-index: 1; overflow: hidden; }
   background: transparent; border: none; cursor: pointer;
   width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
   color: rgba(232,244,255,.35); font-size: 1rem; transition: color .25s;
+  z-index: 10; /* Garante que o botão fique por cima de tudo */
 }
 .password-toggle:hover { color: var(--cyan); }
 
@@ -1180,4 +1202,59 @@ footer { position: relative; z-index: 1; overflow: hidden; }
 @media (max-width: 700px) {
   #cadastro-form-section { padding: 2rem 1.5rem 4rem; }
   .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
+}
+/* - CSS DA PAGINA DE LOGIN_CLIENTE - */
+/* Força as animações a rodarem no carregamento */
+    .fade-in {
+      animation: fadeInUp 1s ease forwards !important;
+      opacity: 0;
+    }
+    .delay-1 { animation-delay: 0.2s !important; }
+
+    /* Esmaga os espaçamentos gigantes para manter a página compacta */
+    #page-hero {
+      padding: 40px 2rem 10px !important;
+      min-height: auto !important;
+    }
+    #login-form-section {
+      padding-top: 20px !important;
+    }
+    
+    /* Centraliza o formulário de login já que ele é menor que o de cadastro */
+    .login-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Estilo para o link de cadastro no final */
+    .login-footer-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: rgba(232,244,255,.5);
+    }
+    .login-footer-link a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .login-footer-link a:hover {
+      color: var(--white);
+    }
+  /* LOGIN NA PAGINA DE CADASTRO (TF) */
+.cadastro-footer-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: rgba(232,244,255,.5);
+}
+.cadastro-footer-link a {
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.cadastro-footer-link a:hover {
+  color: var(--white);
 }

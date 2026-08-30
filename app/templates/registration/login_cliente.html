@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | Andromeda</title>
+
+  <!-- Fontes e CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="{% static 'script.js' %}" defer></script>
+</head>
+<body>
+
+  <!-- ── CURSOR E EFEITOS (Obrigatório para o script.js não quebrar) ── -->
+  <div class="cursor-galaxy" id="cursorGalaxy">
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 1.5 C20.9 10,21.3 15.5,20 20 C18.7 15.5,19.1 10,20 1.5Z" fill="url(#cg1)"/>
+      <path d="M20 38.5 C19.1 30,18.7 24.5,20 20 C21.3 24.5,20.9 30,20 38.5Z" fill="url(#cg2)"/>
+      <path d="M1.5 20 C10 20.9,15.5 21.3,20 20 C15.5 18.7,10 19.1,1.5 20Z" fill="url(#cg3)"/>
+      <path d="M38.5 20 C30 19.1,24.5 18.7,20 20 C24.5 21.3,30 20.9,38.5 20Z" fill="url(#cg4)"/>
+      <circle cx="20" cy="20" r="2.8" fill="white" opacity="0.95"/>
+      <circle cx="20" cy="20" r="5.5" fill="rgba(0,212,255,0.18)"/>
+      <defs>
+        <linearGradient id="cg1" x1="20" y1="1.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="cg2" x1="20" y1="38.5" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.65"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="cg3" x1="1.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#3b9eff" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+        <linearGradient id="cg4" x1="38.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/>
+          <stop offset="100%" stop-color="#00d4ff"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+  <div class="cursor-ring" id="cursorRing"></div>
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- ══ PAGE HERO ══ -->
+  <section id="page-hero">
+    <div class="page-hero-deco">
+      <div class="glow-blob blob-h1"></div>
+      <div class="glow-blob blob-h2"></div>
+    </div>
+    <div class="page-hero-inner fade-in">
+      <div class="page-hero-tag">ACESSO SEGURO</div>
+      <h1 class="page-hero-title">ENTRAR</h1>
+      <p class="page-hero-sub">Insira o seu E-mail ou CPF e senha para acessar o painel de controle Andromeda.</p>
+    </div>
+  </section>
+
+  <div class="h-divider"></div>
+
+  <!-- ══ FORMULÁRIO DE LOGIN ══ -->
+  <section id="login-form-section">
+    <div class="login-container">
+
+      <!-- Substitua a url 'login' pela rota correta no seu urls.py se for diferente -->
+      <form class="cadastro-form fade-in delay-1" id="loginForm" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div class="form-fieldset">
+          <div class="fieldset-title">Credenciais de Acesso</div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="loginIdentificacao">E-mail ou CPF <span style="color: var(--cyan); font-size: 1.2rem;">*</span></label>
+              <input type="text" id="loginIdentificacao" name="identificacao" placeholder="cliente@email.com ou 000.000.000-00" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group password-field">
+              <label for="loginSenha">Senha <span style="color: var(--cyan); font-size: 1.2rem;">*</span></label>
+              <input type="password" id="loginSenha" name="senha" placeholder="••••••••" autocomplete="current-password" required>
+              
+              <button type="button" class="password-toggle" style="z-index: 10; cursor: pointer;" aria-label="Mostrar senha" onclick="const input = document.getElementById('loginSenha'); input.type = input.type === 'password' ? 'text' : 'password';">👁️</button>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn-send" type="submit" style="width: 100%; justify-content: center;">Acessar Painel ✦</button>
+        
+        <div class="login-footer-link">
+          Não tem uma conta? <a href="{% url 'cadastro' %}">Cadastre-se</a>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+</body>
+</html>
