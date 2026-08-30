@@ -58,16 +58,29 @@
 
     <!-- NAV BAR -->
     <nav>
-  <a href="{% url 'home' %}" class="nav-logo">
-    <div class="nav-logo-img">
-    </div>
-    ANDROMEDA
-  </a>
+    <a href="{% if user.is_staff %}{% url 'dashboard' %}{% elif user.is_authenticated %}{% url 'perfil' %}{% else %}{% url 'home' %}{% endif %}" class="nav-logo">
+      <div class="nav-logo-img"></div>
+      ANDROMEDA
+    </a>
   <ul class="nav-links">
     <li><a href="{% url 'home' %}">Início</a></li>
     <li><a href="{% url 'services' %}">Serviços</a></li>
     <li><a href="{% url 'equipe' %}">Equipe</a></li>
-    <li><a href="{% url 'cadastro' %}">Login</a></li>
+    <!-- pra caso o user ja esteja logado -->
+    {% if user.is_authenticated %}
+    <!-- O que aparece quando o usuário ESTÁ logado -->
+    <div class="user-menu">
+        <span style="color: var(--cyan);">Olá, {{ user.get_short_name|default:user.username }}</span>
+        <!-- É bom ter um botão de sair para testar -->
+      <a href="{% url 'logout' %}" class="btn-sair">Sair</a>
+    </div>
+{% else %}
+    <!-- O que aparece quando o usuário NÃO está logado -->
+    <div class="auth-buttons">
+        <a href="{% url 'login' %}" class="btn-login">Login</a>
+    </div>
+{% endif %}
+
   </ul>
 </nav>
     {% block content %}

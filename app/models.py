@@ -17,7 +17,7 @@ class Plano(models.Model):
 class Usuario(AbstractUser):
     email = models.EmailField(unique=True, blank=False, null=False)
     cpf_cnpj = models.CharField(max_length=14, unique=True, blank=True, null=True)
-    telefone = models.CharField(max_length=15, blank=False, null=False)
+    telefone = models.CharField(max_length=15, blank=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
     def __str__(self):

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="cursor-galaxy" id="cursorGalaxy"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="stars-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
+
+<div class="dashboard-container fade-in" style="margin-top: 100px; max-width: 800px; margin-left: auto; margin-right: auto; padding: 40px; background: rgba(10, 15, 30, 0.65); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 16px; backdrop-filter: blur(12px);">
+    
+    <h1 style="font-family: 'Orbitron', sans-serif; color: var(--cyan); text-align: center; margin-bottom: 30px; text-shadow: 0 0 15px rgba(0,212,255,0.5);">MEU PERFIL</h1>
+
+    <!-- Mensagem de Sucesso -->
+    {% if messages %}
+        <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: center; font-weight: 600;">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form class="cadastro-form" method="POST" action="{% url 'perfil' %}"> 
+        {% csrf_token %} 
+
+        <!-- Mensagens de Erro -->
+        {% if form.errors %}
+          <div class="form-errors" style="background: rgba(255, 50, 50, 0.1); border: 1px solid #ff3232; color: #ff3232; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+            <strong>Ocorreu um erro ao atualizar:</strong>
+            <ul style="margin-top: 10px; margin-left: 20px; font-size: 0.85rem;">
+            {% for field, errors in form.errors.items %}
+              {% for error in errors %}
+                <li><b>{{ field }}</b>: {{ error }}</li>
+              {% endfor %}
+            {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="form-fieldset"> 
+            <div class="fieldset-title">Atualizar Informações Pessoais</div> 
+
+            <div class="form-row"> 
+                <div class="form-group"> 
+                    <label>Nome / Usuário</label> 
+                    <input type="text" name="username" value="{{ form.username.value|default_if_none:'' }}" required> 
+                </div> 
+            </div> 
+
+            <div class="form-row form-row-2"> 
+                <div class="form-group"> 
+                    <label>CPF/CNPJ</label> 
+                    <input type="text" name="cpf_cnpj" value="{{ form.cpf_cnpj.value|default_if_none:'' }}" required> 
+                </div> 
+                <div class="form-group"> 
+                    <label>Telefone</label> 
+                    <input type="text" name="telefone" value="{{ form.telefone.value|default_if_none:'' }}" required> 
+                </div> 
+            </div> 
+
+            <div class="form-row"> 
+                <div class="form-group"> 
+                    <label>E-mail</label> 
+                    <input type="email" name="email" value="{{ form.email.value|default_if_none:'' }}" required> 
+                </div> 
+            </div> 
+        </div> 
+
+        <button class="btn-send" type="submit" style="width: 100%; justify-content: center; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: var(--cyan); font-weight: bold;">
+            Salvar Alterações ✦
+        </button> 
+    </form> 
+</div>
+{% endblock %}
