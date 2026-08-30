@@ -14,7 +14,6 @@
     10. Contador animado (home)
    ════════════════════════════════════════════════════════════════ */
 
-
 /* ══════════════════════════════════════════════════════════════
    1. CURSOR GALÁXIA
    — cGal segue o mouse em tempo real
@@ -483,4 +482,26 @@ document.querySelectorAll('.password-toggle').forEach(btn => {
     input.type = isHidden ? 'text' : 'password';
     btn.textContent = isHidden ? '🙈' : '👁️';
   });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona todos os botões de mostrar/ocultar senha
+    const togglePasswords = document.querySelectorAll('.password-toggle');
+
+    togglePasswords.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Pega o ID do campo de senha através do atributo data-target
+            const targetId = this.getAttribute('data-target');
+            const passwordInput = document.getElementById(targetId);
+
+            // Verifica se o campo existe
+            if (passwordInput) {
+                // Alterna entre texto e senha
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                } else {
+                    passwordInput.type = 'password';
+                }
+            }
+        });
+    });
 });
