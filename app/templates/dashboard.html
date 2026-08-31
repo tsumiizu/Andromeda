@@ -118,7 +118,16 @@
           <tbody>
             {% for u in usuarios %}
             <tr>
-              <td style="font-weight: bold; color: #fff;">{{ u.get_full_name }}</td>
+              <td style="font-weight: bold; color: #fff; display: flex; align-items: center; gap: 12px;">
+                <div class="review-avatar" style="width: 32px; height: 32px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                  {% if u.foto %}
+                    <img src="{{ u.foto.url }}" alt="{{ u.get_full_name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                  {% else %}
+                    <span style="font-size: 0.65rem;">{{ u.first_name|slice:":1"|upper }}{{ u.last_name|slice:":1"|upper }}</span>
+                  {% endif %}
+                </div>
+                <span>{{ u.get_full_name }}</span>
+              </td>
               <td>{{ u.email }}</td>
               <td>{{ u.cpf_cnpj|default:"<span style='color: rgba(255,255,255,0.3);'>Não informado</span>"|safe }}</td>
               <td>{{ u.telefone|default:"<span style='color: rgba(255,255,255,0.3);'>Não informado</span>"|safe }}</td>

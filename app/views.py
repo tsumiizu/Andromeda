@@ -68,7 +68,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('home')
-#POR ENQUANTO DASHBOARD É PUBLICO PARA TODOS
+
 @login_required
 @staff_member_required
 def dashboard_view(request):
@@ -88,11 +88,7 @@ def perfil_view(request):
         form_dados = CadastroUsuarioForm(request.POST, instance=user)
         form_foto = FotoPerfilForm(request.POST, request.FILES, instance=user)
         form_endereco = EnderecoForm(request.POST, instance=user)
-
-        # Trata o campo de senha no formulário principal de dados
         form_dados.fields['senha'].required = False
-
-        # Valida os 3 formulários em conjunto
         if form_dados.is_valid() and form_foto.is_valid() and form_endereco.is_valid():
             form_dados.save()
             form_foto.save()
