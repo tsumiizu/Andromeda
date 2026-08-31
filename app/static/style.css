@@ -180,7 +180,6 @@ body {
   color: var(--cyan); margin-bottom: .8rem;
   display: flex; align-items: center; gap: 12px;
 }
-.section-subtitle::before { content: ''; width: 28px; height: 1px; background: var(--cyan); }
 .section-title  { font-family: 'Orbitron', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 900; letter-spacing: 4px; line-height: 1.1; margin-bottom: 1rem; }
 .section-line   { width: 60px; height: 2px; background: linear-gradient(90deg, var(--cyan), transparent); margin-bottom: 3rem; }
 
@@ -1486,4 +1485,199 @@ body {
 .btn-primary:hover {
   box-shadow: 0 0 20px var(--cyan);
   transform: scale(1.05);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ESTILOS ADICIONAIS — CARROSSEL & CAPAS DE PLANOS
+══════════════════════════════════════════════════════════════ */
+
+/* Contêiner da Imagem do Plano */
+.plano-img-container {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--img-border);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+
+.plano-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.service-card-v2:hover .plano-img-container img {
+  transform: scale(1.08);
+}
+
+/* Wrapper do Carrossel */
+.planos-carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.planos-carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0.5rem;
+  width: 100%;
+  scrollbar-width: none; /* Firefox */
+}
+
+.planos-carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.plano-card-carousel {
+  flex: 0 0 320px; /* Largura fixa para cada card no carrossel */
+  max-width: 320px;
+}
+
+/* Botões de Navegação do Carrossel */
+.carousel-btn {
+  background: rgba(6, 13, 30, 0.9);
+  border: 1px solid rgba(59, 158, 255, 0.3);
+  color: var(--cyan);
+  font-size: 1.8rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  position: absolute;
+}
+
+.carousel-btn:hover {
+  background: var(--blue-dark);
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+.carousel-btn.prev {
+  left: -20px;
+}
+
+.carousel-btn.next {
+  right: -20px;
+}
+
+/* Responsividade do Carrossel */
+@media (max-width: 768px) {
+  .plano-card-carousel {
+    flex: 0 0 85%;
+    max-width: 85%;
+  }
+  
+  .carousel-btn {
+    display: none; /* Em telas menores, o swipe natural com o dedo é suficiente */
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CARROSSEL DE SERVIÇOS / PLANOS (CORREÇÃO DE RESPONSIVIDADE)
+══════════════════════════════════════════════════════════════ */
+.planos-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Track de rolagem contínua com snap para mobile e desktop */
+.planos-carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 1rem 0.5rem;
+  width: 100%;
+  
+  /* Esconde a barra de rolagem nativa */
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.planos-carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari e Opera */
+}
+
+/* Card do carrossel com dimensões responsivas fixas */
+.plano-card-carousel {
+  flex: 0 0 340px; /* Impede os cards de estourarem e fixa uma largura base */
+  max-width: 340px;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+}
+
+/* Trata as imagens dentro dos cards para não vazarem */
+.plano-img-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid var(--img-border);
+  margin-bottom: 1.2rem;
+}
+
+.plano-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+
+/* Estilo dos botões de navegação lateral */
+.carousel-btn {
+  background: rgba(6, 13, 30, 0.85);
+  border: 1px solid rgba(59, 158, 255, 0.3);
+  color: var(--cyan);
+  font-size: 2rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background: var(--cyan);
+  color: var(--dark);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+}
+
+.carousel-btn.prev { left: -20px; }
+.carousel-btn.next { right: -20px; }
+
+/* Adaptação para celulares (Mobile) */
+@media (max-width: 768px) {
+  .plano-card-carousel {
+    flex: 0 0 85vw; /* O card ocupa 85% da largura da tela no celular */
+    max-width: 85vw;
+  }
+
+  /* Oculta setas laterais em telas pequenas para favorecer o swipe com o dedo */
+  .carousel-btn {
+    display: none;
+  }
 }

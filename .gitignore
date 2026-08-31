@@ -1,6 +1,6 @@
 # Media
+media/
 staticfiles/
-planos/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

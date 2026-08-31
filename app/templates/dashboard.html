@@ -1,4 +1,5 @@
 {% load static %}
+{% if user.is_authenticated %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,8 +8,48 @@
   <title>Dashboard | Andromeda</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
   
-  <!-- Carrega o CSS global (onde você colocou os estilos do dashboard) -->
+  <!-- Carrega o CSS global -->
   <link rel="stylesheet" href="{% static 'style.css' %}">
+  
+  <!-- Estilo rápido exclusivo para posicionar e alinhar o botão Voltar -->
+  <style>
+    .btn-back-floating {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(6, 13, 30, 0.8);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      color: #00d4ff;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .btn-back-floating:hover {
+      background: #00d4ff;
+      color: #060d1e;
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+      transform: translateX(-3px);
+    }
+
+    @media (max-width: 768px) {
+      .btn-back-floating {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        align-self: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -32,10 +73,15 @@
   <div class="cursor-ring" id="cursorRing"></div> 
   <canvas id="stars-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
 
-  <div class="dashboard-container">
+  <div class="dashboard-container" style="position: relative;">
     
+    <!-- BOTÃO VOLTAR -->
+    <a href="{% url 'home' %}" class="btn-back-floating">
+      ← VOLTAR
+    </a>
+
     <div class="dash-header-main fade-in">
-      <h1>PAINEL DE COMANDO</h1>
+      <h1>PAINEL DE COMANDO<br>BEM VINDO, {{ user.first_name.upper }}</h1>
       <p style="color: rgba(255,255,255,0.6);">Controle de tripulação e serviços da Andromeda</p>
     </div>
 
@@ -48,10 +94,6 @@
       <div class="stat-card">
         <div class="stat-value">{{ planos|length }}</div>
         <div class="stat-label">Planos Ativos</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" style="color: #4CAF50;">Online</div>
-        <div class="stat-label">Status do Sistema</div>
       </div>
     </div>
 
@@ -76,7 +118,7 @@
           <tbody>
             {% for u in usuarios %}
             <tr>
-              <td style="font-weight: bold; color: #fff;">{{ u.username }}</td>
+              <td style="font-weight: bold; color: #fff;">{{ u.get_full_name }}</td>
               <td>{{ u.email }}</td>
               <td>{{ u.cpf_cnpj|default:"<span style='color: rgba(255,255,255,0.3);'>Não informado</span>"|safe }}</td>
               <td>{{ u.telefone|default:"<span style='color: rgba(255,255,255,0.3);'>Não informado</span>"|safe }}</td>
@@ -124,3 +166,4 @@
   <script src="{% static 'script.js' %}"></script>
 </body>
 </html>
+{% endif %}

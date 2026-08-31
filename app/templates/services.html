@@ -22,211 +22,78 @@
 
 <div class="h-divider"></div>
 
-<!-- ── FILTER BAR ── -->
-<div id="filter-section">
-  <div class="filter-bar">
-    <span class="filter-label">Filtrar:</span>
-    <button class="filter-btn active" data-filter="all">Todos</button>
-    <button class="filter-btn" data-filter="web">Web</button>
-    <button class="filter-btn" data-filter="sistema">Sistemas</button>
-    <button class="filter-btn" data-filter="marketing">Marketing</button>
-    <button class="filter-btn" data-filter="design">Design</button>
-  </div>
-</div>
-
 <!-- ══ SERVICES ══ -->
 <section id="servicos-main">
   <div class="services-container">
 
-    <!-- FEATURED: CRIAÇÃO DE SITES -->
-    <div class="featured-service fade-in" data-category="web">
-      <div class="featured-img">
-        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=900&q=80" alt="Criação de Sites">
-        <div class="featured-img-overlay"></div>
+    {% if planos %}
+      {% if planos|length > 3 %}
+        <!-- CARROSSEL (EXIBIDO QUANDO HÁ MAIS DE 3 PLANOS) -->
+        <div class="planos-carousel-wrapper fade-in">
+          <button class="carousel-btn prev" id="carouselPrev" aria-label="Anterior">‹</button>
+          
+          <div class="planos-carousel-track" id="carouselTrack">
+            {% for plano in planos %}
+              <div class="service-card-v2 plano-card-carousel">
+                <div class="card-num">— 0{{ forloop.counter }}</div>
+                
+                <!-- VALIDAÇÃO DE CAPA: Só renderiza a tag img se o plano possuir foto -->
+                {% if plano.capa %}
+                  <div class="plano-img-container">
+                    <img src="{{ plano.capa.url }}" alt="{{ plano.nome }}">
+                  </div>
+                {% endif %}
+
+                <h3 class="card-title">{{ plano.nome }}</h3>
+                <p class="card-desc">{{ plano.descricao|linebreaksbr }}</p>
+                
+                <div class="service-price-range">
+                  <span class="price-from">A partir de</span>
+                  <span class="price-val">R$ {{ plano.preco }}</span>
+                </div>
+                
+                <a href="" class="btn-primary" style="margin-top: auto; text-align: center;">Solicitar Orçamento ✦</a>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button class="carousel-btn next" id="carouselNext" aria-label="Próximo">›</button>
+        </div>
+
+      {% else %}
+        <!-- GRID DINÂMICO (EXIBIDO QUANDO HÁ 3 OU MENOS PLANOS) -->
+        <div class="services-grid-3">
+          {% for plano in planos %}
+            <div class="service-card-v2 fade-in">
+              <div class="card-num">— 0{{ forloop.counter }}</div>
+              
+              <!-- VALIDAÇÃO DE CAPA: Não exibe a tag img se não existir capa -->
+              {% if plano.capa %}
+                <div class="plano-img-container">
+                  <img src="{{ plano.capa.url }}" alt="{{ plano.nome }}">
+                </div>
+              {% endif %}
+
+              <h3 class="card-title">{{ plano.nome }}</h3>
+              <p class="card-desc">{{ plano.descricao|linebreaksbr }}</p>
+              
+              <div class="service-price-range">
+                <span class="price-from">A partir de</span>
+                <span class="price-val">R$ {{ plano.preco }}</span>
+              </div>
+              
+              <a href="" class="btn-primary" style="margin-top: auto; text-align: center;">Solicitar Orçamento ✦</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    {% else %}
+      <!-- FALLBACK: Caso nenhum plano tenha sido cadastrado ainda -->
+      <div style="text-align: center; padding: 3rem 1rem;" class="fade-in">
+        <p class="card-desc">Nenhum plano disponível no momento. Volte em breve!</p>
       </div>
-      <div class="featured-body">
-        <div class="featured-tag">Mais Solicitado</div>
-        <div class="service-number">— 01</div>
-        <span class="service-icon-large">🌐</span>
-        <h2 class="featured-title">CRIAÇÃO DE SITES</h2>
-        <p class="featured-desc">Do portfólio ao site institucional. Com páginas rápidas, bonitas, otimizadas e designs modernos para não só fazer o site aparecer no Google, como também converter visitantes em clientes. 
-</p>
-        <ul class="service-features">
-          <li>Design responsivo para todos os dispositivos</li>
-          <li>Otimização SEO desde o zero</li>
-          <li>Velocidade de carregamento otimizada</li>
-          <li>Painel de administração intuitivo</li>
-          <li>Integração com WhatsApp e redes sociais</li>
-        </ul>
-        <div class="service-price-range">
-          <span class="price-from">A partir de</span>
-          <span class="price-val">R$ 1.800</span>
-          <span class="price-note">— entrega em até 2 semanas</span>
-        </div>
-        <a href="index.html#contato" class="btn-primary">Solicitar Orçamento ✦</a>
-      </div>
-    </div>
-
-    <!-- GRID 3 COLUNAS -->
-    <div class="services-grid-3">
-
-      <!-- Lojas Virtuais -->
-      <div class="service-card-v2 fade-in fade-in-delay-1" data-category="web">
-        <div class="card-num">— 02</div>
-        <span class="card-icon">🛒</span>
-        <h3 class="card-title">LOJAS VIRTUAIS</h3>
-        <p class="card-desc">E-commerce completo com pagamentos integrados e gestão de estoque.</p>
-        <div class="card-tags">
-          <span class="tag">WooCommerce</span>
-          <span class="tag">Shopify</span>
-          <span class="tag">Custom</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 3.500</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-      <!-- Sistemas de Gestão -->
-      <div class="service-card-v2 fade-in fade-in-delay-2" data-category="sistema">
-        <div class="card-num">— 03</div>
-        <span class="card-icon">⚙️</span>
-        <h3 class="card-title">SISTEMAS DE GESTÃO</h3>
-        <p class="card-desc">Integração completa para controle de clientes, pedidos, finanças e equipes.</p>
-        <div class="card-tags">
-          <span class="tag">CRM</span>
-          <span class="tag">ERP</span>
-          <span class="tag">Dashboard</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 5.000</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-      <!-- Landing Pages -->
-      <div class="service-card-v2 fade-in fade-in-delay-3" data-category="marketing">
-        <div class="card-num">— 04</div>
-        <span class="card-icon">🚀</span>
-        <h3 class="card-title">LANDING PAGES</h3>
-        <p class="card-desc">Páginas de alta conversão feitas para transformar seus visitantes em leads ou clientes.</p>
-        <div class="card-tags">
-          <span class="tag">Alta Conversão</span>
-          <span class="tag">A/B Test</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 900</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-    </div>
-
-    <!-- GRID 2 COLUNAS -->
-    <div class="services-grid-2">
-
-      <!-- Portfólios Digitais -->
-      <div class="service-card-v2 fade-in" data-category="web">
-        <div class="card-num">— 05</div>
-        <span class="card-icon">🎨</span>
-        <h3 class="card-title">PORTFÓLIOS DIGITAIS</h3>
-        <p class="card-desc">Demonstre seu trabalho com puro estilo. Com portfólios personalizados para qualquer profissional que queira impressionar.</p>
-        <div class="card-tags">
-          <span class="tag">Fotografia</span>
-          <span class="tag">Design</span>
-          <span class="tag">Arquitetura</span>
-          <span class="tag">Arte</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 1.200</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-      <!-- Automação de Processos -->
-      <div class="service-card-v2 fade-in fade-in-delay-1" data-category="sistema">
-        <div class="card-num">— 06</div>
-        <span class="card-icon">🤖</span>
-        <h3 class="card-title">AUTOMAÇÃO DE PROCESSOS <span class="badge-novo">Novo</span></h3>
-        <p class="card-desc">Realize tarefas repetitivas e que requerem muito esforço. Integraremos seus sistemas para que trabalhem no automático de forma inteligente.</p>
-        <div class="card-tags">
-          <span class="tag">Zapier</span>
-          <span class="tag">Make</span>
-          <span class="tag">API</span>
-          <span class="tag">Webhooks</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 2.200</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-    </div>
-
-    <!-- GRID 3 COLUNAS — linha final -->
-    <div class="services-grid-3" style="margin-top:1.5px">
-
-      <!-- Identidade Visual -->
-      <div class="service-card-v2 fade-in" data-category="design">
-        <div class="card-num">— 07</div>
-        <span class="card-icon">✨</span>
-        <h3 class="card-title">IDENTIDADE VISUAL</h3>
-        <p class="card-desc">Conjunto completo de elementos gráficos, cores e tipografias para sua marca ser reconhecida e lembrada.</p>
-        <div class="card-tags">
-          <span class="tag">Logo</span>
-          <span class="tag">Branding</span>
-          <span class="tag">Style Guide</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 800</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-      <!-- SEO & Performance -->
-      <div class="service-card-v2 fade-in fade-in-delay-1" data-category="marketing">
-        <div class="card-num">— 08</div>
-        <span class="card-icon">📈</span>
-        <h3 class="card-title">SEO & PERFORMANCE</h3>
-        <p class="card-desc">Apareça no google e carregue rápido sem travar. Otimização técnica e de conteúdo que seu site precisa para rodar 24h por dia sem queda de desempenho. 
-</p>
-        <div class="card-tags">
-          <span class="tag">On-Page</span>
-          <span class="tag">Core Web Vitals</span>
-          <span class="tag">Analytics</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 600</span><span class="price-note">/mês</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-      <!-- Manutenção & Suporte -->
-      <div class="service-card-v2 fade-in fade-in-delay-2" data-category="sistema">
-        <div class="card-num">— 09</div>
-        <span class="card-icon">🛡️</span>
-        <h3 class="card-title">MANUTENÇÃO & SUPORTE</h3>
-        <p class="card-desc">Mantenha seu site no ar, seguro e atualizado. Planos mensais com monitoramento, backups e um atendimento prioritário.</p>
-        <div class="card-tags">
-          <span class="tag">Backups</span>
-          <span class="tag">Segurança</span>
-          <span class="tag">Atualizações</span>
-        </div>
-        <div class="service-price-range" style="margin-bottom:1rem">
-          <span class="price-from">De</span>
-          <span class="price-val" style="font-size:1.1rem">R$ 350</span><span class="price-note">/mês</span>
-        </div>
-        <a href="index.html#contato" class="card-link">Saiba Mais</a>
-      </div>
-
-    </div>
+    {% endif %}
 
   </div>
 </section>
@@ -304,4 +171,25 @@
     </div>
   </div>
 </section>
+
+<!-- Script do Carrossel -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+
+    if (track && prevBtn && nextBtn) {
+      const scrollAmount = 340; // Distância do scroll a cada clique
+
+      nextBtn.addEventListener('click', () => {
+        track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+
+      prevBtn.addEventListener('click', () => {
+        track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
 {% endblock %}

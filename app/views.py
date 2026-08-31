@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import CadastroUsuarioForm, PerfilUsuarioForm
+from .forms import CadastroUsuarioForm, FotoPerfilForm, EnderecoForm
 from django_ratelimit.decorators import ratelimit
-from django.contrib.auth import login
 from .models import *
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 
 def homeview(request):
@@ -69,10 +69,11 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 #POR ENQUANTO DASHBOARD É PUBLICO PARA TODOS
+@login_required
+@staff_member_required
 def dashboard_view(request):
     usuarios = Usuario.objects.all()
-    planos = Plano.objects.all()
-    
+    planos = Plano.objects.all()    
     context = {
         'usuarios': usuarios,
         'planos': planos
@@ -81,19 +82,37 @@ def dashboard_view(request):
 
 @login_required 
 def perfil_view(request):
-    
-    if request.user.is_staff:
-        return redirect('dashboard')
+    user = request.user
 
     if request.method == 'POST':
-       
-        form = PerfilUsuarioForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
+        form_dados = CadastroUsuarioForm(request.POST, instance=user)
+        form_foto = FotoPerfilForm(request.POST, request.FILES, instance=user)
+        form_endereco = EnderecoForm(request.POST, instance=user)
+
+        # Trata o campo de senha no formulário principal de dados
+        form_dados.fields['senha'].required = False
+
+        # Valida os 3 formulários em conjunto
+        if form_dados.is_valid() and form_foto.is_valid() and form_endereco.is_valid():
+            form_dados.save()
+            form_foto.save()
+            form_endereco.save()
+            if form_dados.cleaned_data.get('senha'):
+                update_session_auth_hash(request, user)
+
             messages.success(request, 'Seus dados foram atualizados com sucesso!')
             return redirect('perfil')
     else:
-        
-        form = PerfilUsuarioForm(instance=request.user)
+        form_dados = CadastroUsuarioForm(instance=user)
+        form_dados.fields['senha'].required = False
+        form_foto = FotoPerfilForm(instance=user)
+        form_endereco = EnderecoForm(instance=user)
 
-    return render(request, 'perfil.html', {'form': form})
+    context = {
+        'form_dados': form_dados,
+        'form_foto': form_foto,
+        'form_endereco': form_endereco,
+        'foto': user.foto,
+        'user': user,
+    }
+    return render(request, 'perfil.html', context)

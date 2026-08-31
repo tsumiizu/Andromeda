@@ -142,17 +142,17 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUD_API_KEY'),
-    'API_SECRET': os.getenv('CLOUD_API_SECRET'),
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+#     'API_KEY': os.getenv('CLOUD_API_KEY'),
+#     'API_SECRET': os.getenv('CLOUD_API_SECRET'),
+# }
 
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+#     },
+# }

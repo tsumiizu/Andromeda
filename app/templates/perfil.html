@@ -6,11 +6,10 @@
 <div class="cursor-ring" id="cursorRing"></div>
 <canvas id="stars-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
 
-<div class="dashboard-container fade-in" style="margin-top: 100px; max-width: 800px; margin-left: auto; margin-right: auto; padding: 40px; background: rgba(10, 15, 30, 0.65); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 16px; backdrop-filter: blur(12px);">
+<div class="dashboard-container fade-in" style="margin-top: 100px; max-width: 1100px; margin-left: auto; margin-right: auto; padding: 40px; background: rgba(10, 15, 30, 0.65); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 16px; backdrop-filter: blur(12px);">
     
     <h1 style="font-family: 'Orbitron', sans-serif; color: var(--cyan); text-align: center; margin-bottom: 30px; text-shadow: 0 0 15px rgba(0,212,255,0.5);">MEU PERFIL</h1>
 
-    <!-- Mensagem de Sucesso -->
     {% if messages %}
         <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: center; font-weight: 600;">
             {% for message in messages %}
@@ -19,55 +18,147 @@
         </div>
     {% endif %}
 
-    <form class="cadastro-form" method="POST" action="{% url 'perfil' %}"> 
+    <form class="cadastro-form" method="POST" action="{% url 'perfil' %}" enctype="multipart/form-data"> 
         {% csrf_token %} 
 
-        <!-- Mensagens de Erro -->
-        {% if form.errors %}
+        {% if form_dados.errors or form_foto.errors or form_endereco.errors %}
           <div class="form-errors" style="background: rgba(255, 50, 50, 0.1); border: 1px solid #ff3232; color: #ff3232; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
             <strong>Ocorreu um erro ao atualizar:</strong>
             <ul style="margin-top: 10px; margin-left: 20px; font-size: 0.85rem;">
-            {% for field, errors in form.errors.items %}
-              {% for error in errors %}
-                <li><b>{{ field }}</b>: {{ error }}</li>
-              {% endfor %}
-            {% endfor %}
+                {% for field, errors in form_dados.errors.items %}
+                    {% for error in errors %}<li><b>{{ field }}</b>: {{ error }}</li>{% endfor %}
+                {% endfor %}
+                {% for field, errors in form_foto.errors.items %}
+                    {% for error in errors %}<li><b>{{ field }}</b>: {{ error }}</li>{% endfor %}
+                {% endfor %}
+                {% for field, errors in form_endereco.errors.items %}
+                    {% for error in errors %}<li><b>{{ field }}</b>: {{ error }}</li>{% endfor %}
+                {% endfor %}
             </ul>
           </div>
         {% endif %}
 
-        <div class="form-fieldset"> 
-            <div class="fieldset-title">Atualizar Informações Pessoais</div> 
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 30px;">
+            
+            <!-- Coluna Esquerda: Foto + Dados Pessoais -->
+            <div class="form-fieldset" style="margin-bottom: 0;"> 
+                <div class="fieldset-title">Informações Pessoais</div> 
 
-            <div class="form-row"> 
-                <div class="form-group"> 
-                    <label>Nome / Usuário</label> 
-                    <input type="text" name="username" value="{{ form.username.value|default_if_none:'' }}" required> 
+                <!-- 1. FORM FOTO -->
+                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25px;">
+                    <div style="position: relative; width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--cyan); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); overflow: hidden; background: #0a0f1e; display: flex; align-items: center; justify-content: center;">
+                        <img id="avatarPreview" 
+                            src="{% if user.foto %}{{ user.foto.url }}{% else %}{% static 'img/avatar-placeholder.png' %}{% endif %}" 
+                            alt="" 
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <label for="id_foto" class="btn-secondary" style="margin-top: 15px; padding: 8px 16px; font-size: 0.65rem; cursor: pointer;">
+                        📷 Alterar Foto
+                    </label>
+                    <div style="display: none;">
+                        {{ form_foto.foto }}
+                    </div>
+                </div>
+
+                <!-- 2. FORM DADOS PESSOAIS -->
+                <div class="form-row"> 
+                    <div class="form-group"> 
+                        <label>Nome Completo</label> 
+                        <input type="text" name="nome_completo" value="{{ form_dados.nome_completo.value|default:user.get_full_name }}" required> 
+                    </div> 
+                </div> 
+
+                <div class="form-row form-row-2"> 
+                    <div class="form-group"> 
+                        <label>CPF/CNPJ</label> 
+                        <input type="text" id="clienteCpf" name="cpf_cnpj" value="{{ user.cpf_cnpj|default:'' }}"> 
+                    </div> 
+                    <div class="form-group"> 
+                        <label>Telefone</label> 
+                        <input type="text" id="clienteTelefone" name="telefone" value="{{ user.telefone|default:'' }}"> 
+                    </div> 
+                </div> 
+
+                <div class="form-row"> 
+                    <div class="form-group"> 
+                        <label>E-mail</label> 
+                        <input type="email" name="email" value="{{ user.email|default:'' }}" required> 
+                    </div> 
                 </div> 
             </div> 
 
-            <div class="form-row form-row-2"> 
-                <div class="form-group"> 
-                    <label>CPF/CNPJ</label> 
-                    <input type="text" name="cpf_cnpj" value="{{ form.cpf_cnpj.value|default_if_none:'' }}" required> 
-                </div> 
-                <div class="form-group"> 
-                    <label>Telefone</label> 
-                    <input type="text" name="telefone" value="{{ form.telefone.value|default_if_none:'' }}" required> 
-                </div> 
-            </div> 
+            <!-- Coluna Direita: 3. FORM ENDEREÇO -->
+            <div class="form-fieldset" style="margin-bottom: 0;">
+                <div class="fieldset-title">Endereço de Entrega / Cobrança</div>
 
-            <div class="form-row"> 
-                <div class="form-group"> 
-                    <label>E-mail</label> 
-                    <input type="email" name="email" value="{{ form.email.value|default_if_none:'' }}" required> 
-                </div> 
-            </div> 
-        </div> 
+                <div class="form-row form-row-2">
+                    <div class="form-group">
+                        <label>CEP</label>
+                        <input type="text" id="clienteCep" name="cep" value="{{ user.cep|default:'' }}" placeholder="00000-000">
+                        <span id="cepStatus" class="cep-status" style="font-size: 0.75rem; margin-top: 4px; color: var(--cyan);"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Número</label>
+                        <input type="text" name="numero" value="{{ user.numero|default:'' }}">
+                    </div>
+                </div>
 
-        <button class="btn-send" type="submit" style="width: 100%; justify-content: center; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: var(--cyan); font-weight: bold;">
-            Salvar Alterações ✦
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Logradouro / Rua</label>
+                        <input type="text" id="clienteEndereco" name="endereco" value="{{ user.endereco|default:'' }}">
+                    </div>
+                </div>
+
+                <div class="form-row form-row-2">
+                    <div class="form-group">
+                        <label>Bairro</label>
+                        <input type="text" id="clienteBairro" name="bairro" value="{{ user.bairro|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Complemento</label>
+                        <input type="text" name="complemento" value="{{ user.complemento|default:'' }}" placeholder="Apto, Bloco...">
+                    </div>
+                </div>
+
+                <div class="form-row form-row-2">
+                    <div class="form-group">
+                        <label>Cidade</label>
+                        <input type="text" id="clienteCidade" name="cidade" value="{{ user.cidade|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado (UF)</label>
+                        <input type="text" id="clienteEstado" name="estado" maxlength="2" value="{{ user.estado|default:'' }}" placeholder="RJ">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="btn-send" type="submit" style="width: 100%; justify-content: center; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: var(--cyan); font-weight: bold; font-size: 0.9rem; padding: 18px;">
+            Salvar Todas as Alterações ✦
         </button> 
     </form> 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Django automaticamente gera id_foto para o campo form_foto.foto
+    const fotoInput = document.getElementById('id_foto');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    if (fotoInput && avatarPreview) {
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
