@@ -70,8 +70,10 @@
               <!-- VALIDAÇÃO DE CAPA: Não exibe a tag img se não existir capa -->
               {% if plano.capa %}
                 <div class="plano-img-container">
-                  <img src="{{ plano.capa.url }}" alt="{{ plano.nome }}">
+                  <img src="{{ plano.capa_url }}" alt="Capa do {{ plano.nome }}">
                 </div>
+              {% else %}
+                  <img src="{% static 'planos/default.jpg' %}" alt="Capa do {{ plano.nome }}">
               {% endif %}
 
               <h3 class="card-title">{{ plano.nome }}</h3>
