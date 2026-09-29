@@ -162,5 +162,8 @@ STORAGES = {
     },
 }
 
-LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+SENDGRID_FROM_EMAIL = os.getenv('SENDGRID_EMAIL')
+SENDGRID_KEY = os.getenv('SENDGRID_KEY')

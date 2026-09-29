@@ -1,178 +1,105 @@
-{% load static %}
+{% extends 'base.html' %}
+{% block content %}
 {% if user.is_authenticated %}
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Andromeda</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
-  
-  <!-- Carrega o CSS global -->
-  <link rel="stylesheet" href="{% static 'style.css' %}">
-  
-  <!-- Estilo rápido exclusivo para posicionar e alinhar o botão Voltar -->
-  <style>
-    .btn-back-floating {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(6, 13, 30, 0.8);
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      color: #00d4ff;
-      text-decoration: none;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 1px;
-      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-      transition: all 0.3s ease;
-      z-index: 100;
-    }
-
-    .btn-back-floating:hover {
-      background: #00d4ff;
-      color: #060d1e;
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-      transform: translateX(-3px);
-    }
-
-    @media (max-width: 768px) {
-      .btn-back-floating {
-        position: relative;
-        top: 0;
-        left: 0;
-        margin-bottom: 20px;
-        align-self: flex-start;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ── CURSOR E EFEITOS RESTAURADOS ── -->
-  <div class="cursor-galaxy" id="cursorGalaxy"> 
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"> 
-      <path d="M20 1.5 C20.9 10,21.3 15.5,20 20 C18.7 15.5,19.1 10,20 1.5Z" fill="url(#cg1)"/> 
-      <path d="M20 38.5 C19.1 30,18.7 24.5,20 20 C21.3 24.5,20.9 30,20 38.5Z" fill="url(#cg2)"/> 
-      <path d="M1.5 20 C10 20.9,15.5 21.3,20 20 C15.5 18.7,10 19.1,1.5 20Z" fill="url(#cg3)"/> 
-      <path d="M38.5 20 C30 19.1,24.5 18.7,20 20 C24.5 21.3,30 20.9,38.5 20Z" fill="url(#cg4)"/> 
-      <circle cx="20" cy="20" r="2.8" fill="white" opacity="0.95"/> 
-      <circle cx="20" cy="20" r="5.5" fill="rgba(0,212,255,0.18)"/> 
-      <defs> 
-        <linearGradient id="cg1" x1="20" y1="1.5" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient> 
-        <linearGradient id="cg2" x1="20" y1="38.5" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b9eff" stop-opacity="0.65"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient> 
-        <linearGradient id="cg3" x1="1.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#3b9eff" stop-opacity="0.55"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient> 
-        <linearGradient id="cg4" x1="38.5" y1="20" x2="20" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff" stop-opacity="0.65"/><stop offset="100%" stop-color="#00d4ff"/></linearGradient> 
-      </defs> 
-    </svg> 
-  </div> 
-  <div class="cursor-ring" id="cursorRing"></div> 
-  <canvas id="stars-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
-
-  <div class="dashboard-container" style="position: relative;">
-    
-    <!-- BOTÃO VOLTAR -->
-    <a href="{% url 'home' %}" class="btn-back-floating">
-      ← VOLTAR
-    </a>
-
-    <div class="dash-header-main fade-in">
-      <h1>PAINEL DE COMANDO<br>BEM VINDO, {{ user.first_name.upper }}</h1>
-      <p style="color: rgba(255,255,255,0.6);">Controle de tripulação e serviços da Andromeda</p>
-    </div>
-
-    <!-- ESTATÍSTICAS RÁPIDAS -->
-    <div class="stats-grid fade-in delay-1">
-      <div class="stat-card">
-        <div class="stat-value">{{ usuarios|length }}</div>
-        <div class="stat-label">Tripulantes (Usuários)</div>
+<a href="{% url 'home' %}" class="btn-back-floating">← VOLTAR</a>
+<!-- ═══════ DASHBOARD LIQUID GLASS ═══════ -->
+<section class="login-section-bottom fade-in">
+  <!-- Cabeçalho: reaproveita .login-info dentro do .login-grid -->
+  <div class="dash-header">
+    <div>
+      <div class="login-status">
+        <span class="status-dot"></span>PAINEL DE COMANDO
       </div>
-      <div class="stat-card">
-        <div class="stat-value">{{ planos|length }}</div>
-        <div class="stat-label">Planos Ativos</div>
+      <h1 class="dash-title">Bem-vindo, {{ user.first_name|upper }}</h1>
+      <p class="dash-sub">Controle de tripulação e serviços da Andromeda.</p>
+    </div>
+    <!-- Stats: reaproveita .security-item -->
+    <div class="dash-stats">
+      <div class="security-item">
+        <span class="security-icon">✦</span>
+        <div>
+          <strong>{{ usuarios|length }}</strong>
+          <small>Tripulantes</small>
+        </div>
+      </div>
+      <div class="security-item">
+        <span class="security-icon">◈</span>
+        <div>
+          <strong>{{ planos|length }}</strong>
+          <small>Planos ativos</small>
+        </div>
       </div>
     </div>
-
-    <!-- SEÇÃO DE USUÁRIOS -->
-    <div class="dash-section fade-in delay-2">
-      <div class="section-header">
-        <h2 class="section-title">Base de Usuários</h2>
-        <a href="/admin/app/usuario/add/" target="_blank" class="btn-action btn-primary">+ Adicionar Tripulante</a>
-      </div>
-
-      <div class="table-responsive">
-        <table class="dash-table">
-          <thead>
-            <tr>
-              <th>Identificação</th>
-              <th>E-mail de Contato</th>
-              <th>Documento (CPF/CNPJ)</th>
-              <th>Telefone</th>
-              <th style="text-align: right;">Controle</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for u in usuarios %}
-            <tr>
-              <td style="font-weight: bold; color: #fff; display: flex; align-items: center; gap: 12px;">
-                <div class="review-avatar" style="width: 32px; height: 32px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+  </div>
+  <!-- ── Base de Usuários ── -->
+  <div class="dash-block">
+    <div class="dash-block-head">
+      <h2 class="dash-block-title">Base de Usuários</h2>
+      <a href="/admin/app/usuario/add/" target="_blank" class="dash-btn">+ ADICIONAR</a>
+    </div>
+    <div class="dash-table-wrap">
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th>Identificação</th>
+            <th>E-mail</th>
+            <th>CPF/CNPJ</th>
+            <th>Telefone</th>
+            <th style="text-align: right;">Controle</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for u in usuarios %}
+          <tr>
+            <td>
+              <div class="dash-user">
+                <div class="dash-avatar">
                   {% if u.foto %}
-                    <img src="{{ u.foto.url }}" alt="{{ u.get_full_name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                  <img src="{{ u.foto.url }}" alt="{{ u.get_full_name }}">
                   {% else %}
-                    <span style="font-size: 0.65rem;">{{ u.first_name|slice:":1"|upper }}{{ u.last_name|slice:":1"|upper }}</span>
+                  {{ u.first_name|slice:":1"|upper }}{{ u.last_name|slice:":1"|upper }}
                   {% endif %}
                 </div>
                 <span>{{ u.get_full_name }}</span>
-              </td>
-              <td>{{ u.email }}</td>
-              <td>{{ u.cpf_cnpj|default:"<span style='color: rgba(255,255,255,0.3);'>Não informado</span>"|safe }}</td>
-              <td>{{ u.telefone|default:"<span style='color: rgba(255,255,255,0.3);'>Não informado</span>"|safe }}</td>
-              <td style="text-align: right;">
-                <a href="/admin/app/usuario/{{ u.id }}/change/" target="_blank" class="btn-action btn-edit">Editar</a>
-              </td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="5" style="text-align: center; padding: 30px; color: rgba(255,255,255,0.5);">O banco de dados de usuários está vazio.</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
+              </div>
+            </td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.cpf_cnpj|default:"—" }}</td>
+            <td>{{ u.telefone|default:"—" }}</td>
+            <td style="text-align: right;">
+              <a href="/admin/app/usuario/{{ u.id }}/change/" target="_blank" class="dash-btn dash-btn-mini">EDITAR</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="dash-empty">O banco de dados de usuários está vazio.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-
-    <!-- SEÇÃO DE PLANOS (COMO CARDS) -->
-    <div class="dash-section fade-in delay-3">
-      <div class="section-header">
-        <h2 class="section-title">Planos de Serviço</h2>
-        <a href="/admin/app/plano/add/" target="_blank" class="btn-action btn-primary">+ Criar Plano</a>
-      </div>
-
-      <div class="plans-grid">
-        {% for p in planos %}
-        <div class="plan-card">
-          <h3 style="margin: 0; font-family: 'Orbitron'; color: #fff;">{{ p.nome }}</h3>
-          <div class="plan-price">R$ {{ p.preco }}</div>
-          <p style="font-size: 0.9rem; color: rgba(255,255,255,0.6); margin-bottom: 20px;">
-            {{ p.descricao|truncatewords:15 }}
-          </p>
-          <a href="/admin/app/plano/{{ p.id }}/change/" target="_blank" class="btn-action btn-edit" style="width: 100%;">Modificar Plano</a>
-        </div>
-        {% empty %}
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 1px dashed rgba(0,212,255,0.2); border-radius: 12px; color: rgba(255,255,255,0.5);">
-          Nenhum plano espacial configurado no momento.
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-
   </div>
-  
-  <script src="{% static 'script.js' %}"></script>
-</body>
-</html>
+  <!-- ── Planos de Serviço ── -->
+  <div class="dash-block">
+    <div class="dash-block-head">
+      <h2 class="dash-block-title">Planos de Serviço</h2>
+      <a href="/admin/app/plano/add/" target="_blank" class="dash-btn">+ CRIAR PLANO</a>
+    </div>
+
+    <div class="dash-plans">
+      {% for p in planos %}
+      <div class="dash-plan-card">
+        <h3>{{ p.nome }}</h3>
+        <div class="dash-plan-price">R$ {{ p.preco }}</div>
+        <p>{{ p.descricao|truncatewords:15 }}</p>
+        <a href="/admin/app/plano/{{ p.id }}/change/" target="_blank" class="dash-btn dash-btn-mini"
+          style="width: 100%; justify-content: center;">MODIFICAR</a>
+      </div>
+      {% empty %}
+      <div class="dash-empty" style="grid-column: 1 / -1;">Nenhum plano configurado no momento.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endif %}
+{% endblock %}

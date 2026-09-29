@@ -3,3 +3,4 @@ from .models import *
 
 admin.site.register(Plano)
 admin.site.register(Usuario)
+admin.site.register(Servico)
