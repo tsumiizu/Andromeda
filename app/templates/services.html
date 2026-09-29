@@ -1,197 +1,181 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
-
-<!-- ══ PAGE HERO ══ -->
-<section id="page-hero">
-  <div class="page-hero-deco">
-    <div class="glow-blob blob-h1"></div>
-    <div class="glow-blob blob-h2"></div>
-  </div>
-  <div class="page-hero-inner fade-in">
-    <div class="page-hero-tag">Catálogo Completo</div>
-    <h1 class="page-hero-title">SERVIÇOS</h1>
-    <p class="page-hero-sub">As soluções digitais perfeitas para transformar o seu negócio além do convencional. Cada projeto sempre possui uma variedade de possibilidades.</p>
-    <div class="page-hero-stats">
-      <div class="hero-stat"><span class="hero-stat-num">8</span><span class="hero-stat-label">Categorias</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">40+</span><span class="hero-stat-label">Projetos Entregues</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">98%</span><span class="hero-stat-label">Satisfação</span></div>
-    </div>
-  </div>
-</section>
-
-<div class="h-divider"></div>
-
-<!-- ══ SERVICES ══ -->
 <section id="servicos-main">
   <div class="services-container">
+    {% if servicos %}
+<div class="servicos-destaques">
+  {% for servico in servicos %}
+    {% if servico.ordem == 1 or servico.ordem == 2 %}
+    <article class="servico-destaque fade-in {% if forloop.counter == 2 %}is-right{% endif %}" data-servico-id="{{ servico.id }}">
 
-    {% if planos %}
-      {% if planos|length > 3 %}
-        <!-- CARROSSEL (EXIBIDO QUANDO HÁ MAIS DE 3 PLANOS) -->
-        <div class="planos-carousel-wrapper fade-in">
-          <button class="carousel-btn prev" id="carouselPrev" aria-label="Anterior">‹</button>
-          
-          <div class="planos-carousel-track" id="carouselTrack">
-            {% for plano in planos %}
-              <div class="service-card-v2 plano-card-carousel">
-                <div class="card-num">— 0{{ forloop.counter }}</div>
-                
-                <!-- VALIDAÇÃO DE CAPA: Só renderiza a tag img se o plano possuir foto -->
-                {% if plano.capa %}
-                  <div class="plano-img-container">
-                    <img src="{{ plano.capa.url }}" alt="{{ plano.nome }}">
-                  </div>
-                {% endif %}
+      <div class="servico-destaque-visual">
+        {% if servico.capa %}
+          <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
+        {% else %}
+          <div class="servico-destaque-placeholder">✦</div>
+        {% endif %}
+      </div>
 
-                <h3 class="card-title">{{ plano.nome }}</h3>
-                <p class="card-desc">{{ plano.descricao|linebreaksbr }}</p>
-                
-                <div class="service-price-range">
-                  <span class="price-from">A partir de</span>
-                  <span class="price-val">R$ {{ plano.preco }}</span>
-                </div>
-                
-                <a href="" class="btn-primary" style="margin-top: auto; text-align: center;">Solicitar Orçamento ✦</a>
+      <div class="servico-destaque-content">
+        <div class="servico-destaque-head">
+          <h2 class="servico-destaque-titulo">{{ servico.nome }}</h2>
+
+          <div class="service-price-range">
+            <span class="price-from">{% if servico.planos.all %}A partir de{% else %}De{% endif %}</span>
+            <span class="price-val">R$ {{ servico.preco }}</span>
+            {% if servico.planos.all %}<span class="price-suffix">/mês</span>{% endif %}
+          </div>
+        </div>
+
+        <p class="servico-destaque-desc">{{ servico.descricao|truncatewords:18|linebreaksbr }}</p>
+
+        <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}">
+          SAIBA MAIS ✦
+        </button>
+
+        <div class="servico-detalhe servico-detalhe-destaque" id="detalhe-{{ servico.id }}">
+          <div class="servico-detalhe-inner">
+            <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
+
+            {% if servico.planos.all %}
+              <div class="servico-detalhe-head">PLANOS DISPONÍVEIS</div>
+              <div class="servico-planos-scroll">
+                <ul class="servico-planos-lista">
+                  {% for plano in servico.planos.all %}
+                    <li>
+                      <div class="plano-linha">
+                        <span class="plano-nome">{{ plano.nome }}</span>
+                        <span class="plano-preco">R$ {{ plano.preco }}</span>
+                      </div>
+                      {% if plano.descricao %}
+                        <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
+                      {% endif %}
+                      <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            {% endfor %}
+            {% else %}
+              <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="servico-destaque-expand">
+        <div class="servico-destaque-expand-visual">
+          {% if servico.capa %}
+            <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
+          {% else %}
+            <div class="servico-destaque-placeholder">✦</div>
+          {% endif %}
+        </div>
+        <div class="servico-destaque-expand-info">
+          <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
+
+          {% if servico.planos.all %}
+            <div class="servico-detalhe-head">PLANOS DISPONÍVEIS</div>
+            <div class="servico-planos-scroll">
+              <ul class="servico-planos-lista">
+                {% for plano in servico.planos.all %}
+                  <li>
+                    <div class="plano-linha">
+                      <span class="plano-nome">{{ plano.nome }}</span>
+                      <span class="plano-preco">R$ {{ plano.preco }}</span>
+                    </div>
+                    {% if plano.descricao %}
+                      <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
+                    {% endif %}
+                    <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% else %}
+            <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
+          {% endif %}
+        </div>
+      </div>
+
+    </article>
+    {% endif %}
+  {% endfor %}
+</div>
+
+    <div class="servicos-mosaico">
+      {% for servico in servicos %}
+      {% if servico.ordem == 0 or servico.ordem >= 3 %}
+      <article class="servico-card fade-in {% if servico.planos.all %}is-mensal{% endif %}"
+        data-servico-id="{{ servico.id }}">
+
+        <div class="servico-card-inner">
+
+          <div class="servico-card-visual">
+            {% if servico.capa %}
+            <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
+            {% else %}
+            <div class="servico-card-expand-placeholder">✦</div>
+            {% endif %}
           </div>
 
-          <button class="carousel-btn next" id="carouselNext" aria-label="Próximo">›</button>
-        </div>
+          <div class="servico-card-content">
+            <div class="servico-card-head">
+              <h3 class="card-title">{{ servico.nome }}</h3>
 
-      {% else %}
-        <!-- GRID DINÂMICO (EXIBIDO QUANDO HÁ 3 OU MENOS PLANOS) -->
-        <div class="services-grid-3">
-          {% for plano in planos %}
-            <div class="service-card-v2 fade-in">
-              <div class="card-num">— 0{{ forloop.counter }}</div>
-              
-              <!-- VALIDAÇÃO DE CAPA: Não exibe a tag img se não existir capa -->
-              {% if plano.capa %}
-                <div class="plano-img-container">
-                  <img src="{{ plano.capa_url }}" alt="Capa do {{ plano.nome }}">
-                </div>
-              {% else %}
-                  <img src="{% static 'planos/default.jpg' %}" alt="Capa do {{ plano.nome }}">
-              {% endif %}
-
-              <h3 class="card-title">{{ plano.nome }}</h3>
-              <p class="card-desc">{{ plano.descricao|linebreaksbr }}</p>
-              
               <div class="service-price-range">
-                <span class="price-from">A partir de</span>
-                <span class="price-val">R$ {{ plano.preco }}</span>
+                <span class="price-from">{% if servico.planos.all %}A partir de{% else %}De{% endif %}</span>
+                <span class="price-val">R$ {{ servico.preco }}</span>
+                {% if servico.planos.all %}<span class="price-suffix">/mês</span>{% endif %}
               </div>
-              
-              <a href="" class="btn-primary" style="margin-top: auto; text-align: center;">Solicitar Orçamento ✦</a>
             </div>
-          {% endfor %}
+
+            <p class="card-desc">{{ servico.descricao|truncatewords:22|linebreaksbr }}</p>
+
+            <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}">
+              SAIBA MAIS →
+            </button>
+
+            <div class="servico-detalhe" id="detalhe-{{ servico.id }}">
+              <div class="servico-detalhe-inner">
+                <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
+
+                {% if servico.planos.all %}
+                <div class="servico-detalhe-head">PLANOS DISPONÍVEIS</div>
+                <div class="servico-planos-scroll">
+                  <ul class="servico-planos-lista">
+                    {% for plano in servico.planos.all %}
+                    <li>
+                      <div class="plano-linha">
+                        <span class="plano-nome">{{ plano.nome }}</span>
+                        <span class="plano-preco">R$ {{ plano.preco }}</span>
+                      </div>
+                      {% if plano.descricao %}
+                      <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
+                      {% endif %}
+                      <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                {% else %}
+                <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
         </div>
+      </article>
       {% endif %}
+      {% endfor %}
+    </div>
 
     {% else %}
-      <!-- FALLBACK: Caso nenhum plano tenha sido cadastrado ainda -->
-      <div style="text-align: center; padding: 3rem 1rem;" class="fade-in">
-        <p class="card-desc">Nenhum plano disponível no momento. Volte em breve!</p>
-      </div>
+    <div style="text-align: center; padding: 3rem 1rem;" class="fade-in">
+      <p class="card-desc">Nenhum serviço disponível no momento. Volte em breve!</p>
+    </div>
     {% endif %}
 
   </div>
 </section>
-
-<div class="h-divider"></div>
-
-<!-- ── PROCESSO ── -->
-<section id="processo">
-  <div style="width:100%">
-    <div class="fade-in">
-      <div class="section-subtitle">Como Trabalhamos</div>
-      <h2 class="section-title">PROCESSO</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="processo-steps">
-      <div class="step-card fade-in fade-in-delay-1"><div class="step-num">01</div><div class="step-title">Diagnóstico</div><p class="step-desc">Entendemos seu negócio a fundo, o que você faz, quem é seu cliente e o que precisa melhorar com a tecnologia.</p></div>
-      <div class="step-card fade-in fade-in-delay-2"><div class="step-num">02</div><div class="step-title">Planejamento</div><p class="step-desc">Desenhamos a solução ideal: quais ferramentas, páginas e funcionalidades vão fazer a diferença real para sua empresa.</p></div>
-      <div class="step-card fade-in fade-in-delay-3"><div class="step-num">03</div><div class="step-title">Execução</div><p class="step-desc">Desenvolvemos com rapidez e qualidade, mantendo você atualizado em cada etapa com total transparência.</p></div>
-      <div class="step-card fade-in"><div class="step-num">04</div><div class="step-title">Lançamento</div><p class="step-desc">Entregamos e damos suporte contínuo para que tudo funcione perfeitamente no dia a dia.</p></div>
-    </div>
-  </div>
-</section>
-
-<div class="h-divider"></div>
-
-<!-- ══ FAQ ══ -->
-<section id="faq">
-  <div class="faq-container">
-    <div class="fade-in" style="text-align:center;margin-bottom:3rem">
-      <div class="section-subtitle" style="justify-content:center">Dúvidas Frequentes</div>
-      <h2 class="section-title">PERGUNTAS</h2>
-      <div class="section-line" style="margin:0 auto 0"></div>
-    </div>
-
-    <div class="faq-item fade-in">
-      <div class="faq-question">Quanto tempo leva para entregar um projeto? <div class="faq-icon">+</div></div>
-      <div class="faq-answer">Depende da complexidade. Landing pages ficam prontas em 3–5 dias. Sites institucionais de 1 a 2 semanas. Lojas virtuais e sistemas de gestão geralmente levam de 3 a 6 semanas. Sempre informamos o prazo real na proposta antes de iniciar.</div>
-    </div>
-
-    <div class="faq-item fade-in">
-      <div class="faq-question">Como funciona o pagamento? <div class="faq-icon">+</div></div>
-      <div class="faq-answer">Trabalhamos com 50% de entrada para iniciar o projeto e 50% na entrega final. Para projetos maiores, parcelamos em etapas conforme entregas. Aceitamos PIX, transferência e cartão de crédito.</div>
-    </div>
-
-    <div class="faq-item fade-in">
-      <div class="faq-question">Preciso ter um domínio e hospedagem? <div class="faq-icon">+</div></div>
-      <div class="faq-answer">Não precisa se preocupar com isso. Cuidamos de tudo: registramos o domínio, configuramos a hospedagem e SSL. Se já tiver um domínio, também aproveitamos — sem problemas.</div>
-    </div>
-
-    <div class="faq-item fade-in">
-      <div class="faq-question">Posso atualizar o site sozinho depois? <div class="faq-icon">+</div></div>
-      <div class="faq-answer">Sim. Entregamos todos os sites com um painel de administração intuitivo e fazemos um treinamento completo para que você consiga editar textos, imagens e produtos sem depender de ninguém.</div>
-    </div>
-
-    <div class="faq-item fade-in">
-      <div class="faq-question">Vocês atendem fora de São Paulo? <div class="faq-icon">+</div></div>
-      <div class="faq-answer">Sim! Atendemos clientes de todo o Brasil de forma 100% remota. Todo o processo — reuniões, aprovações e entregas — é feito online com total eficiência.</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ══ CTA BANNER ══ -->
-<section id="cta">
-  <div class="cta-border-left"></div>
-  <div class="cta-border-right"></div>
-  <div class="glow-blob" style="width:600px;height:400px;background:rgba(0,212,255,.04);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
-  <div class="cta-inner fade-in">
-    <div class="cta-tag">✦ Pronto para Começar?</div>
-    <h2 class="cta-title">VAMOS LEVAR SEU NEGÓCIO ALÉM</h2>
-    <p class="cta-sub">Inicie uma conversa sem compromissos, conte sobre seu projeto e receba uma proposta personalizada em até 24h.</p>
-    <div class="cta-btns">
-      <a href="{% url 'home' %}" class="btn-primary">Solicitar Proposta ✦</a>
-      <a href="https://wa.me/5521987477900" class="btn-secondary">Chamar no WhatsApp →</a>
-    </div>
-  </div>
-</section>
-
-<!-- Script do Carrossel -->
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const track = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('carouselPrev');
-    const nextBtn = document.getElementById('carouselNext');
-
-    if (track && prevBtn && nextBtn) {
-      const scrollAmount = 340; // Distância do scroll a cada clique
-
-      nextBtn.addEventListener('click', () => {
-        track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      });
-
-      prevBtn.addEventListener('click', () => {
-        track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      });
-    }
-  });
-</script>
 {% endblock %}

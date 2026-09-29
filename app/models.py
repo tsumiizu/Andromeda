@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator
 from decimal import Decimal
 from cloudinary.models import CloudinaryField
 from cloudinary.utils import cloudinary_url
-from django.templatetags.static import static
 import random
 from django.contrib.auth.models import AbstractUser
 
@@ -19,11 +18,48 @@ DEFAULT_AVATARS = [
 def get_random_avatar():
     return random.choice(DEFAULT_AVATARS)
 
-class Plano(models.Model):
+class Servico(models.Model):
     nome = models.CharField(max_length=250)
     descricao = models.TextField(blank=False, null=False)
     preco = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
-    # capa = models.ImageField(upload_to='media/planos/')
+    capa = CloudinaryField('image', folder='serviços/', default='default', null=True, blank=True)
+    ordem = models.PositiveSmallIntegerField(default=0, blank=True, null=True)
+    @property
+    def capa_url(self):
+        if self.capa and hasattr(self.capa, 'url') and self.capa.url: 
+            return self.capa.url
+        if self.capa:
+            capa_str = str(self.capa)
+            if capa_str and not capa_str.startswith('static/'):
+                url, _ = cloudinary_url(capa_str)
+                return url
+        url, _ = cloudinary_url('planos/default') 
+        return url
+    def save(self, *args, **kwargs):
+        try:
+            num = int(self.ordem) if self.ordem is not None else 0
+        except (TypeError, ValueError):
+            num = 0
+        if num < 0 or num > 9:
+            num = 0
+        if num != 0:
+            conflito = Servico.objects.exclude(pk=self.pk).filter(ordem=num).exists()
+            if conflito:
+                num = 0
+        self.ordem = num
+        super().save(*args, **kwargs)
+
+class Plano(models.Model):
+    servico = models.ForeignKey(
+        Servico, 
+        on_delete=models.CASCADE, 
+        related_name='planos', 
+        null=False, 
+        blank=False
+    )
+    nome = models.CharField(max_length=250)
+    descricao = models.TextField(blank=False, null=False)
+    preco = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
     capa = CloudinaryField('image', folder='planos/', default='default', null=True, blank=True)
     @property
     def capa_url(self):

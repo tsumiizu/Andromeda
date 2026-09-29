@@ -1,7 +1,7 @@
 import re
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Usuario
+from .models import Usuario, Servico, Plano
 
 class CadastroUsuarioForm(forms.ModelForm):
     nome_completo = forms.CharField(
@@ -68,3 +68,13 @@ class EnderecoForm(forms.ModelForm):
     class Meta:
         model = Usuario
         fields = ['cep', 'endereco', 'numero', 'complemento', 'bairro', 'cidade', 'estado']
+
+class ServicoForm(forms.ModelForm):
+    class Meta:
+        model = Servico
+        fields = ['nome', 'descricao', 'preco', 'capa']
+
+class PlanoForm(forms.ModelForm):
+    class Meta:
+        model = Plano
+        fields = ['servico', 'nome', 'descricao', 'preco', 'capa']

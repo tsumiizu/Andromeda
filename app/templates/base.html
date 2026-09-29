@@ -44,8 +44,8 @@
     
     <!-- A bolota do avatar totalmente separada do menu -->
     <div class="profile-circle">
-      {% if user.is_authenticated and user.foto_perfil %}
-        <img src="{{ user.foto_perfil.url }}" alt="Avatar">
+      {% if user.is_authenticated and user.foto %}
+        <img src="{{ user.foto_url }}" alt="Avatar">
       {% elif user.is_authenticated %}
         <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=00d4ff&color=0a0f1e&bold=true" alt="Avatar">
       {% else %}
