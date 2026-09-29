@@ -11,9 +11,9 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   font-family: 'Exo 2', sans-serif;
+  position: relative;
 }
 
-/* ── NAVBAR ── */
 .navbar-glass { display: flex; align-items: center; justify-content: space-between; padding: 10px 30px; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; box-sizing: border-box; background: rgba(5, 10, 20, 0.15); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid rgba(0, 212, 255, 0.15); }
 .nav-logo { display: flex; align-items: center; text-decoration: none; }
 .nav-logo-img { height: 45px; width: auto; object-fit: contain; }
@@ -34,7 +34,6 @@ body {
 .dropdown-arrow { transition: transform 0.3s ease; }
 .dropdown-trigger.active .dropdown-arrow { transform: rotate(180deg); }
 
-/* ── DROPDOWN ── */
 .dropdown-menu { position: absolute; top: 150%; right: 0; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 12px; list-style: none; padding: 10px 0; margin: 0; min-width: 200px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.02); opacity: 0; visibility: hidden; transform: translateY(-15px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .dropdown-menu.show { opacity: 1; visibility: visible; transform: translateY(0); }
 .dropdown-menu li a { display: block; padding: 12px 25px; color: #e8f4ff; text-decoration: none; font-family: 'Exo 2', sans-serif; font-size: 0.95rem; font-weight: 600; transition: all 0.2s; }
@@ -46,15 +45,28 @@ body {
 .dropdown-menu li.dropdown-register-hint a { display: inline; padding: 0; color: var(--cyan); font-size: 0.75rem; text-decoration: underline; background: transparent; font-weight: 600; }
 .dropdown-menu li.dropdown-register-hint a:hover { background: transparent; color: #fff; padding-left: 0; }
 
-/* ── BACKGROUND ESPACIAL ── */
-.space-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: radial-gradient(circle at 15% 50%, rgba(35, 10, 70, 0.4), transparent 60%), radial-gradient(circle at 85% 20%, rgba(0, 150, 255, 0.15), transparent 50%), radial-gradient(circle at 50% 100%, rgba(0, 212, 255, 0.12), transparent 60%); background-color: #030510; }
-.stars { position: absolute; top: 0; left: 0; width: 100%; height: 200%; }
+.space-background { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  min-height: 100%; 
+  z-index: -2; 
+  background: radial-gradient(circle at 15% 50%, rgba(35, 10, 70, 0.4), transparent 60%), radial-gradient(circle at 85% 20%, rgba(0, 150, 255, 0.15), transparent 50%), radial-gradient(circle at 50% 100%, rgba(0, 212, 255, 0.12), transparent 60%); 
+  background-color: #030510; 
+}
+.stars { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+}
 .stars-small { background-image: radial-gradient(1px 1px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 40px 70px, rgba(255,255,255,0.7), transparent), radial-gradient(1px 1px at 90px 40px, #fff, transparent), radial-gradient(1px 1px at 150px 120px, rgba(0,212,255,0.5), transparent), radial-gradient(1px 1px at 220px 190px, #fff, transparent), radial-gradient(1px 1px at 350px 250px, rgba(255,255,255,0.6), transparent), radial-gradient(1px 1px at 400px 80px, #fff, transparent); background-size: 433px 433px; animation: star-drift 150s linear infinite; opacity: 0.5; }
 .stars-medium { background-image: radial-gradient(1.5px 1.5px at 50px 50px, #fff, transparent), radial-gradient(1.5px 1.5px at 150px 200px, rgba(0,212,255,0.8), transparent), radial-gradient(1.5px 1.5px at 280px 90px, #fff, transparent), radial-gradient(1.5px 1.5px at 450px 300px, rgba(255,255,255,0.7), transparent), radial-gradient(1.5px 1.5px at 580px 450px, #fff, transparent); background-size: 677px 677px; animation: star-drift 100s linear infinite; opacity: 0.8; }
 .stars-large { background-image: radial-gradient(2px 2px at 80px 100px, #fff, transparent), radial-gradient(2px 2px at 300px 400px, rgba(0,212,255,0.9), transparent), radial-gradient(2px 2px at 600px 800px, #fff, transparent), radial-gradient(2.5px 2.5px at 900px 200px, rgba(255,255,255,0.9), transparent); background-size: 1009px 1009px; animation: star-drift 60s linear infinite; opacity: 1; }
 @keyframes star-drift { from { transform: translateY(0); } to { transform: translateY(-50%); } }
 
-/* ── HERO SECTION ── */
 .hero-section { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 100vh; padding-top: 80px; padding-bottom: 5vh; position: relative; }
 .hero-inner { display: flex; flex-direction: column; align-items: center; gap: 40px; z-index: 10; width: 100%; padding: 0 20px; box-sizing: border-box; }
 .hero-branding { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; min-height: 150px; margin-bottom: 20px; }
@@ -65,7 +77,6 @@ body {
 .hero-sub { font-size: 1.2rem; font-family: 'Exo 2', sans-serif; font-weight: 600; color: #ffffff; margin-bottom: 15px; letter-spacing: 1px; }
 .hero-text { font-family: 'Exo 2', sans-serif; font-size: 1rem; color: rgba(255, 255, 255, 0.85); line-height: 1.6; margin-bottom: 30px; text-align: center; }
 
-/* ── BOTÕES ── */
 .hero-btns { display: flex; gap: 20px; justify-content: center; margin-top: 15px; }
 .btn-primary { background-color: #00d4ff !important; color: #030510 !important; border: 2px solid #00d4ff !important; padding: 12px 28px; border-radius: 8px; text-decoration: none; font-weight: 700; font-family: 'Exo 2', sans-serif; font-size: 1rem; letter-spacing: 1px; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); cursor: pointer; }
 .btn-primary:hover { background-color: #ffffff !important; color: #030510 !important; border-color: #ffffff !important; box-shadow: 0 0 25px rgba(0, 212, 255, 0.7); transform: translateY(-3px); }
@@ -75,10 +86,6 @@ body {
 .blob-1 { width: 350px; height: 350px; background: var(--cyan); top: 15%; left: 10%; }
 .blob-2 { width: 300px; height: 300px; background: #6432ff; bottom: 20%; right: 15%; }
 
-/* =========================================================================
-   LAYOUT DIVIDIDO (ESQUERDA CARD / DIREITA TEXTO) - EXPANDIDO
-========================================================================= */
-
 .split-layout {
   display: flex;
   flex-direction: row;
@@ -86,10 +93,14 @@ body {
   gap: 5%; 
   max-width: 92%; 
   margin: 0 auto;
-  padding: 40px 0 100px 0; 
+  padding: 40px 0 120px 0; 
 }
 
-/* ── LADO ESQUERDO: O Card SCI-FI 3D HUD ── */
+.split-layout ~ .split-layout {
+  flex-direction: row-reverse;
+  padding-top: 40px; 
+}
+
 .left-info-card {
   flex: 1; 
   max-width: 50%;
@@ -118,7 +129,6 @@ body {
   transition: transform 0.5s ease;
 }
 
-/* ── FOIL HOLOGRÁFICO ── */
 .holo-foil {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -149,7 +159,6 @@ body {
   100% { background-position: -200% 0%; }
 }
 
-/* ── A SUA BORDA HUD ORIGINAL (SEM DELETAR NADA) ── */
 .cyber-border-wrapper {
   position: absolute;
   top: 15px; left: 15px; right: 15px; bottom: 15px;
@@ -181,7 +190,6 @@ body {
   );
 }
 
-/* Quadrados Brilhantes nos "cortes" */
 .cyber-corner {
   position: absolute;
   width: 8px; height: 8px; 
@@ -193,21 +201,19 @@ body {
 .cyber-corner.top-left { top: 48px; left: 11px; transform: rotate(45deg); }
 .cyber-corner.bottom-right { bottom: 48px; right: 11px; transform: rotate(45deg); }
 
-/* ── O Texto Limpo ── */
 .card-content-safe {
-position: relative;
+  position: relative;
   z-index: 20; 
   pointer-events: auto; 
   transition: transform 0.1s ease-out;
   transform-style: preserve-3d;
   padding-top: 20px;
-  }
+}
 
 .left-info-card:not(:hover) .card-content-safe {
   transition: transform 0.5s ease;
 }
 
-/* ── LOGO GIGANTE NO FUNDO ── */
 .layer-logo {
   position: absolute;
   top: 50%;
@@ -226,7 +232,6 @@ position: relative;
   transition: transform 0.5s ease;
 }
 
-/* ── ESTRELA 3D GIF ── */
 .layer-star {
   position: absolute;
   top: 15%;
@@ -235,14 +240,38 @@ position: relative;
   z-index: 25; 
   pointer-events: none;
   transition: transform 0.1s ease-out;
-  filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.6)); 
 }
 
 .left-info-card:not(:hover) .layer-star {
   transition: transform 0.5s ease;
 }
 
-/* ── LADO DIREITO: O Texto Limpo ── */
+.layer-gear {
+  position: absolute;
+  z-index: 25; 
+  pointer-events: none;
+  opacity: 0.4; 
+  transition: transform 0.1s ease-out;
+}
+
+.gear-top-left {
+  width: 250px;
+  top: 30px;
+  left: 30px;
+  transform: translateZ(60px);
+}
+
+.gear-bottom-right {
+  width: 190px;
+  bottom: 30px;
+  right: 30px;
+  transform: translateZ(90px);
+}
+
+.left-info-card:not(:hover) .layer-gear {
+  transition: transform 0.5s ease;
+}
+
 .right-process-text {
   flex: 1; 
   max-width: 50%; 
@@ -250,7 +279,6 @@ position: relative;
   text-align: left;
 }
 
-/* Títulos das Secções */
 .section-subtitle {
   font-family: 'Orbitron', sans-serif;
   color: #ffffff;
@@ -275,7 +303,6 @@ position: relative;
   border-radius: 2px;
 }
 
-/* Textos do Painel (Sobre) */
 .panel-text p {
   color: rgba(255, 255, 255, 0.85);
   line-height: 1.8;
@@ -283,7 +310,6 @@ position: relative;
   font-size: 1.15rem; 
 }
 
-/* Lista de Processos (Direita) */
 .process-list {
   display: flex;
   flex-direction: column;
@@ -319,41 +345,44 @@ position: relative;
   font-size: 1.1rem; 
 }
 
-/* =========================================================================
-   SECÇÃO CONTATO / SUPORTE (NOVO VISUAL HUD)
-========================================================================= */
-
 .contact-section-bottom {
-  max-width: 1200px; 
+  max-width: 92%; 
   margin: 0 auto 100px auto;
-  padding: 60px;
-  background: rgba(3, 5, 15, 0.85); /* Fundo translúcido idêntico ao do card esquerdo */
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: none; /* Removidas as bordas redondas antigas para usar o HUD clip-path */
+  padding: 80px 100px; 
+  background: transparent; 
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none; 
   border-radius: 0;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
-  position: relative; /* Necessário para a borda HUD funcionar aqui */
+  box-shadow: none; 
+  position: relative; 
+  min-height: 500px; 
+}
+
+.contact-section-bottom .cyber-border-wrapper,
+.contact-section-bottom .cyber-border-inner,
+.contact-section-bottom .cyber-corner {
+  display: none;
 }
 
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  margin-top: 10px;
+  gap: 100px; 
+  margin-top: 30px;
 }
 
 .contact-desc {
   color: rgba(255, 255, 255, 0.85);
-  line-height: 1.7;
-  font-size: 1.15rem;
-  margin-bottom: 30px;
+  line-height: 1.8;
+  font-size: 1.25rem; 
+  margin-bottom: 40px;
 }
 
 .contact-quick-links {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px; 
 }
 
 .contact-quick-links span {
@@ -361,43 +390,40 @@ position: relative;
   color: #e8f4ff;
   background: rgba(0, 212, 255, 0.05);
   border: 1px solid rgba(0, 212, 255, 0.15);
-  padding: 12px 18px;
-  border-radius: 4px; /* Canto mais afiado e Sci-Fi */
+  padding: 16px 24px; 
+  border-radius: 4px; 
   display: inline-block;
   width: fit-content;
-  font-size: 1.05rem;
+  font-size: 1.1rem; 
   transition: all 0.3s ease;
   cursor: default;
 }
 
 .contact-quick-links span:hover {
-  border-color: var(--cyan);
-  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
-  transform: translateX(5px);
 }
 
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px; 
 }
 
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 15px;
+  padding: 20px; 
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 4px; /* Canto afiado */
+  border-radius: 4px; 
   color: #ffffff;
   font-family: 'Exo 2', sans-serif;
-  font-size: 1.05rem;
+  font-size: 1.15rem; 
   box-sizing: border-box;
   transition: all 0.3s;
 }
 
 .form-group textarea {
-  min-height: 140px;
+  min-height: 180px; 
   resize: vertical;
 }
 
@@ -409,7 +435,17 @@ position: relative;
   box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
 }
 
-/* ── RESPONSIVO ── */
+.contact-form .btn-primary {
+  padding: 18px !important;
+  font-size: 1.15rem !important;
+  margin-top: 15px !important;
+}
+
+.contact-form .btn-primary:hover {
+  transform: none;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.4); 
+}
+
 @media (max-width: 1024px) {
   .split-layout {
     flex-direction: column; 
@@ -418,23 +454,23 @@ position: relative;
     padding: 0 20px 60px 20px;
   }
   
+  .split-layout ~ .split-layout {
+    flex-direction: column-reverse; 
+  }
+
   .left-info-card, .right-process-text {
     max-width: 100%;
   }
 
   .contact-section-bottom {
-    margin: 0 20px 80px 20px;
-    padding: 30px 20px;
+    max-width: 95%;
+    padding: 50px 30px; 
   }
-
   .contact-grid {
     grid-template-columns: 1fr;
+    gap: 50px;
   }
 }
-
-/* =========================================================================
-   FOOTER (RODAPÉ)
-========================================================================= */
 
 .site-footer {
   display: flex;
@@ -447,10 +483,11 @@ position: relative;
   border-top: 1px solid rgba(0, 212, 255, 0.15); 
   position: relative;
   z-index: 100;
-  margin-top: auto; 
+  clear: both;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Esquerda */
 .footer-left p {
   margin: 0;
   color: rgba(232, 244, 255, 0.6);
@@ -458,7 +495,6 @@ position: relative;
   letter-spacing: 1px;
 }
 
-/* Direita (Redes e Contatos) */
 .footer-right {
   display: flex;
   gap: 30px;
@@ -474,26 +510,18 @@ position: relative;
   font-family: 'Exo 2', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
-  transition: all 0.3s ease;
 }
 
 .footer-link svg {
   color: var(--cyan);
-  transition: all 0.3s ease;
 }
 
-/* Efeito de Brilho ao passar o mouse */
 .footer-link:hover {
-  color: var(--cyan);
-  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
 
 .footer-link:hover svg {
-  transform: scale(1.15) translateY(-2px);
-  filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.8));
 }
 
-/* Responsividade do Footer para Celulares */
 @media (max-width: 850px) {
   .site-footer {
     flex-direction: column;
@@ -501,18 +529,15 @@ position: relative;
     text-align: center;
     padding: 30px 20px;
   }
-  
   .footer-right {
     flex-direction: column;
     gap: 15px;
   }
 }
-/* =========================================================================
-   BENEFÍCIOS / GARANTIAS (TELA TODA E FONTE NORMAL)
-========================================================================= */
+
 .benefits-section {
-  width: 100%; /* Força a ocupar a tela inteira */
-  margin: 0 0 80px 0; /* Remove margens laterais */
+  width: 100%; 
+  margin: 0 0 80px 0; 
   padding: 0; 
 }
 
@@ -522,12 +547,12 @@ position: relative;
   background: rgba(3, 5, 15, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0, 212, 255, 0.15); /* Borda apenas em cima e embaixo */
+  border-top: 1px solid rgba(0, 212, 255, 0.15); 
   border-bottom: 1px solid rgba(0, 212, 255, 0.15);
-  border-left: none; /* Remove borda lateral para não aparecer um corte */
+  border-left: none; 
   border-right: none;
-  border-radius: 0; /* Tira os cantos redondos para colar nos cantos da tela */
-  padding: 60px 10%; /* Dá um respiro pro conteúdo não encostar na beira do monitor */
+  border-radius: 0; 
+  padding: 60px 10%; 
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
 }
 
@@ -539,24 +564,21 @@ position: relative;
   padding: 0 40px;
 }
 
-/* Linhas divisórias verticais entre os itens */
 .benefit-item:not(:last-child) {
   border-right: 1px solid rgba(0, 212, 255, 0.15);
 }
 
 .benefit-icon {
   margin-bottom: 20px;
-  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
   transition: transform 0.3s ease;
 }
 
 .benefit-item:hover .benefit-icon {
-  transform: translateY(-5px) scale(1.1);
+  transform: none;
 }
 
-/* ── TÍTULO COM FONTE NORMAL E LIMPA ── */
 .benefit-title {
-  font-family: 'Exo 2', sans-serif; /* Mudei da fonte futurista para a normal */
+  font-family: 'Exo 2', sans-serif; 
   font-size: 1.4rem;
   font-weight: 600;
   color: #ffffff;
@@ -572,7 +594,6 @@ position: relative;
   margin: 0;
 }
 
-/* Responsividade (Para celulares, empilha os itens e ajusta o padding) */
 @media (max-width: 900px) {
   .benefits-container {
     grid-template-columns: 1fr;
@@ -587,4 +608,18 @@ position: relative;
     padding-bottom: 40px;
     margin-bottom: 20px;
   }
+}
+
+.img-suporte-ativo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+  object-fit: contain;
+  animation: float-support 3s ease-in-out infinite;
+}
+
+@keyframes float-support {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
