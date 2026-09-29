@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Zera a rotação quando o mouse sai do card
         card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;}
+)})})
 
 /* ================= SUBMIT LOCK (UNIVERSAL) ================= */
 
