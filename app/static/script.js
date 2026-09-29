@@ -73,6 +73,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Pega todos os cards que vão ter o efeito 3D
+    const cards = document.querySelectorAll('.left-info-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Calcula a rotação com base na posição do mouse
+            const rotateX = ((y - centerY) / centerY) * -15; // Força do efeito vertical
+            const rotateY = ((x - centerX) / centerX) * 15;  // Força do efeito horizontal
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        // Zera a rotação quando o mouse sai do card
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
 
 
 /* ================= SUBMIT LOCK (UNIVERSAL) ================= */

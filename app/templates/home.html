@@ -1,225 +1,266 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
+{% extends 'base.html' %} 
+{% load static %} 
+{% block content %} 
 
-<!-- ── HERO SECTION ── -->
-<section id="home" class="hero-section">
-  <div class="glow-blob blob-1"></div>
-  <div class="glow-blob blob-2"></div>
+<!-- ── HERO SECTION ── --> 
+<section id="home" class="hero-section"> 
+  <div class="glow-blob blob-1"></div> 
+  <div class="glow-blob blob-2"></div> 
 
-  <div class="hero-inner">
-    <!-- LOGO CENTRALIZADA COM NOME EM CIMA -->
-    <div class="hero-branding fade-in">
-      <img src="{% static 'media/favicon/andromeda.png' %}" alt="Logo Andromeda" class="hero-logo-img">
-      <h1>ANDROMEDA</h1>
-    </div>
+  <div class="hero-inner"> 
+    <!-- LOGO CENTRALIZADA COM NOME EM CIMA --> 
+    <div class="hero-branding fade-in"> 
+      <img src="{% static 'media/favicon/andromeda.png' %}" alt="Logo Andromeda" class="hero-logo-img"> 
+      <h1>ANDROMEDA</h1> 
+    </div> 
 
-    <!-- TEXTO E BOTÕES -->
-    <div class="hero-content fade-in fade-in-delay-1">
-      <div class="hero-tag">Informatização de Negócios</div>
-      <div class="hero-sub">Websites · Sistemas · Transformação Digital</div>
-      <p class="hero-text">
-        Informatizando empresas por meio de sistemas e soluções digitais, transformando negócios físicos em referências modernas, eficientes e conectadas ao universo digital.
-      </p>
-      <div class="hero-btns">
-        <a href="#processo" class="btn-primary">Como Trabalhamos ✦</a>
-        <a href="#contato" class="btn-secondary">Falar Conosco →</a>
-      </div>
-    </div>
+    <!-- TEXTO E BOTÕES --> 
+    <div class="hero-content fade-in fade-in-delay-1"> 
+      <div class="hero-tag">Informatização de Negócios</div> 
+      <div class="hero-sub">Websites · Sistemas · Transformação Digital</div> 
+      <p class="hero-text"> 
+        Informatizando empresas por meio de sistemas e soluções digitais, transformando negócios físicos em referências modernas, eficientes e conectadas ao universo digital. 
+      </p> 
+      <div class="hero-btns"> 
+        <a href="#processo" class="btn-primary">Como Trabalhamos ✦</a> 
+        <a href="#contato" class="btn-secondary">Falar Conosco →</a> 
+      </div> 
+    </div> 
+  </div> 
+</section> 
+
+<!-- ── TICKER ── --> 
+<div class="ticker-wrap"> 
+  <div class="ticker-track" id="tickerTrack"></div> 
+</div> 
+
+<!-- ══════════════════════════════════════════════════════════ 
+     LAYOUT DIVIDIDO 1: SOBRE | PROCESSO 
+══════════════════════════════════════════════════════════ --> 
+<div class="split-layout"> 
+   
+  <!-- LADO ESQUERDO: CARD 3D HUD --> 
+  <div class="left-info-card fade-in"> 
+     
+    <!-- 1. Camada Z=0: Logo no Fundo --> 
+    <img src="{% static 'media/favicon/andromeda.png' %}" alt="Logo Background" class="layer-logo"> 
+
+    <!-- 2. Camada Z=4: Foil Holográfico --> 
+    <div class="holo-foil"></div> 
+
+    <!-- 3. Camada Z=10: Borda Fina Cyberpunk HUD --> 
+    <div class="cyber-border-wrapper"> 
+      <div class="cyber-border-inner"></div> 
+    </div> 
+    <!-- Pequenos brilhos nos cantos recortados --> 
+    <div class="cyber-corner top-left"></div> 
+    <div class="cyber-corner bottom-right"></div> 
+
+    <!-- 4. Camada Z=25: Estrela GIF --> 
+    <img src="https://media.tenor.com/PunoyARbAWgAAAAM/obesity.gif" alt="Estrela 3D" class="layer-star"> 
+
+    <!-- 5. Camada Z=20: O Texto Principal --> 
+    <section id="sobre" class="card-content-safe"> 
+      <div class="section-header"> 
+        <div class="section-subtitle">Quem Somos</div> 
+        <h2 class="section-title">SOBRE A ANDROMEDA</h2> 
+        <div class="section-line"></div> 
+      </div> 
+      <div class="panel-text"> 
+        <p>A nossa equipa Andromeda foi criada com o objetivo de informatizar negócios e criar sites para outras empresas. Somos uma equipa pequena com dedicação total aos nossos clientes, prometendo entregar resultados de alta qualidade num curto período de tempo.</p> 
+        <p>Somos especialistas em informatização: construímos sites, sistemas e experiências digitais que realmente funcionam para o dia a dia da sua empresa.</p> 
+        <p>Com atendimento próximo e soluções sob medida, transformamos complexidade em simplicidade e fazemos com que a tecnologia trabalhe a seu favor.</p> 
+      </div> 
+    </section> 
+
+  </div> 
+
+  <!-- LADO DIREITO: TEXTO "COMO TRABALHAMOS" --> 
+  <div class="right-process-text fade-in"> 
+    <section id="processo"> 
+      <div class="section-header"> 
+        <div class="section-subtitle">Como Trabalhamos</div> 
+        <h2 class="section-title">O NOSSO PROCESSO</h2> 
+        <div class="section-line"></div> 
+      </div> 
+      <div class="process-list"> 
+        <div class="step-row"> 
+          <div class="step-number">01</div> 
+          <div class="step-info"> 
+            <h3>Diagnóstico</h3> 
+            <p>Entendemos o seu negócio a fundo, o que faz, quem é o seu cliente e o que precisa de melhorar com a tecnologia.</p> 
+          </div> 
+        </div> 
+        <div class="step-row"> 
+          <div class="step-number">02</div> 
+          <div class="step-info"> 
+            <h3>Planeamento</h3> 
+            <p>Desenhamos a solução ideal: quais ferramentas, páginas e funcionalidades farão a diferença real para a sua empresa.</p> 
+          </div> 
+        </div> 
+        <div class="step-row"> 
+          <div class="step-number">03</div> 
+          <div class="step-info"> 
+            <h3>Execução</h3> 
+            <p>Desenvolvemos com rapidez e qualidade, mantendo-o atualizado em cada etapa com total transparência.</p> 
+          </div> 
+        </div> 
+        <div class="step-row"> 
+          <div class="step-number">04</div> 
+          <div class="step-info"> 
+            <h3>Lançamento</h3> 
+            <p>Entregamos e damos suporte contínuo para que tudo funcione perfeitamente no dia a dia.</p> 
+          </div> 
+        </div> 
+      </div> 
+    </section> 
+  </div> 
+
+</div> 
+
+<!-- ══════════════════════════════════════════════════════════ 
+     LAYOUT DIVIDIDO 2: ACOMPANHAMENTO E GARANTIA (NOVO)
+══════════════════════════════════════════════════════════ --> 
+<div class="split-layout" style="padding-top: 0;"> 
+
+<!-- LADO ESQUERDO: CARD 3D HUD (ÍCONE DE SUPORTE) --> 
+  <div class="left-info-card fade-in" style="min-height: 400px; padding: 40px;"> 
+    <div class="holo-foil"></div> 
+    <div class="cyber-border-wrapper"> 
+      <div class="cyber-border-inner"></div> 
+    </div> 
+    <div class="cyber-corner top-left"></div> 
+    <div class="cyber-corner bottom-right"></div> 
+
+    <!-- ── ENGRENAGENS 3D GIFS ── -->
+    <img src="https://cdn.pixabay.com/animation/2023/05/16/19/39/19-39-22-287_512.gif" class="layer-gear gear-top-left" alt="Engrenagem">
+    <img src="https://lh3.googleusercontent.com/proxy/a73WJUvXkH7HO5ky8CbuYGLM50o4TOKBH7UEBfJtZpAOVyv8VjcrdbBFwC1rAL_16VEoq3FGKvgPHwPw3_7k0W3BEo44a1wowtYEQdA" class="layer-gear gear-bottom-right" alt="Engrenagem">
+
+    <div class="card-content-safe" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;"> 
+      <!-- Sua imagem do Suporte aqui -->
+      <img src="{% static 'media/andromeda_suporte.png' %}" alt="Suporte Andromeda" class="img-suporte-ativo">
+      <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #ffffff; margin: 0 0 10px 0; letter-spacing: 1px;">SUPORTE ATIVO</h3>
+      <p style="font-family: 'Exo 2', sans-serif; font-size: 1.05rem; color: rgba(255,255,255,0.7); margin: 0; line-height: 1.5;">Transparência e acompanhamento<br>em tempo real.</p>
+    </div> 
   </div>
-</section>
 
-<!-- ── TICKER ── -->
-<div class="ticker-wrap">
-  <div class="ticker-track" id="tickerTrack"></div>
+  <!-- LADO DIREITO: TEXTO ACOMPANHAMENTO E GARANTIAS --> 
+  <div class="right-process-text fade-in"> 
+    <section id="acompanhamento"> 
+      <div class="section-header"> 
+        <div class="section-subtitle">Transparência e Confiança</div> 
+        <h2 class="section-title">ACOMPANHAMENTO</h2> 
+        <div class="section-line"></div> 
+      </div> 
+      <div class="panel-text"> 
+        <p><strong>Desenvolvimento Interativo:</strong> Mantemos contato contínuo por chat enquanto criamos o seu site. Apresentamos o progresso e perguntamos se aceita ou gostou de cada alteração, garantindo que tudo ocorra exatamente como você quer.</p>
+        <p><strong>Manutenção Contínua:</strong> Funciona perfeitamente após a entrega. A Andromeda oferece planos dedicados para que o seu site tenha manutenção constante, mantendo a performance e segurança no topo.</p>
+        <p><strong>Garantia Técnica:</strong> É fundamental para nós estipular em contrato um período de garantia técnica (geralmente de 30 a 90 dias) para correção de bugs, erros de código ou falhas no que foi combinado inicialmente.</p>
+        <p><strong>Satisfação Garantida:</strong> O cliente tem total direito à devolução do investimento caso não goste do site dentro de 7 dias após ser entregue.</p>
+      </div> 
+    </section> 
+  </div> 
+
 </div>
 
-<!-- ══════════════════════════════════════════════════════════
-     LAYOUT DIVIDIDO: CARD ESQUERDA | TEXTO DIREITA
-══════════════════════════════════════════════════════════ -->
-<div class="split-layout">
-  
-  <!-- LADO ESQUERDO: CARD 3D HUD -->
-  <div class="left-info-card fade-in">
-    
-    <!-- 1. Camada Z=0: Logo no Fundo -->
-    <img src="{% static 'media/favicon/andromeda.png' %}" alt="Logo Background" class="layer-logo">
+<!-- ══════════════════════════════════════════════════════════ 
+     CONTATO: SEPARADO E NO FINAL (ESTILO SUPORTE HUD) 
+══════════════════════════════════════════════════════════ --> 
+<section id="contato" class="contact-section-bottom fade-in"> 
+   
+  <!-- A MESMA BORDA HUD DO CARD PARA MANTER O PADRÃO --> 
+  <div class="cyber-border-wrapper"></div> 
+  <div class="cyber-border-inner"></div> 
+  <div class="cyber-corner top-left"></div> 
+  <div class="cyber-corner bottom-right"></div> 
 
-    <!-- 2. Camada Z=4: Foil Holográfico (Mantido como você pediu) -->
-    <div class="holo-foil"></div>
+  <!-- CONTEÚDO SEGURO ACIMA DA BORDA --> 
+  <div class="card-content-safe"> 
+    <div class="section-header"> 
+      <div class="section-subtitle">Dúvidas?</div> 
+      <h2 class="section-title">SUPORTE</h2> 
+      <div class="section-line"></div> 
+    </div> 
+     
+    <div class="contact-grid"> 
+      <!-- Info de Contato --> 
+      <div class="contact-info"> 
+        <!-- Texto focado em tirar dúvidas --> 
+        <p class="contact-desc">Ficou com alguma dúvida sobre os nossos planos ou sobre como funciona o processo da Andromeda? A nossa equipe está a postos para esclarecer qualquer detalhe. Entre em contato conosco!</p> 
+        <div class="contact-quick-links"> 
+          <span>📸 @ky.andromeda</span> 
+          <span>✉️ ky.andromeda@gmail.com</span> 
+          <span>📱 +55 (21) 99826-0278</span> 
+        </div> 
+      </div> 
+       
+      <!-- Formulário --> 
+      <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST"> 
+        <input type="hidden" name="access_key" value="2d5fd815-4287-4555-be88-0abc27b96c66"> 
+        <input type="hidden" name="redirect" value="{% url 'home' %}"> 
 
-    <!-- 3. Camada Z=10: Borda Fina Cyberpunk HUD -->
-    <div class="cyber-border-wrapper">
-      <div class="cyber-border-inner"></div>
-    </div>
-    <!-- Pequenos brilhos nos cantos recortados -->
-    <div class="cyber-corner top-left"></div>
-    <div class="cyber-corner bottom-right"></div>
+        <div class="form-group"> 
+          <input type="text" name="name" placeholder="O seu nome completo" required> 
+        </div> 
+        <div class="form-group"> 
+          <input type="email" name="email" placeholder="seu@email.com" required> 
+        </div> 
+        <div class="form-group"> 
+          <!-- Placeholder focado em dúvidas --> 
+          <input type="text" name="subject" placeholder="Assunto (Ex: Dúvida sobre o Plano Pro)"> 
+        </div> 
+        <div class="form-group"> 
+          <!-- Placeholder focado em dúvidas --> 
+          <textarea name="message" placeholder="Como podemos ajudar? Escreva sua dúvida aqui..." required></textarea> 
+        </div> 
+        <button class="btn-primary" type="submit" style="width: 100%; margin-top: 10px;">Enviar Mensagem ✦</button> 
+      </form> 
+    </div> 
+  </div> 
+</section> 
 
-    <!-- 4. Camada Z=25: Estrela GIF -->
-    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExenF2emRqeHV6OTcyN3h3MmNpeWJvdGJmYjV5Y29qOTB5cHBxcWc0ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/iXmFTqEETL6u6Vn3Fz/giphy.webp" alt="Estrela 3D" class="layer-star">
+<!-- ══════════════════════════════════════════════════════════ 
+      SECÇÃO DE BENEFÍCIOS  
+══════════════════════════════════════════════════════════ --> 
+<section class="benefits-section fade-in"> 
+  <div class="benefits-container"> 
+     
+    <!-- Benefício 1: Pagamento --> 
+    <div class="benefit-item"> 
+      <div class="benefit-icon"> 
+        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"> 
+          <rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect> 
+          <line x1="2" y1="10" x2="22" y2="10"></line> 
+        </svg> 
+      </div> 
+      <h3 class="benefit-title">Escolha como pagar</h3> 
+      <p class="benefit-text">Pague com cartão, boleto ou Pix. Condições flexíveis para que o seu projeto saia do papel sem pesar no seu bolso.</p> 
+    </div> 
 
-    <!-- 5. Camada Z=20: O Texto Principal -->
-    <section id="sobre" class="card-content-safe">
-      <div class="section-header">
-        <div class="section-subtitle">Quem Somos</div>
-        <h2 class="section-title">SOBRE A ANDROMEDA</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="panel-text">
-        <p>A nossa equipa Andromeda foi criada com o objetivo de informatizar negócios e criar sites para outras empresas. Somos uma equipa pequena com dedicação total aos nossos clientes, prometendo entregar resultados de alta qualidade num curto período de tempo.</p>
-        <p>Somos especialistas em informatização: construímos sites, sistemas e experiências digitais que realmente funcionam para o dia a dia da sua empresa.</p>
-        <p>Com atendimento próximo e soluções sob medida, transformamos complexidade em simplicidade e fazemos com que a tecnologia trabalhe a seu favor.</p>
-      </div>
-    </section>
+    <!-- Benefício 2: Entrega --> 
+    <div class="benefit-item"> 
+      <div class="benefit-icon"> 
+        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"> 
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon> 
+        </svg> 
+      </div> 
+      <h3 class="benefit-title">Entrega Rápida</h3> 
+      <p class="benefit-text">Utilizamos metodologias ágeis para garantir que o seu site ou sistema seja entregue no menor tempo possível, com máxima qualidade.</p> 
+    </div> 
 
-  </div>
+    <!-- Benefício 3: Segurança --> 
+    <div class="benefit-item"> 
+      <div class="benefit-icon"> 
+        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"> 
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path> 
+          <polyline points="9 12 11 14 15 10"></polyline> 
+        </svg> 
+      </div> 
+      <h3 class="benefit-title">Segurança e Garantia</h3> 
+      <p class="benefit-text">Não gostou do resultado? Nós garantimos a devolução do seu dinheiro. A sua satisfação é a nossa prioridade do início ao fim.</p> 
+    </div> 
 
-  <!-- LADO DIREITO: TEXTO "COMO TRABALHAMOS" -->
-  <div class="right-process-text fade-in">
-    <section id="processo">
-      <div class="section-header">
-        <div class="section-subtitle">Como Trabalhamos</div>
-        <h2 class="section-title">O NOSSO PROCESSO</h2>
-        <div class="section-line"></div>
-      </div>
-      <div class="process-list">
-        <div class="step-row">
-          <div class="step-number">01</div>
-          <div class="step-info">
-            <h3>Diagnóstico</h3>
-            <p>Entendemos o seu negócio a fundo, o que faz, quem é o seu cliente e o que precisa de melhorar com a tecnologia.</p>
-          </div>
-        </div>
-        <div class="step-row">
-          <div class="step-number">02</div>
-          <div class="step-info">
-            <h3>Planeamento</h3>
-            <p>Desenhamos a solução ideal: quais ferramentas, páginas e funcionalidades farão a diferença real para a sua empresa.</p>
-          </div>
-        </div>
-        <div class="step-row">
-          <div class="step-number">03</div>
-          <div class="step-info">
-            <h3>Execução</h3>
-            <p>Desenvolvemos com rapidez e qualidade, mantendo-o atualizado em cada etapa com total transparência.</p>
-          </div>
-        </div>
-        <div class="step-row">
-          <div class="step-number">04</div>
-          <div class="step-info">
-            <h3>Lançamento</h3>
-            <p>Entregamos e damos suporte contínuo para que tudo funcione perfeitamente no dia a dia.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-</div>
-
-<!-- ══════════════════════════════════════════════════════════
-    CONTATO: SEPARADO E NO FINAL (ESTILO SUPORTE HUD)
-══════════════════════════════════════════════════════════ -->
-<section id="contato" class="contact-section-bottom fade-in">
-  
-  <!-- A MESMA BORDA HUD DO CARD PARA MANTER O PADRÃO -->
-  <div class="cyber-border-wrapper"></div>
-  <div class="cyber-border-inner"></div>
-  <div class="cyber-corner top-left"></div>
-  <div class="cyber-corner bottom-right"></div>
-
-  <!-- CONTEÚDO SEGURO ACIMA DA BORDA -->
-  <div class="card-content-safe">
-    <div class="section-header">
-      <div class="section-subtitle">Dúvidas?</div>
-      <h2 class="section-title">SUPORTE</h2>
-      <div class="section-line"></div>
-    </div>
-    
-    <div class="contact-grid">
-      <!-- Info de Contato -->
-      <div class="contact-info">
-        <!-- Texto focado em tirar dúvidas -->
-        <p class="contact-desc">Ficou com alguma dúvida sobre os nossos planos ou sobre como funciona o processo da Andromeda? A nossa equipe está a postos para esclarecer qualquer detalhe. Entre em contato conosco!</p>
-        <div class="contact-quick-links">
-          <span>📸 @ky.andromeda</span>
-          <span>✉️ ky.andromeda@gmail.com</span>
-          <span>📱 +55 (21) 99826-0278</span>
-        </div>
-      </div>
-      
-      <!-- Formulário -->
-      <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="2d5fd815-4287-4555-be88-0abc27b96c66">
-        <input type="hidden" name="redirect" value="{% url 'home' %}">
-
-        <div class="form-group">
-          <input type="text" name="name" placeholder="O seu nome completo" required>
-        </div>
-        <div class="form-group">
-          <input type="email" name="email" placeholder="seu@email.com" required>
-        </div>
-        <div class="form-group">
-          <!-- Placeholder focado em dúvidas -->
-          <input type="text" name="subject" placeholder="Assunto (Ex: Dúvida sobre o Plano Pro)">
-        </div>
-        <div class="form-group">
-          <!-- Placeholder focado em dúvidas -->
-          <textarea name="message" placeholder="Como podemos ajudar? Escreva sua dúvida aqui..." required></textarea>
-        </div>
-        <button class="btn-primary" type="submit" style="width: 100%; margin-top: 10px;">Enviar Mensagem ✦</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-
-
-
-<!-- ══════════════════════════════════════════════════════════
-     SECÇÃO DE BENEFÍCIOS 
-══════════════════════════════════════════════════════════ -->
-<section class="benefits-section fade-in">
-  <div class="benefits-container">
-    
-    <!-- Benefício 1: Pagamento -->
-    <div class="benefit-item">
-      <div class="benefit-icon">
-        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect>
-          <line x1="2" y1="10" x2="22" y2="10"></line>
-        </svg>
-      </div>
-      <h3 class="benefit-title">Escolha como pagar</h3>
-      <p class="benefit-text">Pague com cartão, boleto ou Pix. Condições flexíveis para que o seu projeto saia do papel sem pesar no seu bolso.</p>
-    </div>
-
-    <!-- Benefício 2: Entrega -->
-    <div class="benefit-item">
-      <div class="benefit-icon">
-        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-      </div>
-      <h3 class="benefit-title">Entrega Rápida</h3>
-      <p class="benefit-text">Utilizamos metodologias ágeis para garantir que o seu site ou sistema seja entregue no menor tempo possível, com máxima qualidade.</p>
-    </div>
-
-    <!-- Benefício 3: Segurança -->
-    <div class="benefit-item">
-      <div class="benefit-icon">
-        <svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          <polyline points="9 12 11 14 15 10"></polyline>
-        </svg>
-      </div>
-      <h3 class="benefit-title">Segurança e Garantia</h3>
-      <p class="benefit-text">Não gostou do resultado? Nós garantimos a devolução do seu dinheiro. A sua satisfação é a nossa prioridade do início ao fim.</p>
-    </div>
-
-  </div>
-</section>
-
+  </div> 
+</section> 
 
 {% endblock %}
