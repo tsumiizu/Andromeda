@@ -1,173 +1,103 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+
+<!-- ================= SEÇÃO DE SERVIÇOS (CARROSSEL) ================= -->
 <section id="servicos-main">
-  <div class="services-container">
+  <div class="shooting-stars-container" id="shootingStars"></div>
+
+  <div class="services-carousel-container">
     {% if servicos %}
-<div class="servicos-destaques">
-  {% for servico in servicos %}
-    {% if servico.ordem == 1 or servico.ordem == 2 %}
-    <article class="servico-destaque fade-in {% if forloop.counter == 2 %}is-right{% endif %}" data-servico-id="{{ servico.id }}">
-
-      <div class="servico-destaque-visual">
-        {% if servico.capa %}
-          <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
-        {% else %}
-          <div class="servico-destaque-placeholder">✦</div>
-        {% endif %}
-      </div>
-
-      <div class="servico-destaque-content">
-        <div class="servico-destaque-head">
-          <h2 class="servico-destaque-titulo">{{ servico.nome }}</h2>
-
-          <div class="service-price-range">
-            <span class="price-from">{% if servico.planos.all %}A partir de{% else %}De{% endif %}</span>
-            <span class="price-val">R$ {{ servico.preco }}</span>
-            {% if servico.planos.all %}<span class="price-suffix">/mês</span>{% endif %}
-          </div>
-        </div>
-
-        <p class="servico-destaque-desc">{{ servico.descricao|truncatewords:18|linebreaksbr }}</p>
-
-        <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}">
-          SAIBA MAIS ✦
-        </button>
-
-        <div class="servico-detalhe servico-detalhe-destaque" id="detalhe-{{ servico.id }}">
-          <div class="servico-detalhe-inner">
-            <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
-
-            {% if servico.planos.all %}
-              <div class="servico-detalhe-head">PLANOS DISPONÍVEIS</div>
-              <div class="servico-planos-scroll">
-                <ul class="servico-planos-lista">
-                  {% for plano in servico.planos.all %}
-                    <li>
-                      <div class="plano-linha">
-                        <span class="plano-nome">{{ plano.nome }}</span>
-                        <span class="plano-preco">R$ {{ plano.preco }}</span>
-                      </div>
-                      {% if plano.descricao %}
-                        <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
-                      {% endif %}
-                      <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            {% else %}
-              <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      <div class="servico-destaque-expand">
-        <div class="servico-destaque-expand-visual">
-          {% if servico.capa %}
-            <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
-          {% else %}
-            <div class="servico-destaque-placeholder">✦</div>
-          {% endif %}
-        </div>
-        <div class="servico-destaque-expand-info">
-          <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
-
-          {% if servico.planos.all %}
-            <div class="servico-detalhe-head">PLANOS DISPONÍVEIS</div>
-            <div class="servico-planos-scroll">
-              <ul class="servico-planos-lista">
-                {% for plano in servico.planos.all %}
-                  <li>
-                    <div class="plano-linha">
-                      <span class="plano-nome">{{ plano.nome }}</span>
-                      <span class="plano-preco">R$ {{ plano.preco }}</span>
-                    </div>
-                    {% if plano.descricao %}
-                      <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
-                    {% endif %}
-                    <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          {% else %}
-            <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
-          {% endif %}
-        </div>
-      </div>
-
-    </article>
-    {% endif %}
-  {% endfor %}
-</div>
-
-    <div class="servicos-mosaico">
-      {% for servico in servicos %}
-      {% if servico.ordem == 0 or servico.ordem >= 3 %}
-      <article class="servico-card fade-in {% if servico.planos.all %}is-mensal{% endif %}"
-        data-servico-id="{{ servico.id }}">
-
-        <div class="servico-card-inner">
-
-          <div class="servico-card-visual">
-            {% if servico.capa %}
-            <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
-            {% else %}
-            <div class="servico-card-expand-placeholder">✦</div>
-            {% endif %}
-          </div>
-
-          <div class="servico-card-content">
-            <div class="servico-card-head">
-              <h3 class="card-title">{{ servico.nome }}</h3>
-
-              <div class="service-price-range">
-                <span class="price-from">{% if servico.planos.all %}A partir de{% else %}De{% endif %}</span>
-                <span class="price-val">R$ {{ servico.preco }}</span>
-                {% if servico.planos.all %}<span class="price-suffix">/mês</span>{% endif %}
-              </div>
+    
+    <div class="carousel-wrapper">
+      <button class="carousel-btn prev-btn" id="prevBtn">❮</button>
+      
+      <div class="carousel-track" id="servicesTrack">
+        {% for servico in servicos %}
+        <article class="servico-card slide fade-in" data-servico-id="{{ servico.id }}">
+          <div class="servico-card-inner">
+            
+            <!-- LADO ESQUERDO: LOGO GIGANTE DO ANDROMEDA -->
+            <div class="andromeda-logo-container">
+              <img src="{% static 'media/favicon/andromeda.png' %}" alt="Logo Andromeda" class="andromeda-logo-img">
             </div>
 
-            <p class="card-desc">{{ servico.descricao|truncatewords:22|linebreaksbr }}</p>
-
-            <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}">
-              SAIBA MAIS →
-            </button>
-
-            <div class="servico-detalhe" id="detalhe-{{ servico.id }}">
-              <div class="servico-detalhe-inner">
-                <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
-
-                {% if servico.planos.all %}
-                <div class="servico-detalhe-head">PLANOS DISPONÍVEIS</div>
-                <div class="servico-planos-scroll">
-                  <ul class="servico-planos-lista">
-                    {% for plano in servico.planos.all %}
-                    <li>
-                      <div class="plano-linha">
-                        <span class="plano-nome">{{ plano.nome }}</span>
-                        <span class="plano-preco">R$ {{ plano.preco }}</span>
-                      </div>
-                      {% if plano.descricao %}
-                      <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
-                      {% endif %}
-                      <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </div>
+            <!-- LADO DIREITO: O CARD COMPLETO DE SERVIÇO -->
+            <div class="servico-card-box">
+              
+              <!-- METADE ESQUERDA DO CARD: IMAGEM -->
+              <div class="servico-card-visual">
+                {% if servico.capa %}
+                  <img src="{{ servico.capa_url }}" alt="{{ servico.nome }}">
                 {% else %}
-                <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
+                  <div class="servico-card-expand-placeholder">✦</div>
                 {% endif %}
               </div>
-            </div>
-          </div>
 
-        </div>
-      </article>
-      {% endif %}
-      {% endfor %}
+              <!-- METADE DIREITA DO CARD: CONTEÚDO E PLANOS INTERNOS -->
+              <div class="servico-card-content">
+                <div class="servico-card-head">
+                  <h3 class="card-title">{{ servico.nome }}</h3>
+                  <div class="service-price-range">
+                    <span class="price-from">{% if servico.planos.all %}A partir de{% else %}De{% endif %}</span>
+                    <span class="price-val">R$ {{ servico.preco }}</span>
+                    {% if servico.planos.all %}<span class="price-suffix">/mês</span>{% endif %}
+                  </div>
+                </div>
+
+                <p class="card-desc">{{ servico.descricao|truncatewords:20|linebreaksbr }}</p>
+
+                <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}">
+                  SAIBA MAIS ✦
+                </button>
+
+                <!-- ÁREA QUE EXPANDIRÁ AO CLICAR EM "SAIBA MAIS" -->
+                <div class="servico-detalhe" id="detalhe-{{ servico.id }}">
+                  <div class="servico-detalhe-inner">
+                    <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
+
+                    {% if servico.planos.all %}
+                    <div class="servico-detalhe-head">PLANOS DO SERVIÇO</div>
+                    <div class="servico-planos-scroll">
+                      <ul class="servico-planos-lista">
+                        {% for plano in servico.planos.all %}
+                        <li>
+                          <div class="plano-linha">
+                            <span class="plano-nome">{{ plano.nome }}</span>
+                            <span class="plano-preco">R$ {{ plano.preco }}</span>
+                          </div>
+                          {% if plano.descricao %}
+                          <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
+                          {% endif %}
+                          <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    {% else %}
+                    <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
+                    {% endif %}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      
+      <button class="carousel-btn next-btn" id="nextBtn">❯</button>
+    </div>
+
+    <!-- INDICADORES FORA DO CARROSSEL -->
+    <div class="carousel-pagination-container">
+      <div class="carousel-dots" id="carouselDots">
+        {% for servico in servicos %}
+        <span class="carousel-dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
+        {% endfor %}
+      </div>
     </div>
 
     {% else %}
@@ -175,7 +105,42 @@
       <p class="card-desc">Nenhum serviço disponível no momento. Volte em breve!</p>
     </div>
     {% endif %}
+  </div>
+</section>
 
+<!-- ================= FITA MARQUEE ANIMADA ================= -->
+<div class="marquee-ribbon">
+  <div class="marquee-content">
+    <span>PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦</span>
+    <span>PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦ PLANOS ✦</span>
+  </div>
+</div>
+
+<!-- ================= NOVA SEÇÃO DE PLANOS ================= -->
+<section id="planos-section">
+  <div class="planos-grid-container">
+    <div class="section-title-wrap">
+      <h2 class="section-title">PLANOS <span>DISPONIVEIS:</span></h2>
+    </div>
+    
+    <div class="planos-cards-grid">
+      {% if planos %}
+        {% for plano in planos %}
+        <div class="plano-card-vip">
+          <div class="plano-card-vip-head">
+            <h3>{{ plano.nome }}</h3>
+            <div class="plano-card-vip-price">R$ {{ plano.preco }}</div>
+          </div>
+          <div class="plano-card-vip-body">
+            <p>{{ plano.descricao|linebreaksbr }}</p>
+          </div>
+          <a href="#" class="btn-primary plano-card-vip-btn">ASSINAR AGORA ✦</a>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p style="text-align: center; width: 100%; color: rgba(255,255,255,0.6);">Nenhum plano cadastrado no momento.</p>
+      {% endif %}
+    </div>
   </div>
 </section>
 {% endblock %}

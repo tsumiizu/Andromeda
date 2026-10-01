@@ -173,3 +173,198 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('servicesTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const mainContainer = document.querySelector('.services-carousel-container');
+    
+    // FUNÇÃO QUE FECHA QUALQUER CARD ABERTO
+    const closeAllExpandedCards = () => {
+        document.querySelectorAll('.servico-detalhe.is-open').forEach(el => el.classList.remove('is-open'));
+        document.querySelectorAll('.servico-card-inner.card-expanded').forEach(el => el.classList.remove('card-expanded'));
+        document.querySelectorAll('.servico-toggle').forEach(btn => btn.textContent = 'SAIBA MAIS ✦');
+        if (mainContainer) mainContainer.classList.remove('carousel-expanded');
+    };
+
+    if (track && prevBtn && nextBtn) {
+        const cards = Array.from(track.children);
+        let currentIndex = 0;
+
+        const updateCarousel = () => {
+            const cardWidth = track.clientWidth;
+            track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+            
+            // Atualiza as bolotas ativas
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        };
+
+        // Avançar
+        nextBtn.addEventListener('click', () => {
+            closeAllExpandedCards(); // <--- CORREÇÃO DO BUG: Fecha aba ao mudar de lado
+            if (currentIndex >= cards.length - 1) {
+                currentIndex = 0; 
+            } else {
+                currentIndex++;
+            }
+            updateCarousel();
+        });
+
+        // Voltar
+        prevBtn.addEventListener('click', () => {
+            closeAllExpandedCards(); // <--- CORREÇÃO DO BUG: Fecha aba ao mudar de lado
+            if (currentIndex <= 0) {
+                currentIndex = cards.length - 1; 
+            } else {
+                currentIndex--;
+            }
+            updateCarousel();
+        });
+
+        // Clicar nas bolotas para trocar
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                closeAllExpandedCards(); // <--- CORREÇÃO DO BUG
+                currentIndex = index;
+                updateCarousel();
+            });
+        });
+
+        window.addEventListener('resize', updateCarousel);
+    }
+
+    // Abertura do "Saiba Mais" interno e Expansão
+    const toggles = document.querySelectorAll('.servico-toggle');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetEl = document.getElementById(targetId);
+            const cardInner = this.closest('.servico-card-inner');
+
+            if (targetEl.classList.contains('is-open')) {
+                // Se já tá aberto, fecha
+                targetEl.classList.remove('is-open');
+                this.textContent = 'SAIBA MAIS ✦';
+                if(cardInner) cardInner.classList.remove('card-expanded');
+                if (mainContainer) mainContainer.classList.remove('carousel-expanded');
+            } else {
+                // Se está fechado, garante que tudo tá fechado e abre o clicado
+                closeAllExpandedCards(); 
+                
+                targetEl.classList.add('is-open');
+                this.textContent = 'FECHAR ✕';
+                if(cardInner) cardInner.classList.add('card-expanded');
+                if (mainContainer) mainContainer.classList.add('carousel-expanded');
+            }
+        });
+    });
+
+    // Geração randômica de estrelas cadentes em toda a largura da tela
+    const starsContainer = document.getElementById('shootingStars');
+    if (starsContainer) {
+        const starCount = 12; 
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('span');
+            star.classList.add('shooting-star');
+            
+            const starTip = document.createElement('span');
+            starTip.classList.add('star-tip');
+            starTip.textContent = '✦';
+            star.appendChild(starTip);
+            
+            star.style.left = Math.random() * 100 + '%';
+            
+            const duration = Math.random() * 3 + 2.5;
+            star.style.animationDuration = duration + 's';
+            
+            const delay = Math.random() * 6;
+            star.style.animationDelay = delay + 's';
+            
+            starsContainer.appendChild(star);
+        }
+    }
+});
+
+
+
+
+
+
+
+
+// Geração randômica de estrelas cadentes com ponta brilhante
+const starsContainer = document.getElementById('shootingStars');
+if (starsContainer) {
+    const starCount = 8; // Podes ajustar a quantidade de estrelas se achares necessário
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('span');
+        star.classList.add('shooting-star');
+        
+        // Cria a ponta de estrela na frente
+        const starTip = document.createElement('span');
+        starTip.classList.add('star-tip');
+        starTip.textContent = '✦';
+        star.appendChild(starTip);
+        
+        // Posição horizontal em toda a largura da tela (0% a 100%)
+        star.style.left = Math.random() * 120 + '%';
+        
+        // Velocidade/Duração aleatória (entre 2.5s e 5.5s)
+        const duration = Math.random() * 3 + 2.5;
+        star.style.animationDuration = duration + 's';
+        
+        // Atraso de queda aleatório
+        const delay = Math.random() * 6;
+        star.style.animationDelay = delay + 's';
+        
+        starsContainer.appendChild(star);
+    }
+}
+
+
+
+
+
+
+
+
+// Abertura do "Saiba Mais" interno com Expansão do Card
+    const toggles = document.querySelectorAll('.servico-toggle');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetEl = document.getElementById(targetId);
+            
+            // Pega o container do card e da logo para aplicar o efeito de expansão
+            const cardInner = this.closest('.servico-card-inner');
+
+            if (targetEl.classList.contains('is-open')) {
+                targetEl.classList.remove('is-open');
+                this.textContent = 'SAIBA MAIS ✦';
+                // Remove a classe de expansão
+                if(cardInner) cardInner.classList.remove('card-expanded');
+            } else {
+                targetEl.classList.add('is-open');
+                this.textContent = 'FECHAR ✕';
+                // Adiciona a classe de expansão
+                if(cardInner) cardInner.classList.add('card-expanded');
+            }
+        });
+    });
