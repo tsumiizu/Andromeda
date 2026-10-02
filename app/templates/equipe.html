@@ -2,149 +2,269 @@
 {% load static %}
 {% block content %}
 
-<!-- ══ PAGE HERO ══ -->
 <section id="page-hero">
   <div class="page-hero-deco">
     <div class="glow-blob blob-h1"></div>
     <div class="glow-blob blob-h2"></div>
   </div>
   <div class="page-hero-inner fade-in">
-    <div class="page-hero-tag">Conheça quem está por trás</div>
-    <h1 class="page-hero-title">EQUIPE</h1>
-    <p class="page-hero-sub">Uma constelação de pessoas dedicadas a transformar ideias em soluções digitais. Conheça quem faz o universo Andromeda funcionar.</p>
-    <div class="page-hero-stats">
-      <div class="hero-stat"><span class="hero-stat-num">6</span><span class="hero-stat-label">Integrantes</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">1+</span><span class="hero-stat-label">Ano de Mercado</span></div>
-      <div class="hero-stat"><span class="hero-stat-num">0</span><span class="hero-stat-label">Projetos Entregues</span></div>
-    </div>
+    <h1 class="page-hero-title" id="heroTitle" data-original="EQUIPE">EQUIPE</h1>
   </div>
 </section>
 
 <div class="h-divider"></div>
 
-<!-- ══ EQUIPE ══ -->
+<!-- ══════════ EQUIPE (VISÍVEL) ══════════ -->
 <section id="team-section">
   <div class="team-container">
 
-    <div class="fade-in" style="text-align:center;margin-bottom:3rem">
-      <div class="section-subtitle" style="justify-content:center">Nosso Time</div>
-      <h2 class="section-title">QUEM SOMOS</h2>
-    </div>
-
     <div class="team-grid">
 
-      <!--
-        🖼️ FOTO DO MEMBRO — troque o link do <img> abaixo pela foto real
-        de cada integrante (recomendado: imagem quadrada, mín. 600x600px).
-      -->
-
-      <!-- Membro 01 -->
-      <div class="team-card fade-in fade-in-delay-1">
-        <div class="team-photo">
-          <img src="{% static 'media/zion.webp' %}" alt="Nome do Membro 1">
-        </div>
-        <div class="team-body">
-          <div class="team-num">— 01</div>
-          <div class="team-name">Zion</div>
-          <div class="team-role">PROGRAMADOR</div>
-          <p class="team-desc">Descrição: Fundador e programador da Andromeda. Zion busca os melhores resultados da equipe.</p>
-          <div class="team-social">
-            <a href="#" title="tsumiizu">📸</a>
-            <a href="#" title="Zion Vieira">💼</a>
-            <a href="#" title="zion.vieira.inf@gmail.com">✉️</a>
+      <!-- ══════════ ZION ══════════ -->
+      <article class="team-card fade-in">
+        <div class="team-card-stage-badge">BASIC</div>
+        <div class="team-card-frame">
+          <header class="team-card-top">
+            <h3 class="team-card-name">Zion</h3>
+            <div class="team-card-type-orb">
+              <img src="{% static 'media/andromeda.webp' %}" alt="Andromeda" class="team-card-orb-icon">
+            </div>
+          </header>
+          <div class="team-photo">
+            <img src="{% static 'media/zion.webp' %}" alt="Zion">
+          </div>
+          <div class="team-card-attack">
+            <div class="team-card-attack-head">
+              <span class="team-card-attack-name">Função Principal</span>
+              <span class="team-card-attack-dmg">TechLead</span>
+            </div>
+            <p class="team-card-attack-desc">Fundador e programador da Andromeda. Sua função como techlead é fazer o versionamento do projeto garantindo segurança para o código e trabalhar o backend, ou seja, a lógica do site.</p>
+          </div>
+          <div class="team-card-stats">
+            <div class="team-stat">
+              <span class="team-stat-label">Cargo</span>
+              <span class="team-stat-val">FULLSTACK</span>
+            </div>
+            <div class="team-stat"></div>
+            <div class="team-stat">
+              <span class="team-stat-label">Ferramenta</span>
+              <span class="team-stat-tool">
+                <img src="{% static 'media/vscode.webp' %}" alt="VS Code" class="team-tool-icon">
+                <span class="team-stat-val">VS CODE</span>
+              </span>
+            </div>
+          </div>
+          <div class="team-card-footer">
+            <span>ANDROMEDA</span>
+            <span>© 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- Membro 02 -->
-      <div class="team-card fade-in fade-in-delay-2">
-        <div class="team-photo">
-          <img src="{% static 'media/enzo.webp' %}" alt="Nome do Membro 2">
-        </div>
-        <div class="team-body">
-          <div class="team-num">— 02</div>
-          <div class="team-name">Enzo</div>
-          <div class="team-role">PROGRAMADOR</div>
-          <p class="team-desc">Sendo o segundo programador da Andromeda, Enzo Lopes realiza um ótimo serviço na sua área de programação.</p>
-          <div class="team-social">
-            <a href="#" title="Instagram">📸</a>
-            <a href="#" title="LinkedIn">💼</a>
-            <a href="#" title="E-mail">✉️</a>
+      <!-- ══════════ ENZO ══════════ -->
+      <article class="team-card fade-in">
+        <div class="team-card-stage-badge">BASIC</div>
+        <div class="team-card-frame">
+          <header class="team-card-top">
+            <h3 class="team-card-name">Enzo</h3>
+            <div class="team-card-type-orb">
+              <img src="{% static 'media/andromeda.webp' %}" alt="Andromeda" class="team-card-orb-icon">
+            </div>
+          </header>
+          <div class="team-photo">
+            <img src="{% static 'media/enzo.png' %}" alt="Enzo">
+          </div>
+          <div class="team-card-attack">
+            <div class="team-card-attack-head">
+              <span class="team-card-attack-name">Função Principal</span>
+              <span class="team-card-attack-dmg">User Interface</span>
+            </div>
+            <p class="team-card-attack-desc">Sendo o segundo programador da Andromeda, seu foco é a interface do usuário, ou seja, o frontend. Ele que faz a parte visual dos sites de nossos clientes.</p>
+          </div>
+          <div class="team-card-stats">
+            <div class="team-stat">
+              <span class="team-stat-label">Cargo</span>
+              <span class="team-stat-val">FRONTEND</span>
+            </div>
+            <div class="team-stat"></div>
+            <div class="team-stat">
+              <span class="team-stat-label">Ferramenta</span>
+              <span class="team-stat-tool">
+                <img src="{% static 'media/vscode.webp' %}" alt="VS Code" class="team-tool-icon">
+                <span class="team-stat-val">VS CODE</span>
+              </span>
+            </div>
+          </div>
+          <div class="team-card-footer">
+            <span>ANDROMEDA</span>
+            <span>© 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- Membro 03 -->
-      <div class="team-card fade-in fade-in-delay-3">
-        <div class="team-photo">
-          <img src="{% static 'media/victor.webp' %}" alt="Nome do Membro 3">
-        </div>
-        <div class="team-body">
-          <div class="team-num">— 03</div>
-          <div class="team-name">Victor</div>
-          <div class="team-role">ANALISTA</div>
-          <p class="team-desc">Victor Martins possui um serviço importante dentro da Andromeda por mapear processos e organizar a empresa.</p>
-          <div class="team-social">
-            <a href="#" title="Instagram">📸</a>
-            <a href="#" title="LinkedIn">💼</a>
-            <a href="#" title="E-mail">✉️</a>
+      <!-- ══════════ VICTOR ══════════ -->
+      <article class="team-card fade-in">
+        <div class="team-card-stage-badge">BASIC</div>
+        <div class="team-card-frame">
+          <header class="team-card-top">
+            <h3 class="team-card-name">Victor</h3>
+            <div class="team-card-type-orb">
+              <img src="{% static 'media/andromeda.webp' %}" alt="Andromeda" class="team-card-orb-icon">
+            </div>
+          </header>
+          <div class="team-photo">
+            <img src="{% static 'media/femboy.png' %}" alt="Victor">
+          </div>
+          <div class="team-card-attack">
+            <div class="team-card-attack-head">
+              <span class="team-card-attack-name">Função Principal</span>
+              <span class="team-card-attack-dmg">Escritor de POP</span>
+            </div>
+            <p class="team-card-attack-desc">Possui um serviço importante dentro da Andromeda por mapear processos e organizar a empresa, traduzindo a arquitetura em diagramas detalhados e cheios de prints.</p>
+          </div>
+          <div class="team-card-stats">
+            <div class="team-stat">
+              <span class="team-stat-label">Cargo</span>
+              <span class="team-stat-val">ANALISTA</span>
+            </div>
+            <div class="team-stat"></div>
+            <div class="team-stat">
+              <span class="team-stat-label">Ferramenta</span>
+              <span class="team-stat-tool">
+                <img src="{% static 'media/word.webp' %}" alt="Word" class="team-tool-icon">
+                <span class="team-stat-val">WORD</span>
+              </span>
+            </div>
+          </div>
+          <div class="team-card-footer">
+            <span>ANDROMEDA</span>
+            <span>© 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- Membro 04 -->
-      <div class="team-card fade-in">
-        <div class="team-photo">
-          <img src="{% static 'media/marlon.webp' %}" alt="Nome do Membro 4">
-        </div>
-        <div class="team-body">
-          <div class="team-num">— 04</div>
-          <div class="team-name">Marlon</div>
-          <div class="team-role">DESIGNER</div>
-          <p class="team-desc">Sendo o designer principal da Andromeda, Marlon cria os melhores designs já vistos pela equipe.</p>
-          <div class="team-social">
-            <a href="#" title="Instagram">📸</a>
-            <a href="#" title="LinkedIn">💼</a>
-            <a href="#" title="E-mail">✉️</a>
+      <!-- ══════════ MARLON ══════════ -->
+      <article class="team-card fade-in">
+        <div class="team-card-stage-badge">BASIC</div>
+        <div class="team-card-frame">
+          <header class="team-card-top">
+            <h3 class="team-card-name">Marlon</h3>
+            <div class="team-card-type-orb">
+              <img src="{% static 'media/andromeda.webp' %}" alt="Andromeda" class="team-card-orb-icon">
+            </div>
+          </header>
+          <div class="team-photo">
+            <img src="{% static 'media/marlon.png' %}" alt="Marlon">
+          </div>
+          <div class="team-card-attack">
+            <div class="team-card-attack-head">
+              <span class="team-card-attack-name">Função Principal</span>
+              <span class="team-card-attack-dmg">Estrategista Visual</span>
+            </div>
+            <p class="team-card-attack-desc">Sua função é trazer a identidade da Andromeda para o mundo, expressando todas as cores da empresa em seus designs enquanto trabalha lado a lado com o marketing.</p>
+          </div>
+          <div class="team-card-stats">
+            <div class="team-stat">
+              <span class="team-stat-label">Cargo</span>
+              <span class="team-stat-val">DESIGNER</span>
+            </div>
+            <div class="team-stat"></div>
+            <div class="team-stat">
+              <span class="team-stat-label">Ferramenta</span>
+              <span class="team-stat-tool">
+                <img src="{% static 'media/canva.png' %}" alt="Canva" class="team-tool-icon">
+                <span class="team-stat-val">CANVA</span>
+              </span>
+            </div>
+          </div>
+          <div class="team-card-footer">
+            <span>ANDROMEDA</span>
+            <span>© 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- Membro 05 -->
-      <div class="team-card fade-in fade-in-delay-1">
-        <div class="team-photo">
-          <img src="{% static 'media/matheus.webp' %}" alt="Nome do Membro 5">
-        </div>
-        <div class="team-body">
-          <div class="team-num">— 05</div>
-          <div class="team-name">Matheus</div>
-          <div class="team-role">MARKETING</div>
-          <p class="team-desc">Matheus é o membro da equipe por trás dos posts de marketing da Andromeda.</p>
-          <div class="team-social">
-            <a href="#" title="Instagram">📸</a>
-            <a href="#" title="LinkedIn">💼</a>
-            <a href="#" title="E-mail">✉️</a>
+      <!-- ══════════ MATHEUS ══════════ -->
+      <article class="team-card fade-in">
+        <div class="team-card-stage-badge">BASIC</div>
+        <div class="team-card-frame">
+          <header class="team-card-top">
+            <h3 class="team-card-name">Matheus</h3>
+            <div class="team-card-type-orb">
+              <img src="{% static 'media/andromeda.webp' %}" alt="Andromeda" class="team-card-orb-icon">
+            </div>
+          </header>
+          <div class="team-photo">
+            <img src="{% static 'media/matheus.png' %}" alt="Matheus">
+          </div>
+          <div class="team-card-attack">
+            <div class="team-card-attack-head">
+              <span class="team-card-attack-name">Função Principal</span>
+              <span class="team-card-attack-dmg">Gestor de Tráfego</span>
+            </div>
+            <p class="team-card-attack-desc">É o membro que estuda o SEO e o público da Andromeda para garantir que as postagens aparecerão para todos.</p>
+          </div>
+          <div class="team-card-stats">
+            <div class="team-stat">
+              <span class="team-stat-label">Cargo</span>
+              <span class="team-stat-val">MARKETING</span>
+            </div>
+            <div class="team-stat"></div>
+            <div class="team-stat">
+              <span class="team-stat-label">Ferramenta</span>
+              <span class="team-stat-tool">
+                <img src="{% static 'media/instagram.png' %}" alt="Instagram" class="team-tool-icon">
+                <span class="team-stat-val">INSTAGRAM</span>
+              </span>
+            </div>
+          </div>
+          <div class="team-card-footer">
+            <span>ANDROMEDA</span>
+            <span>© 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
-      <!-- Membro 06 -->
-      <div class="team-card fade-in fade-in-delay-2">
-        <div class="team-photo">
-          <img src="{% static 'media/esther.webp' %}" alt="Nome do Membro 6">
-        </div>
-        <div class="team-body">
-          <div class="team-num">— 06</div>
-          <div class="team-name">Esther</div>
-          <div class="team-role">MARKETING</div>
-          <p class="team-desc">Esther organiza os posts de marketing na conta oficial da Andromeda.</p>
-          <div class="team-social">
-            <a href="#" title="Instagram">📸</a>
-            <a href="#" title="LinkedIn">💼</a>
-            <a href="#" title="E-mail">✉️</a>
+      <!-- ══════════ ESTHER ══════════ -->
+      <article class="team-card fade-in">
+        <div class="team-card-stage-badge">BASIC</div>
+        <div class="team-card-frame">
+          <header class="team-card-top">
+            <h3 class="team-card-name">Esther</h3>
+            <div class="team-card-type-orb">
+              <img src="{% static 'media/andromeda.webp' %}" alt="Andromeda" class="team-card-orb-icon">
+            </div>
+          </header>
+          <div class="team-photo">
+            <img src="{% static 'media/esther.png' %}" alt="Esther">
+          </div>
+          <div class="team-card-attack">
+            <div class="team-card-attack-head">
+              <span class="team-card-attack-name">Função Principal</span>
+              <span class="team-card-attack-dmg">Copywriter</span>
+            </div>
+            <p class="team-card-attack-desc">A mente narrativa, ela que faz as legendas e o conteúdo que vai ser abordado nos posts da Andromeda.</p>
+          </div>
+          <div class="team-card-stats">
+            <div class="team-stat">
+              <span class="team-stat-label">Cargo</span>
+              <span class="team-stat-val">MARKETING</span>
+            </div>
+            <div class="team-stat"></div>
+            <div class="team-stat">
+              <span class="team-stat-label">Ferramenta</span>
+              <span class="team-stat-tool">
+                <img src="{% static 'media/blocodenotas.png' %}" alt="Bloco de Notas" class="team-tool-icon">
+                <span class="team-stat-val">NOTEPAD</span>
+              </span>
+            </div>
+          </div>
+          <div class="team-card-footer">
+            <span>ANDROMEDA</span>
+            <span>© 2026</span>
           </div>
         </div>
-      </div>
+      </article>
 
     </div>
   </div>
@@ -152,14 +272,94 @@
 
 <div class="h-divider"></div>
 
-<!-- ══ CTA BANNER ══ -->
-<section id="cta">
+<!-- ══════════ EQUIPE REAL (EASTER EGG — escondido) ══════════ -->
+<section id="equipe-real-section" class="equipe-real-section">
+  <div class="equipe-real-grid">
+
+    <article class="team-card equipe-real-card">
+      <div class="team-card-stage-badge">???</div>
+      <div class="team-card-frame">
+        <header class="team-card-top">
+          <h3 class="team-card-name">IanSeed</h3>
+          <div class="team-card-type-orb">
+            <img src="{% static 'media/KyokaDev.png' %}" alt="Andromeda" class="team-card-orb-icon">
+          </div>
+        </header>
+        <div class="team-photo">
+            <img src="{% static 'media/subiaru.jpg' %}" alt="Esther">
+        </div>
+        <div class="team-card-attack">
+          <div class="team-card-attack-head">
+            <span class="team-card-attack-name">FUNÇÃO</span>
+            <span class="team-card-attack-dmg">TEACHLEAD</span>
+          </div>
+          <p class="team-card-attack-desc">Trabalhei com a organização e liderança do projeto, porém foquei especifícamente no backend mesmo tendo feito algumas contribuições pro front, deploy e integrações. Sou o fundador do @KyokaDev.</p>
+        </div>
+        <div class="team-card-stats">
+          <div class="team-stat"><span class="team-stat-label">CARGO</span><span class="team-stat-val">BACKEND</span></div>
+          <div class="team-stat"></div>
+          <div class="team-stat">
+            <span class="team-stat-label">GITHUB</span>
+            <a href="https://github.com/IanSeedd" target="_blank" rel="noopener noreferrer" class="team-social-link" aria-label="GitHub do ianSeed">
+              <img src="{% static 'media/github.png' %}" alt="GitHub" class="team-social-icon">
+            </a>
+          </div>
+        </div>
+        <div class="team-card-footer">
+          <span>KyokaDev</span>
+          <span>© 2025</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="team-card equipe-real-card">
+      <div class="team-card-stage-badge">???</div>
+      <div class="team-card-frame">
+        <header class="team-card-top">
+          <h3 class="team-card-name">Dudss</h3>
+          <div class="team-card-type-orb">
+            <img src="{% static 'media/KyokaDev.png' %}" alt="Andromeda" class="team-card-orb-icon">
+          </div>
+        </header>
+        <div class="team-photo">
+            <img src="{% static 'media/Dudss.jpg' %}" alt="Dudss">
+        </div>
+        <div class="team-card-attack">
+          <div class="team-card-attack-head">
+            <span class="team-card-attack-name">FUNÇÃO</span>
+            <span class="team-card-attack-dmg">User Interface</span>
+          </div>
+          <p class="team-card-attack-desc">Refez todo o site que estava totalmente vibecodado, trazendo um visual unico e que de fato é bonita. Todo o pensamento e supervisão do frontend foi trabalho dele.</p>
+        </div>
+        <div class="team-card-stats">
+          <div class="team-stat"><span class="team-stat-label">CARGO</span><span class="team-stat-val">FRONTEND</span></div>
+          <div class="team-stat"></div>
+          <div class="team-stat">
+            <span class="team-stat-label">GITHUB</span>
+            <a href="https://github.com/Dudss2007" target="_blank" rel="noopener noreferrer" class="team-social-link" aria-label="GitHub do Dudss">
+              <img src="{% static 'media/github.png' %}" alt="GitHub" class="team-social-icon">
+            </a>
+          </div>
+        </div>
+        <div class="team-card-footer">
+          <span>LosLobosDev</span>
+          <span>© 2025</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="h-divider"></div>
+
+<section id="cta" class="team-cta">
   <div class="cta-border-left"></div>
   <div class="cta-border-right"></div>
   <div class="glow-blob" style="width:600px;height:400px;background:rgba(0,212,255,.04);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
   <div class="cta-inner fade-in">
     <div class="cta-tag">✦ Vamos Trabalhar Juntos?</div>
-    <h2 class="cta-title">FALE COM A NOSSA EQUIPE</h2>
+    <h2 class="cta-title">FALE CONOSCO</h2>
     <p class="cta-sub">Tem um projeto em mente? Nossa equipe está pronta para transformar sua ideia em uma solução digital de alto impacto.</p>
     <div class="cta-btns">
       <a href="{% url 'home' %}#contato" class="btn-primary">Solicitar Proposta ✦</a>
@@ -167,4 +367,5 @@
     </div>
   </div>
 </section>
+
 {% endblock %}

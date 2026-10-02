@@ -57,6 +57,12 @@ def dashboard_view(request):
     }
     return render(request, 'dashboard.html', context)
 
+def p404_customizada(request, exception):
+    return render(request, '404.html', status=404)
+# Pagina 403
+def p505_customizada(request, exception=None):
+    return render(request, '505.html', status=505)
+
 @login_required 
 def perfil_view(request):
     user = request.user
