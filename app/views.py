@@ -12,8 +12,15 @@ def homeview(request):
     return render(request, 'home.html')
 
 def servicesview(request):
+   
     servicos = Servico.objects.prefetch_related('planos').order_by('ordem', 'id')
-    return render(request, 'services.html', {'servicos': servicos})
+    
+    planos = Plano.objects.all().order_by('preco')
+    
+    return render(request, 'services.html', {
+        'servicos': servicos, 
+        'planos': planos
+    })
 
 def equipeview(request):
     return render(request, 'equipe.html')
