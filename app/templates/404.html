@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section id="home" class="hero-section erro404-section">
+  <div class="glow-blob blob-1"></div>
+  <div class="glow-blob blob-2"></div>
+
+  <div class="hero-inner erro404-inner">
+
+    <!-- ── Personagem com a placa ── -->
+    <div class="erro404-character fade-in">
+      <img
+        src="{% static 'media/sylviechan.webp' %}"
+        alt="Personagem Andromeda segurando uma placa"
+        class="erro404-img"
+      >
+      <!-- O número fica ancorado na placa -->
+      <span class="erro404-code">404</span>
+    </div>
+
+    <!-- ── Texto e botões (reaproveitando o hero) ── -->
+    <div class="hero-content fade-in fade-in-delay-1 erro404-content">
+      <div class="hero-tag">Página não encontrada</div>
+      <div class="hero-sub">Ops… este endereço saiu do mapa.</div>
+      <p class="hero-text">
+        A página que você procura não existe, foi movida ou o link está quebrado.
+        Mas não se preocupe — a Andromeda ainda está aqui para te ajudar.
+      </p>
+      <div class="hero-btns">
+        <a href="{% url 'home' %}" class="btn-secondary">Voltar ao Início →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

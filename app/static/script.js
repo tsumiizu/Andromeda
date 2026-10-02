@@ -173,3 +173,382 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================= EASTER EGG — EQUIPE REAL ================= */
+document.addEventListener("DOMContentLoaded", () => {
+    const teamSection = document.getElementById("team-section");
+    if (!teamSection) return; // só roda na página de equipe
+
+    const cards = teamSection.querySelectorAll(".team-card");
+    const heroTitle = document.getElementById("heroTitle");
+    const equipeRealSection = document.getElementById("equipe-real-section");
+    if (!cards.length || !heroTitle || !equipeRealSection) return;
+
+    // ── Estado do easter egg ──
+    const CLICKS_NEEDED = 7;
+    let totalClicks = 0;
+    let triggered = false;
+
+    // ── Função que divide o título em letras ──
+    function splitTitleIntoLetters(el, text) {
+        el.innerHTML = "";
+        const frag = document.createDocumentFragment();
+        for (const ch of text) {
+            const span = document.createElement("span");
+            span.className = "letter";
+            span.textContent = ch === " " ? "\u00A0" : ch;
+            frag.appendChild(span);
+        }
+        el.appendChild(frag);
+    }
+
+    // ── Troca o texto do título com animação ──
+    function swapHeroTitle(newText) {
+        // Primeiro faz as letras saírem
+        heroTitle.classList.add("swap-letters", "swap-out");
+
+        setTimeout(() => {
+            // Troca o conteúdo pelas novas letras
+            splitTitleIntoLetters(heroTitle, newText);
+            heroTitle.classList.remove("swap-out");
+            heroTitle.classList.add("swap-in");
+
+            // Remove a classe swap-in depois da animação
+            setTimeout(() => {
+                heroTitle.classList.remove("swap-in");
+            }, 500);
+        }, 400);
+    }
+
+    // ── Registra o clique em cada card ──
+    cards.forEach(card => {
+        // Ignora os cards secretos (se algum dia forem irmãos)
+        if (card.classList.contains("equipe-real-card")) return;
+
+        card.addEventListener("click", () => {
+            if (triggered) return;
+            totalClicks++;
+
+            // Pequena pulsação visual em cada clique
+            card.style.transition = "transform 0.15s ease";
+            card.style.transform = "scale(0.97)";
+            setTimeout(() => {
+                card.style.transform = "";
+                card.style.transition = "";
+            }, 150);
+
+            if (totalClicks >= CLICKS_NEEDED) {
+                triggered = true;
+                triggerEasterEgg();
+            }
+        });
+    });
+
+        // ── Utilitário: pega a posição central do primeiro card da equipe ──
+    function getCardCenter() {
+        const firstCard = cards[0];
+        if (!firstCard) {
+            return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        }
+        const rect = firstCard.getBoundingClientRect();
+        return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+        };
+    }
+
+        // ── Cria uma onda roxa a partir do CENTRO da tela ──
+    function createPurpleRipple() {
+        const originX = window.innerWidth / 2;
+        const originY = window.innerHeight / 2;
+
+        // Distância até o canto mais distante
+        const maxDistX = Math.max(originX, window.innerWidth - originX);
+        const maxDistY = Math.max(originY, window.innerHeight - originY);
+        const radius = Math.sqrt(maxDistX * maxDistX + maxDistY * maxDistY) * 2.2;
+
+        // Onda principal
+        const ripple1 = document.createElement("div");
+        ripple1.className = "purple-ripple";
+        ripple1.style.left = originX + "px";
+        ripple1.style.top = originY + "px";
+        ripple1.style.width = radius + "px";
+        ripple1.style.height = radius + "px";
+        document.body.appendChild(ripple1);
+
+        // Onda secundária (mais lenta e difusa)
+        const ripple2 = document.createElement("div");
+        ripple2.className = "purple-ripple purple-ripple-secondary";
+        ripple2.style.left = originX + "px";
+        ripple2.style.top = originY + "px";
+        ripple2.style.width = radius * 0.9 + "px";
+        ripple2.style.height = radius * 0.9 + "px";
+        ripple2.style.animationDelay = "0.1s";
+        document.body.appendChild(ripple2);
+
+        // Remove depois da animação
+        setTimeout(() => {
+            ripple1.remove();
+            ripple2.remove();
+        }, 2400);
+    }
+
+    // ── Texto hacker: "EQUIPE" → "TRUE TEAM" com scramble ──
+    function hackerSwapText(el, finalText) {
+        const hackerChars = "!<>-_\\/[]{}—=+*^?#________ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const oldText = el.textContent || "";
+        const maxLen = Math.max(oldText.length, finalText.length);
+
+        // Limpa o conteúdo atual e cria spans por caractere
+        el.innerHTML = "";
+        el.classList.add("hacker-swap");
+
+        const charSpans = [];
+        for (let i = 0; i < maxLen; i++) {
+            const span = document.createElement("span");
+            span.className = "hacker-char scrambling";
+            span.textContent = hackerChars[Math.floor(Math.random() * hackerChars.length)];
+            el.appendChild(span);
+            charSpans.push(span);
+        }
+
+        // Vai resolvendo cada caractere em sequência
+        const queue = [];
+        for (let i = 0; i < maxLen; i++) {
+            const from = oldText[i] || "";
+            const to = finalText[i] || "";
+            const start = Math.floor(Math.random() * 30);
+            const end = start + Math.floor(Math.random() * 30) + 20;
+            queue.push({ from, to, start, end, char: null });
+        }
+
+        let frame = 0;
+        const totalFrames = Math.max(...queue.map(q => q.end)) + 10;
+
+        const tick = () => {
+            let output = "";
+            let complete = 0;
+
+            queue.forEach((q, i) => {
+                if (frame >= q.end) {
+                    complete++;
+                    q.char = q.to;
+                } else if (frame >= q.start) {
+                    if (!q.char || Math.random() < 0.28) {
+                        q.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
+                    }
+                } else {
+                    q.char = "";
+                }
+
+                const span = charSpans[i];
+                if (span) {
+                    if (frame >= q.end) {
+                        span.textContent = q.to === " " ? "\u00A0" : (q.to || "");
+                        span.classList.remove("scrambling");
+                        span.classList.add("resolved");
+                    } else {
+                        span.textContent = q.char === " " ? "\u00A0" : (q.char || "");
+                    }
+                }
+                output += q.char;
+            });
+
+            if (complete === queue.length) {
+                // Resolveu tudo — garante que os espaços ficam certos
+                charSpans.forEach((s, i) => {
+                    s.textContent = finalText[i] === " " ? "\u00A0" : (finalText[i] || "");
+                });
+                return;
+            }
+
+            frame++;
+            requestAnimationFrame(tick);
+        };
+
+        tick();
+    }
+
+    // ── A mágica acontece aqui ──
+    function triggerEasterEgg() {
+                // 1. Dispara a onda roxa do centro da tela
+        createPurpleRipple();
+
+        // 3. Aplica o tema roxo global (com delay pra onda "chegar primeiro")
+        setTimeout(() => {
+            document.body.classList.add("easter-purple");
+        }, 350);
+
+        // 4. Faz os cards caírem
+        teamSection.classList.add("is-falling");
+
+        // 5. Faz o CTA cair junto
+        const teamCta = document.querySelector(".team-cta");
+        if (teamCta) teamCta.classList.add("is-falling");
+
+        // 6. Colapsa a EQUIPE depois que TODOS os cards caírem
+        setTimeout(() => {
+            teamSection.classList.add("is-collapsed");
+        }, 1700);
+
+        // 7. Colapsa o CTA depois da animação dele
+        if (teamCta) {
+            setTimeout(() => {
+                teamCta.classList.add("is-collapsed");
+            }, 1300);
+        }
+
+        // 8. Esconde os h-dividers
+        setTimeout(() => {
+            document.querySelectorAll(".h-divider").forEach(d => {
+                d.classList.add("is-collapsed");
+            });
+        }, 1800);
+
+        // 9. TEXTO HACKER: "EQUIPE" → "TRUE TEAM"
+        setTimeout(() => {
+            hackerSwapText(heroTitle, "TRUE TEAM");
+        }, 900);
+
+        // 10. Mostra a seção secreta depois que a equipe sumiu
+        setTimeout(() => {
+            equipeRealSection.classList.add("is-visible");
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    equipeRealSection.classList.add("is-revealed");
+                });
+            });
+
+            setTimeout(() => {
+                equipeRealSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }, 300);
+        }, 1900);
+    }
+});
