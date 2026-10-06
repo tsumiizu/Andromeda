@@ -69,13 +69,13 @@
                           {% if plano.descricao %}
                           <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
                           {% endif %}
-                          <a href="" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                          <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20de%20{{ plano.nome|urlencode }}" target="_blank" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
                         </li>
                         {% endfor %}
                       </ul>
                     </div>
                     {% else %}
-                    <a href="" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
+                    <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20de%20{{ servico.nome|urlencode }}" target="_blank" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
                     {% endif %}
                   </div>
                 </div>
@@ -134,7 +134,7 @@
           <div class="plano-card-vip-body">
             <p>{{ plano.descricao|linebreaksbr }}</p>
           </div>
-          <a href="#" class="btn-primary plano-card-vip-btn">ASSINAR AGORA ✦</a>
+          <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20de%20{{ plano.nome|urlencode }}" target="_blank" class="btn-primary plano-card-vip-btn">ASSINAR AGORA ✦</a>
         </div>
         {% endfor %}
       {% else %}

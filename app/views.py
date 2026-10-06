@@ -50,11 +50,15 @@ def logout_view(request):
 @staff_member_required
 def dashboard_view(request):
     usuarios = Usuario.objects.all()
-    planos = Plano.objects.all()    
+    planos = Plano.objects.all()
+    servicos = Servico.objects.all()  # <--- Garanta que esta busca existe
+
     context = {
         'usuarios': usuarios,
-        'planos': planos
+        'planos': planos,
+        'servicos': servicos,  # <--- Garanta que a chave 'servicos' está no contexto
     }
+    
     return render(request, 'dashboard.html', context)
 
 def p404_customizada(request, exception):
