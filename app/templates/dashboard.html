@@ -1,105 +1,97 @@
 {% extends 'base.html' %}
 {% block content %}
 {% if user.is_authenticated %}
-<a href="{% url 'home' %}" class="btn-back-floating">← VOLTAR</a>
-<!-- ═══════ DASHBOARD LIQUID GLASS ═══════ -->
-<section class="login-section-bottom fade-in">
-  <!-- Cabeçalho: reaproveita .login-info dentro do .login-grid -->
+
+<!-- ═══════ DASHBOARD PREMIUM (VISÃO GERAL) ═══════ -->
+<section class="dashboard-section fade-in">
+  
+  <!-- BOTÃO VOLTAR -->
+  <div class="dash-top-bar">
+    <a href="{% url 'home' %}" class="btn-back">← VOLTAR</a>
+  </div>
+
+  <!-- CABEÇALHO CENTRALIZADO -->
   <div class="dash-header">
-    <div>
-      <div class="login-status">
-        <span class="status-dot"></span>PAINEL DE COMANDO
-      </div>
-      <h1 class="dash-title">Bem-vindo, {{ user.first_name|upper }}</h1>
-      <p class="dash-sub">Controle de tripulação e serviços da Andromeda.</p>
-    </div>
-    <!-- Stats: reaproveita .security-item -->
-    <div class="dash-stats">
-      <div class="security-item">
-        <span class="security-icon">✦</span>
-        <div>
-          <strong>{{ usuarios|length }}</strong>
-          <small>Tripulantes</small>
-        </div>
-      </div>
-      <div class="security-item">
-        <span class="security-icon">◈</span>
-        <div>
-          <strong>{{ planos|length }}</strong>
-          <small>Planos ativos</small>
-        </div>
-      </div>
-    </div>
+    <div class="dash-status"><span class="status-dot"></span>PAINEL DE COMANDO</div>
+    <h1 class="dash-title">Bem-vindo, {{ user.first_name|upper }}</h1>
+    <p class="dash-sub">Visão geral do sistema Andromeda.</p>
   </div>
-  <!-- ── Base de Usuários ── -->
-  <div class="dash-block">
-    <div class="dash-block-head">
-      <h2 class="dash-block-title">Base de Usuários</h2>
-      <a href="/admin/app/usuario/add/" target="_blank" class="dash-btn">+ ADICIONAR</a>
-    </div>
-    <div class="dash-table-wrap">
-      <table class="dash-table">
-        <thead>
-          <tr>
-            <th>Identificação</th>
-            <th>E-mail</th>
-            <th>CPF/CNPJ</th>
-            <th>Telefone</th>
-            <th style="text-align: right;">Controle</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for u in usuarios %}
-          <tr>
-            <td>
-              <div class="dash-user">
-                <div class="dash-avatar">
-                  {% if u.foto %}
-                  <img src="{{ u.foto.url }}" alt="{{ u.get_full_name }}">
-                  {% else %}
-                  {{ u.first_name|slice:":1"|upper }}{{ u.last_name|slice:":1"|upper }}
-                  {% endif %}
-                </div>
-                <span>{{ u.get_full_name }}</span>
-              </div>
-            </td>
-            <td>{{ u.email }}</td>
-            <td>{{ u.cpf_cnpj|default:"—" }}</td>
-            <td>{{ u.telefone|default:"—" }}</td>
-            <td style="text-align: right;">
-              <a href="/admin/app/usuario/{{ u.id }}/change/" target="_blank" class="dash-btn dash-btn-mini">EDITAR</a>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="5" class="dash-empty">O banco de dados de usuários está vazio.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <!-- ── Planos de Serviço ── -->
-  <div class="dash-block">
-    <div class="dash-block-head">
-      <h2 class="dash-block-title">Planos de Serviço</h2>
-      <a href="/admin/app/plano/add/" target="_blank" class="dash-btn">+ CRIAR PLANO</a>
+
+  <!-- CARDS DE ESTATÍSTICAS -->
+  <div class="dash-stats-container">
+    
+    <!-- Card: Contas -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper">
+        <span class="stat-icon">✦</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{{ usuarios|length }}</div>
+        <div class="stat-label">Contas Cadastradas</div>
+      </div>
     </div>
 
-    <div class="dash-plans">
-      {% for p in planos %}
-      <div class="dash-plan-card">
-        <h3>{{ p.nome }}</h3>
-        <div class="dash-plan-price">R$ {{ p.preco }}</div>
-        <p>{{ p.descricao|truncatewords:15 }}</p>
-        <a href="/admin/app/plano/{{ p.id }}/change/" target="_blank" class="dash-btn dash-btn-mini"
-          style="width: 100%; justify-content: center;">MODIFICAR</a>
+    <!-- Card: Planos -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper">
+        <span class="stat-icon">◈</span>
       </div>
-      {% empty %}
-      <div class="dash-empty" style="grid-column: 1 / -1;">Nenhum plano configurado no momento.</div>
-      {% endfor %}
+      <div class="stat-content">
+        <div class="stat-value">{{ planos|length }}</div>
+        <div class="stat-label">Planos Ativos</div>
+      </div>
+    </div>
+
+    <!-- Card: Serviços -->
+    <div class="stat-card">
+      <div class="stat-icon-wrapper">
+        <span class="stat-icon">✧</span>
+      </div>
+      <div class="stat-content">
+        <div class="stat-value">{% if servicos.count %}{{ servicos.count }}{% else %}{{ servicos }}{% endif %}</div>
+        <div class="stat-label">Serviços Configurados</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTOES DE GERENCIAMENTO (ABAIXO DOS CARDS) -->
+  <div class="dash-actions-container">
+    <h2 class="dash-actions-title">PAINEL DE GERENCIAMENTO</h2>
+    
+    <div class="dash-actions-grid">
+      <a href="/admin/app/servico/" target="_blank" class="dash-action-btn">
+        <div class="btn-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="btn-text">
+          <strong>Editar / Adicionar Serviços</strong>
+          <small>Gerenciar catálogo de serviços</small>
+        </div>
+      </a>
+
+      <a href="/admin/app/plano/" target="_blank" class="dash-action-btn">
+        <div class="btn-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M11 3 8 9l3 12"/><path d="M13 3l3 6-3 12"/><path d="M2 9h20"/></svg>
+        </div>
+        <div class="btn-text">
+          <strong>Editar / Adicionar Planos</strong>
+          <small>Gerenciar planos de assinatura</small>
+        </div>
+      </a>
+
+      <a href="/admin/app/usuario/" target="_blank" class="dash-action-btn">
+        <div class="btn-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="btn-text">
+          <strong>Editar Usuários</strong>
+          <small>Gerenciar contas de tripulantes</small>
+        </div>
+      </a>
     </div>
   </div>
+
 </section>
 {% endif %}
 {% endblock %}
