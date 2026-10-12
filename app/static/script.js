@@ -590,3 +590,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1900);
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fotoInput = document.getElementById('id_foto');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    if (fotoInput && avatarPreview) {
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
