@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!cards.length || !heroTitle || !equipeRealSection) return;
 
     // ── Estado do easter egg ──
-    const CLICKS_NEEDED = 7;
+    const CLICKS_NEEDED = 2;
     let totalClicks = 0;
     let triggered = false;
 
