@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / {{ titulo }}</div>
+        <h1 class="adm-title">{{ titulo }}</h1>
+      </div>
+    </header>
+
+    <div class="adm-panel adm-confirm">
+      <h2>Excluir "{{ obj_nome }}"?</h2>
+      <p>{{ aviso }}</p>
+      <form method="post" class="adm-form-actions">
+        {% csrf_token %}
+        <a href="{% url voltar %}" class="adm-btn">Cancelar</a>
+        <button type="submit" class="adm-btn adm-btn-danger">Sim, excluir</button>
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

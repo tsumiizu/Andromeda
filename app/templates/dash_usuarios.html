@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / Usuários</div>
+        <h1 class="adm-title">Usuários</h1>
+      </div>
+    </header>
+
+    {% include '_dash_msgs.html' %}
+
+    <div class="adm-panel">
+      <div class="adm-panel-head">
+        <h2>{{ usuarios|length }} usuário{{ usuarios|length|pluralize }}</h2>
+        <form method="get" class="adm-search">
+          <input type="search" name="q" value="{{ q }}" placeholder="Buscar nome ou e-mail...">
+          <button type="submit" class="adm-btn">Buscar</button>
+        </form>
+      </div>
+
+      <table class="adm-table">
+        <thead>
+          <tr><th>Usuário</th><th>Telefone</th><th>Tipo</th><th>Status</th><th>Compras</th><th class="adm-right">Ações</th></tr>
+        </thead>
+        <tbody>
+          {% for u in usuarios %}
+          <tr>
+            <td class="adm-strong">
+              <div class="adm-cell">
+                <img class="adm-thumb adm-thumb-round" src="{{ u.foto_url }}" alt="" loading="lazy">
+                <span>{{ u.get_full_name|default:u.username }}<small>{{ u.email }}</small></span>
+              </div>
+            </td>
+            <td data-label="Telefone">{{ u.telefone|default:"-" }}</td>
+            <td data-label="Tipo">
+              {% if u.is_superuser %}<span class="adm-badge is-super">Superuser</span>
+              {% elif u.is_staff %}<span class="adm-badge is-staff">Equipe</span>
+              {% else %}<span class="adm-badge">Cliente</span>{% endif %}
+            </td>
+            <td data-label="Status">
+              {% if u.is_active %}<span class="adm-badge is-ok">Ativo</span>{% else %}<span class="adm-badge is-off">Inativo</span>{% endif %}
+            </td>
+            <td data-label="Compras">{{ u.qtd_compras }}</td>
+            <td class="adm-right">
+              <a href="{% url 'dash_usuario_editar' u.pk %}" class="adm-btn">Editar</a>
+              {% if u != user and not u.is_superuser %}
+              <a href="{% url 'dash_usuario_excluir' u.pk %}" class="adm-btn adm-btn-danger">Excluir</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="adm-empty">Nenhum usuário encontrado.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -28,12 +28,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'andromeda-2ut9.onrender.com'] 
-
+DEBUG = False
+ALLOWED_HOSTS = ['andromeda-2ut9.onrender.com']
+ 
 # DESCOMENTA ISSO E COMENTA O DE CIMA EDUUUUUUUU
-# DEBUG = False
-# ALLOWED_HOSTS = ['andromeda-2ut9.onrender.com']
+# DEBUG = True
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'andromeda-2ut9.onrender.com'] 
 
 # Application definition
 

@@ -72,7 +72,43 @@ class EnderecoForm(forms.ModelForm):
 class ServicoForm(forms.ModelForm):
     class Meta:
         model = Servico
-        fields = ['nome', 'descricao', 'preco', 'capa']
+        fields = ['nome', 'descricao', 'preco', 'capa', 'ordem']
+        help_texts = {
+            'ordem': '0 = sem posição fixa. De 1 a 9 define a ordem na página; número já usado vira 0.',
+        }
+
+class UsuarioAdminForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = ['first_name', 'last_name', 'email', 'telefone', 'cpf_cnpj', 'is_active', 'is_staff']
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'email': 'E-mail',
+            'telefone': 'Telefone',
+            'cpf_cnpj': 'CPF / CNPJ',
+            'is_active': 'Conta ativa',
+            'is_staff': 'Membro da equipe (acesso ao painel)',
+        }
+    def clean_cpf_cnpj(self):
+        doc = self.cleaned_data.get('cpf_cnpj')
+        if not doc:
+            return None
+        doc = re.sub(r'\D', '', doc)
+        if len(doc) not in (11, 14):
+            raise ValidationError('Informe um CPF (11 dígitos) ou CNPJ (14 dígitos).')
+        return doc
+
+    def clean_telefone(self):
+        tel = self.cleaned_data.get('telefone')
+        return re.sub(r'\D', '', tel) if tel else None
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.username = user.email  # mantém o padrão do seu cadastro
+        if commit:
+            user.save()
+        return user
 
 class PlanoForm(forms.ModelForm):
     class Meta:
