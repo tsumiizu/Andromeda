@@ -1,0 +1,31 @@
+<aside class="adm-side">
+  <div class="adm-side-title">Painel</div>
+  <nav class="adm-nav">
+    <a href="{% url 'home' %}" class="adm-nav-link">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Voltar ao site
+    </a>
+    <a href="{% url 'dashboard' %}" class="adm-nav-link {% if ativo == 'geral' %}is-active{% endif %}">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+      Visão geral
+    </a>
+    <a href="{% url 'dash_servicos' %}" class="adm-nav-link {% if ativo == 'servicos' %}is-active{% endif %}">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg>
+      Serviços
+    </a>
+    <a href="{% url 'dash_planos' %}" class="adm-nav-link {% if ativo == 'planos' %}is-active{% endif %}">
+      <svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg>
+      Planos
+    </a>
+    <a href="{% url 'dash_usuarios' %}" class="adm-nav-link {% if ativo == 'usuarios' %}is-active{% endif %}">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Usuários
+    </a>
+  </nav>
+</aside>
+
+{% if messages %}
+<div class="adm-msgs">
+  {% for m in messages %}<div class="adm-msg adm-msg-{{ m.tags }}">{{ m }}</div>{% endfor %}
+</div>
+{% endif %}

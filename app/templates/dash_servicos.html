@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / Serviços</div>
+        <h1 class="adm-title">Serviços</h1>
+      </div>
+      <a href="{% url 'dash_servico_novo' %}" class="adm-btn adm-btn-primary">+ Novo serviço</a>
+    </header>
+
+    {% include '_dash_msgs.html' %}
+
+    <div class="adm-panel">
+      <div class="adm-panel-head">
+        <h2>{{ servicos|length }} serviço{{ servicos|length|pluralize }}</h2>
+        <form method="get" class="adm-search">
+          <input type="search" name="q" value="{{ q }}" placeholder="Buscar por nome...">
+          <button type="submit" class="adm-btn">Buscar</button>
+        </form>
+      </div>
+
+      <table class="adm-table">
+        <thead>
+          <tr><th>Serviço</th><th>Preço</th><th>Planos</th><th>Ordem</th><th class="adm-right">Ações</th></tr>
+        </thead>
+        <tbody>
+          {% for s in servicos %}
+          <tr>
+            <td class="adm-strong">
+              <div class="adm-cell">
+                <img class="adm-thumb" src="{{ s.capa_url }}" alt="" loading="lazy">
+                <span>{{ s.nome }}</span>
+              </div>
+            </td>
+            <td data-label="Preço">R$ {{ s.preco }}</td>
+            <td data-label="Planos">{{ s.qtd_planos }}</td>
+            <td data-label="Ordem">{% if s.ordem %}{{ s.ordem }}{% else %}-{% endif %}</td>
+            <td class="adm-right">
+              <a href="{% url 'dash_servico_editar' s.pk %}" class="adm-btn">Editar</a>
+              <a href="{% url 'dash_servico_excluir' s.pk %}" class="adm-btn adm-btn-danger">Excluir</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="adm-empty">Nenhum serviço encontrado.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

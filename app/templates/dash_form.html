@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / {{ titulo }}</div>
+        <h1 class="adm-title">{{ titulo }}</h1>
+      </div>
+    </header>
+
+    <div class="adm-panel">
+      <form method="post" enctype="multipart/form-data" class="adm-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% if preview %}
+        <div class="adm-preview">
+          <img src="{{ preview }}" alt="">
+          <span>Imagem atual</span>
+        </div>
+        {% endif %}
+
+        {% for field in form %}
+        <div class="adm-field {% if field.field.widget.input_type == 'checkbox' %}adm-field-check{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+          {% for e in field.errors %}<span class="adm-error">{{ e }}</span>{% endfor %}
+        </div>
+        {% endfor %}
+
+        <div class="adm-form-actions">
+          <a href="{% url voltar %}" class="adm-btn">Cancelar</a>
+          <button type="submit" class="adm-btn adm-btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -590,3 +590,135 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1900);
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fotoInput = document.getElementById('id_foto');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    if (fotoInput && avatarPreview) {
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Preview de Imagem de Perfil
+    const fotoInput = document.getElementById('id_foto');
+    const avatarPreview = document.getElementById('avatarPreview');
+
+    if (fotoInput && avatarPreview) {
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // 2. Sistema de Troca de Abas do Menu Lateral (Estilo AliExpress)
+    const menuItems = document.querySelectorAll('.ali-menu-item');
+    const tabContents = document.querySelectorAll('.ali-tab-content');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+
+            // Remove 'active' de todos os itens do menu e das seções
+            menuItems.forEach(i => i.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            // Ativa o item clicado e a aba correspondente
+            this.classList.add('active');
+            const activeSection = document.getElementById(`tab-${targetTab}`);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+        });
+    });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  var nav = document.querySelector('.navbar-glass');
+  var btn = document.getElementById('navToggle');
+  if (!nav || !btn) return;
+
+  function fechar() {
+    nav.classList.remove('nav-open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var aberto = nav.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+
+    // fecha o dropdown do perfil ao abrir o menu
+    var dd = nav.querySelector('.dropdown-menu');
+    var trigger = nav.querySelector('.dropdown-trigger');
+    if (aberto && dd) dd.classList.remove('show');
+    if (aberto && trigger) trigger.classList.remove('active');
+  });
+
+  // clicar num link, fora da navbar, ou apertar Esc fecha
+  nav.querySelectorAll('.nav-links a').forEach(function (a) {
+    a.addEventListener('click', fechar);
+  });
+  document.addEventListener('click', function (e) {
+    if (!nav.contains(e.target)) fechar();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') fechar();
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 820) fechar();
+  });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  var filtros = document.getElementById('planosFiltros');
+  var grid = document.getElementById('planosGrid');
+  if (!filtros || !grid) return;
+
+  var cards = grid.querySelectorAll('.pl-card');
+
+  filtros.addEventListener('click', function (e) {
+    var btn = e.target.closest('.plano-filtro');
+    if (!btn) return;
+
+    filtros.querySelectorAll('.plano-filtro').forEach(function (b) {
+      b.classList.toggle('active', b === btn);
+    });
+
+    var f = btn.dataset.filter;
+    cards.forEach(function (c) {
+      var mostrar = (f === 'todos' || c.dataset.servico === f);
+      c.hidden = !mostrar;
+      if (mostrar) {            // reinicia a animação de entrada
+        c.classList.remove('pl-in');
+        void c.offsetWidth;
+        c.classList.add('pl-in');
+      }
+    });
+  });
+});

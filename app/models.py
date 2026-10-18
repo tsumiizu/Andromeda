@@ -112,3 +112,68 @@ class Usuario(AbstractUser):
     
     def __str__(self):
         return f"{self.get_full_name() or self.username} ({self.email})"
+
+class Compra(models.Model):
+    TIPO_CHOICES = [
+        ('servico', 'Serviço'),
+        ('plano', 'Plano'),
+    ]
+    usuario = models.ForeignKey(
+        Usuario,
+        on_delete=models.CASCADE,
+        related_name='compras',
+        null=False,
+        blank=False
+    )
+    servico = models.ForeignKey(
+        Servico,
+        on_delete=models.PROTECT, 
+        related_name='compras',
+        null=False,
+        blank=False
+    )
+    plano = models.ForeignKey(
+        Plano,
+        on_delete=models.PROTECT,
+        related_name='compras',
+        null=True,
+        blank=True
+    )
+    tipo = models.CharField(max_length=10, choices=TIPO_CHOICES)
+    nome_servico = models.CharField(max_length=250)
+    nome_plano = models.CharField(max_length=250, blank=True, null=True)
+    preco = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.00'))]
+    )
+    ativo = models.BooleanField(default=True)
+    data_compra = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
+    class Meta:
+        ordering = ['-data_compra']
+        verbose_name = 'Compra'
+        verbose_name_plural = 'Compras'
+    def save(self, *args, **kwargs):
+        # Preenche automaticamente nome_servico e nome_plano
+        if self.servico and not self.nome_servico:
+            self.nome_servico = self.servico.nome
+        if self.tipo == 'plano':
+            if not self.plano:
+                raise ValueError('Compra do tipo "plano" precisa ter um Plano associado.')
+            if not self.nome_plano:
+                self.nome_plano = self.plano.nome
+            # Garante que o plano pertence ao serviço informado
+            if self.plano.servico_id != self.servico_id:
+                raise ValueError('O plano informado não pertence ao serviço selecionado.')
+        else:
+            # Para serviço de pagamento único, não deve ter plano
+            self.plano = None
+            self.nome_plano = None
+            # Serviço único não tem status ativo/inativo
+            self.ativo = True
+        super().save(*args, **kwargs)
+    def _str_(self):
+        if self.tipo == 'plano':
+            return f"{self.usuario} - {self.nome_servico} / {self.nome_plano} ({self.preco})"
+        return f"{self.usuario} - {self.nome_servico} ({self.preco})"

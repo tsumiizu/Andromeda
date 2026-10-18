@@ -4,27 +4,47 @@
 {% block content %}
 <div class="cursor-galaxy" id="cursorGalaxy"></div>
 <div class="cursor-ring" id="cursorRing"></div>
-<canvas id="stars-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"></canvas>
+<canvas id="stars-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></canvas>
 
-<div class="dashboard-container fade-in" style="margin-top: 100px; max-width: 1100px; margin-left: auto; margin-right: auto; padding: 40px; background: rgba(10, 15, 30, 0.65); border: 1px solid rgba(0, 212, 255, 0.15); border-radius: 16px; backdrop-filter: blur(12px);">
-    
-    <h1 style="font-family: 'Orbitron', sans-serif; color: var(--cyan); text-align: center; margin-bottom: 30px; text-shadow: 0 0 15px rgba(0,212,255,0.5);">MEU PERFIL</h1>
+<div class="ali-profile-container fade-in">
+
+    <!-- BARRA SUPERIOR: PERFIL DO USUÁRIO (PONTA A PONTA, LIQUID GLASS) -->
+    <div class="ali-profile-header">
+        <div class="ali-user-card">
+            <div class="ali-avatar-box">
+                <img id="avatarPreview" 
+                     src="{% if user.foto %}{{ user.foto_url }}{% else %}{% static 'img/avatar-placeholder.png' %}{% endif %}"
+                     alt="Foto de perfil">
+            </div>
+            <div class="ali-user-details">
+                <h2 class="ali-user-name">{{ user.get_full_name|default:user.username }}</h2>
+                <p class="ali-user-email">{{ user.email }}</p>
+                
+                <label for="id_foto" class="btn-alt-foto-ali">
+                    Alterar Foto
+                </label>
+            </div>
+        </div>
+    </div>
 
     {% if messages %}
-        <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: center; font-weight: 600;">
+        <div class="profile-messages">
             {% for message in messages %}
-                {{ message }}
+                <span>{{ message }}</span>
             {% endfor %}
         </div>
     {% endif %}
 
-    <form class="cadastro-form" method="POST" action="{% url 'perfil' %}" enctype="multipart/form-data"> 
-        {% csrf_token %} 
+    <form class="ali-main-grid" method="POST" action="{% url 'perfil' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div style="display: none;">
+            {{ form_foto.foto }}
+        </div>
 
         {% if form_dados.errors or form_foto.errors or form_endereco.errors %}
-          <div class="form-errors" style="background: rgba(255, 50, 50, 0.1); border: 1px solid #ff3232; color: #ff3232; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+          <div class="form-errors-box" style="grid-column: 1 / -1;">
             <strong>Ocorreu um erro ao atualizar:</strong>
-            <ul style="margin-top: 10px; margin-left: 20px; font-size: 0.85rem;">
+            <ul>
                 {% for field, errors in form_dados.errors.items %}
                     {% for error in errors %}<li><b>{{ field }}</b>: {{ error }}</li>{% endfor %}
                 {% endfor %}
@@ -38,127 +58,124 @@
           </div>
         {% endif %}
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 30px;">
-            
-            <!-- Coluna Esquerda: Foto + Dados Pessoais -->
-            <div class="form-fieldset" style="margin-bottom: 0;"> 
-                <div class="fieldset-title">Informações Pessoais</div> 
+        <!-- MENU LATERAL (SEM EMOJIS, LIQUID GLASS) -->
+        <aside class="ali-sidebar">
+            <div class="ali-menu-group">
+                <div class="ali-menu-title">MINHA CONTA</div>
+                <ul class="ali-menu-list">
+                    <li class="ali-menu-item active" data-tab="info-pessoais">
+                        Informações Pessoais
+                    </li>
+                    <li class="ali-menu-item" data-tab="endereco">
+                        Endereço de Entrega
+                    </li>
+                    <li class="ali-menu-item" data-tab="pedidos">
+                        Meus Pedidos
+                    </li>
+                    <li class="ali-menu-item" data-tab="seguranca">
+                        Segurança & Senha
+                    </li>
+                </ul>
+            </div>
+        </aside>
 
-                <!-- 1. FORM FOTO -->
-                <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25px;">
-                    <div style="position: relative; width: 180px; height: 180px; border-radius: 50%; border: 3px solid var(--cyan); box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); overflow: hidden; background: #0a0f1e; display: flex; align-items: center; justify-content: center;">
-                        <img id="avatarPreview" 
-                            src="{% if user.foto %}{{ user.foto_url }}{% else %}{% static 'img/avatar-placeholder.png' %}{% endif %}"
-                            alt="Foto de perfil" 
-                            style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                    <label for="id_foto" class="btn-secondary" style="margin-top: 15px; padding: 8px 16px; font-size: 0.65rem; cursor: pointer;">
-                        📷 Alterar Foto
-                    </label>
-                    <div style="display: none;">
-                        {{ form_foto.foto }}
-                    </div>
-                </div>
+        <!-- ÁREA CENTRAL DE CONTEÚDO EXPANDIDA -->
+        <main class="ali-content-area">
 
-                <!-- 2. FORM DADOS PESSOAIS -->
-                <div class="form-row"> 
-                    <div class="form-group"> 
-                        <label>Nome Completo</label> 
-                        <input type="text" name="nome_completo" value="{{ form_dados.nome_completo.value|default:user.get_full_name }}" required> 
-                    </div> 
+            <!-- ABA 1: INFORMAÇÕES PESSOAIS -->
+            <section class="ali-tab-content active" id="tab-info-pessoais">
+                <h3 class="ali-section-title">Informações Pessoais</h3>
+                
+                <div class="form-group-full"> 
+                    <label>Nome Completo</label> 
+                    <input type="text" name="nome_completo" class="profile-input" value="{{ form_dados.nome_completo.value|default:user.get_full_name }}" required> 
                 </div> 
 
-                <div class="form-row form-row-2"> 
+                <div class="form-row-dual"> 
                     <div class="form-group"> 
-                        <label>CPF/CNPJ</label> 
-                        <input type="text" id="clienteCpf" name="cpf_cnpj" value="{{ user.cpf_cnpj|default:'' }}"> 
+                        <label>CPF / CNPJ</label> 
+                        <input type="text" id="clienteCpf" class="profile-input" name="cpf_cnpj" value="{{ user.cpf_cnpj|default:'' }}"> 
                     </div> 
                     <div class="form-group"> 
                         <label>Telefone</label> 
-                        <input type="text" id="clienteTelefone" name="telefone" value="{{ user.telefone|default:'' }}"> 
+                        <input type="text" id="clienteTelefone" class="profile-input" name="telefone" value="{{ user.telefone|default:'' }}"> 
                     </div> 
                 </div> 
 
-                <div class="form-row"> 
-                    <div class="form-group"> 
-                        <label>E-mail</label> 
-                        <input type="email" name="email" value="{{ user.email|default:'' }}" required> 
-                    </div> 
+                <div class="form-group-full"> 
+                    <label>E-mail</label> 
+                    <input type="email" name="email" class="profile-input" value="{{ user.email|default:'' }}" required> 
                 </div> 
-            </div> 
+            </section>
 
-            <!-- Coluna Direita: 3. FORM ENDEREÇO -->
-            <div class="form-fieldset" style="margin-bottom: 0;">
-                <div class="fieldset-title">Endereço de Entrega / Cobrança</div>
+            <!-- ABA 2: ENDEREÇO DE ENTREGA -->
+            <section class="ali-tab-content" id="tab-endereco">
+                <h3 class="ali-section-title">Endereço de Entrega / Cobrança</h3>
 
-                <div class="form-row form-row-2">
+                <div class="form-row-dual">
                     <div class="form-group">
                         <label>CEP</label>
-                        <input type="text" id="clienteCep" name="cep" value="{{ user.cep|default:'' }}" placeholder="00000-000">
-                        <span id="cepStatus" class="cep-status" style="font-size: 0.75rem; margin-top: 4px; color: var(--cyan);"></span>
+                        <input type="text" id="clienteCep" class="profile-input" name="cep" value="{{ user.cep|default:'' }}" placeholder="00000-000">
+                        <span id="cepStatus" class="cep-status"></span>
                     </div>
                     <div class="form-group">
                         <label>Número</label>
-                        <input type="text" name="numero" value="{{ user.numero|default:'' }}">
+                        <input type="text" class="profile-input" name="numero" value="{{ user.numero|default:'' }}">
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Logradouro / Rua</label>
-                        <input type="text" id="clienteEndereco" name="endereco" value="{{ user.endereco|default:'' }}">
-                    </div>
+                <div class="form-group-full">
+                    <label>Logradouro / Rua</label>
+                    <input type="text" id="clienteEndereco" class="profile-input" name="endereco" value="{{ user.endereco|default:'' }}">
                 </div>
 
-                <div class="form-row form-row-2">
+                <div class="form-row-dual">
                     <div class="form-group">
                         <label>Bairro</label>
-                        <input type="text" id="clienteBairro" name="bairro" value="{{ user.bairro|default:'' }}">
+                        <input type="text" id="clienteBairro" class="profile-input" name="bairro" value="{{ user.bairro|default:'' }}">
                     </div>
                     <div class="form-group">
                         <label>Complemento</label>
-                        <input type="text" name="complemento" value="{{ user.complemento|default:'' }}" placeholder="Apto, Bloco...">
+                        <input type="text" class="profile-input" name="complemento" value="{{ user.complemento|default:'' }}" placeholder="Apto, Bloco...">
                     </div>
                 </div>
 
-                <div class="form-row form-row-2">
+                <div class="form-row-dual">
                     <div class="form-group">
                         <label>Cidade</label>
-                        <input type="text" id="clienteCidade" name="cidade" value="{{ user.cidade|default:'' }}">
+                        <input type="text" id="clienteCidade" class="profile-input" name="cidade" value="{{ user.cidade|default:'' }}">
                     </div>
                     <div class="form-group">
                         <label>Estado (UF)</label>
-                        <input type="text" id="clienteEstado" name="estado" maxlength="2" value="{{ user.estado|default:'' }}" placeholder="RJ">
+                        <input type="text" id="clienteEstado" class="profile-input" name="estado" maxlength="2" value="{{ user.estado|default:'' }}" placeholder="RJ">
                     </div>
                 </div>
+            </section>
+
+            <!-- ABA 3: PEDIDOS -->
+            <section class="ali-tab-content" id="tab-pedidos">
+                <h3 class="ali-section-title">Meus Pedidos</h3>
+                <div class="ali-placeholder-box">
+                    <p>Você ainda não possui pedidos recentes.</p>
+                </div>
+            </section>
+
+            <!-- ABA 4: SEGURANÇA -->
+            <section class="ali-tab-content" id="tab-seguranca">
+                <h3 class="ali-section-title">Segurança & Autenticação</h3>
+                <div class="ali-placeholder-box">
+                    <p>Configurações de redefinição de senha e autenticação de dois fatores.</p>
+                </div>
+            </section>
+
+            <!-- BOTÃO FIXO DE SALVAR -->
+            <div class="profile-submit-wrapper">
+                <button class="btn-profile-save" type="submit">
+                    Salvar Alterações
+                </button>
             </div>
 
-        </div>
-
-        <button class="btn-send" type="submit" style="width: 100%; justify-content: center; background: rgba(0, 212, 255, 0.1); border: 1px solid var(--cyan); color: var(--cyan); font-weight: bold; font-size: 0.9rem; padding: 18px;">
-            Salvar Todas as Alterações ✦
-        </button> 
-    </form> 
+        </main>
+    </form>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Django automaticamente gera id_foto para o campo form_foto.foto
-    const fotoInput = document.getElementById('id_foto');
-    const avatarPreview = document.getElementById('avatarPreview');
-
-    if (fotoInput && avatarPreview) {
-        fotoInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    avatarPreview.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-});
-</script>
 {% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / Planos</div>
+        <h1 class="adm-title">Planos</h1>
+      </div>
+      <a href="{% url 'dash_plano_novo' %}" class="adm-btn adm-btn-primary">+ Novo plano</a>
+    </header>
+
+    {% include '_dash_msgs.html' %}
+
+    <div class="adm-panel">
+      <div class="adm-panel-head">
+        <h2>{{ planos|length }} plano{{ planos|length|pluralize }}</h2>
+        <form method="get" class="adm-search">
+          <input type="search" name="q" value="{{ q }}" placeholder="Buscar plano ou serviço...">
+          <button type="submit" class="adm-btn">Buscar</button>
+        </form>
+      </div>
+
+      <table class="adm-table">
+        <thead>
+          <tr><th>Plano</th><th>Serviço</th><th>Preço</th><th class="adm-right">Ações</th></tr>
+        </thead>
+        <tbody>
+          {% for p in planos %}
+          <tr>
+            <td class="adm-strong">
+              <div class="adm-cell">
+                <img class="adm-thumb" src="{{ p.capa_url }}" alt="" loading="lazy">
+                <span>{{ p.nome }}</span>
+              </div>
+            </td>
+            <td data-label="Serviço">{{ p.servico.nome }}</td>
+            <td data-label="Preço">R$ {{ p.preco }}</td>
+            <td class="adm-right">
+              <a href="{% url 'dash_plano_editar' p.pk %}" class="adm-btn">Editar</a>
+              <a href="{% url 'dash_plano_excluir' p.pk %}" class="adm-btn adm-btn-danger">Excluir</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="adm-empty">Nenhum plano encontrado.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

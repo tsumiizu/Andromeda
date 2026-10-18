@@ -45,19 +45,27 @@
                   </div>
                 </div>
 
-                <p class="card-desc">{{ servico.descricao|truncatewords:20|linebreaksbr }}</p>
-
-                <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}">
+                <!-- BOTÃO PARA ABRIR OS DETALHES -->
+                <button type="button" class="servico-link servico-toggle" data-target="detalhe-{{ servico.id }}" style="margin-top: 15px;">
                   SAIBA MAIS ✦
                 </button>
 
-                <!-- ÁREA QUE EXPANDIRÁ AO CLICAR EM "SAIBA MAIS" -->
+                <!-- ÁREA QUE EXPANDIRÁ AO CLICAR EM "SAIBA MAIS" (Onde fica a descrição completa e os botões) -->
                 <div class="servico-detalhe" id="detalhe-{{ servico.id }}">
                   <div class="servico-detalhe-inner">
-                    <p class="servico-detalhe-desc">{{ servico.descricao|linebreaksbr }}</p>
+                    
+                    <!-- Descrição única exibida com espaçamento adequado -->
+                    <p class="servico-detalhe-desc" style="margin-bottom: 25px; line-height: 1.6; color: rgba(232, 244, 255, 0.85);">
+                      {{ servico.descricao|linebreaksbr }}
+                    </p>
+
+                    <!-- BOTÃO GERAL DE ORÇAMENTO COM ESPAÇAMENTO -->
+                    <div style="margin: 25px 0;">
+                      <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20do%20serviço%20{{ servico.nome|urlencode }}" target="_blank" class="btn-primary servico-detalhe-cta">Solicitar Orçamento Geral ✦</a>
+                    </div>
 
                     {% if servico.planos.all %}
-                    <div class="servico-detalhe-head">PLANOS DO SERVIÇO</div>
+                    <div class="servico-detalhe-head" style="margin-top: 25px;">PLANOS DO SERVIÇO</div>
                     <div class="servico-planos-scroll">
                       <ul class="servico-planos-lista">
                         {% for plano in servico.planos.all %}
@@ -69,13 +77,11 @@
                           {% if plano.descricao %}
                           <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
                           {% endif %}
-                          <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20de%20{{ plano.nome|urlencode }}" target="_blank" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                          <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20do%20plano%20{{ plano.nome|urlencode }}" target="_blank" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
                         </li>
                         {% endfor %}
                       </ul>
                     </div>
-                    {% else %}
-                    <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20de%20{{ servico.nome|urlencode }}" target="_blank" class="btn-primary servico-detalhe-cta">Solicitar Orçamento ✦</a>
                     {% endif %}
                   </div>
                 </div>
