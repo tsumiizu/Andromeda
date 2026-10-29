@@ -60,8 +60,24 @@
                     </p>
 
                     <!-- BOTÃO GERAL DE ORÇAMENTO COM ESPAÇAMENTO -->
-                    <div style="margin: 25px 0;">
-                      <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20do%20serviço%20{{ servico.nome|urlencode }}" target="_blank" class="btn-primary servico-detalhe-cta">Solicitar Orçamento Geral ✦</a>
+                    <div style="margin: 25px 0; display:flex; gap:10px; flex-wrap:wrap;">
+                      <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20do%20serviço%20{{ servico.nome|urlencode }}"
+                        target="_blank" class="btn-primary servico-detalhe-cta">
+                        Solicitar Orçamento ✦
+                      </a>
+
+                      {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'carrinho_add_servico' servico.id %}" style="display:inline;">
+                          {% csrf_token %}
+                          <button type="submit" class="btn-secondary servico-detalhe-cta">
+                            Adicionar ao Carrinho ✦
+                          </button>
+                        </form>
+                      {% else %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn-secondary servico-detalhe-cta">
+                          Entrar para adicionar ✦
+                        </a>
+                      {% endif %}
                     </div>
 
                     {% if servico.planos.all %}
@@ -77,7 +93,20 @@
                           {% if plano.descricao %}
                           <p class="plano-desc">{{ plano.descricao|linebreaksbr }}</p>
                           {% endif %}
-                          <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20do%20plano%20{{ plano.nome|urlencode }}" target="_blank" class="btn-primary servico-plano-cta">Solicitar Orçamento ✦</a>
+                          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                              <a href="https://wa.me/5521998260278?text=Quero%20fazer%20orçamento%20de%20{{ plano.nome|urlencode }}"
+                                target="_blank" class="btn-primary plano-card-vip-btn" style="flex:1;">
+                                ASSINAR ✦
+                              </a>
+                              {% if user.is_authenticated %}
+                                <form method="post" action="{% url 'carrinho_add_plano' plano.id %}" style="flex:1;">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn-secondary plano-card-vip-btn" style="width:100%;">
+                                    + CARRINHO
+                                  </button>
+                                </form>
+                              {% endif %}
+                            </div>
                         </li>
                         {% endfor %}
                       </ul>

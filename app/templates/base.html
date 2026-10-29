@@ -40,6 +40,7 @@
     {% endif %}
   </ul>
 
+
   <!-- ÁREA DIREITA: PERFIL -->
 <div class="nav-right">
     <button class="nav-toggle" id="navToggle" type="button" aria-label="Abrir menu" aria-expanded="false">
@@ -70,6 +71,10 @@
       <ul class="dropdown-menu" id="perfilDropdown">
         {% if user.is_authenticated %}
           <li><a href="{% url 'perfil' %}">Configurações</a></li>
+  <li><hr class="dropdown-divider"></li>
+
+  <li><a href="{% url 'carrinho' %}">Meu Carrinho</a></li>
+  <li><hr class="dropdown-divider"></li>
           <li><hr class="dropdown-divider"></li>
           <li><a href="{% url 'logout' %}" class="btn-sair-nav">Sair</a></li>
         {% else %}

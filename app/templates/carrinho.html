@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section class="cart-section">
+  <div class="cart-container">
+    <div class="cart-header">
+      <h1 class="cart-title">Meu <span>Carrinho</span></h1>
+      <p class="cart-sub">{{ carrinho.quantidade_itens }} item{{ carrinho.quantidade_itens|pluralize }} selecionado{{ carrinho.quantidade_itens|pluralize }}</p>
+    </div>
+
+    {% if messages %}
+      <div class="cart-messages">
+        {% for m in messages %}
+          <div class="cart-msg cart-msg-{{ m.tags }}">{{ m }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if itens %}
+      <div class="cart-grid">
+        <div class="cart-list">
+          {% for item in itens %}
+          <article class="cart-item">
+            <div class="cart-item-thumb">
+              <img src="{{ item.capa_url }}" alt="{{ item.nome_servico }}">
+            </div>
+            <div class="cart-item-info">
+              <span class="cart-item-tipo">
+                {% if item.tipo == 'plano' %}PLANO{% else %}SERVIÇO{% endif %}
+              </span>
+              <h3 class="cart-item-nome">
+                {% if item.tipo == 'plano' %}
+                  {{ item.nome_servico }} <small>/ {{ item.nome_plano }}</small>
+                {% else %}
+                  {{ item.nome_servico }}
+                {% endif %}
+              </h3>
+            </div>
+            <div class="cart-item-price">
+              R$ {{ item.preco }}
+            </div>
+            <form method="post" action="{% url 'carrinho_remover' item.id %}" class="cart-item-remove">
+              {% csrf_token %}
+              <button type="submit" class="cart-remove-btn" aria-label="Remover">
+                ✕
+              </button>
+            </form>
+          </article>
+          {% endfor %}
+        </div>
+
+        <aside class="cart-summary">
+          <h2 class="cart-summary-title">Resumo</h2>
+          <div class="cart-summary-row">
+            <span>Subtotal</span>
+            <strong>R$ {{ carrinho.subtotal }}</strong>
+          </div>
+          {% if carrinho.preco_manual is not None %}
+          <div class="cart-summary-row cart-summary-manual">
+            <span>Total ajustado</span>
+            <strong>R$ {{ carrinho.preco_manual }}</strong>
+          </div>
+          {% endif %}
+          <div class="cart-summary-total">
+            <span>Total</span>
+            <strong>R$ {{ carrinho.total }}</strong>
+          </div>
+
+          <a href="https://wa.me/5521998260278?text=Quero%20finalizar%20meu%20carrinho%20na%20Andromeda" target="_blank" class="btn-primary cart-checkout-btn">
+            Finalizar via WhatsApp ✦
+          </a>
+          <a href="{% url 'services' %}" class="cart-continue-link">
+            ← Continuar navegando
+          </a>
+        </aside>
+      </div>
+    {% else %}
+      <div class="cart-empty">
+        <div class="cart-empty-icon">✦</div>
+        <h2>Seu carrinho está vazio</h2>
+        <p>Explore nossos serviços e adicione o que faz sentido pro seu projeto.</p>
+        <a href="{% url 'services' %}" class="btn-primary">Ver serviços ✦</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

@@ -14,6 +14,13 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('perfil/', views.perfil_view, name='perfil'),
     path('portfolio/', views.portfolio_view, name='portfolio'),
+    
+    # Carrinho
+    path('carrinho/', views.carrinho_view, name='carrinho'),
+    path('carrinho/adicionar/servico/<int:servico_id>/', views.carrinho_adicionar_servico, name='carrinho_add_servico'),
+    path('carrinho/adicionar/plano/<int:plano_id>/', views.carrinho_adicionar_plano, name='carrinho_add_plano'),
+    path('carrinho/remover/<int:item_id>/', views.carrinho_remover, name='carrinho_remover'),
+
     # Dashboard: gerenciamento (superuser)
     path('dashboard/servicos/', views.dash_servicos, name='dash_servicos'),
     path('dashboard/servicos/novo/', views.dash_servico_form, name='dash_servico_novo'),
@@ -28,4 +35,5 @@ urlpatterns = [
     path('dashboard/usuarios/', views.dash_usuarios, name='dash_usuarios'),
     path('dashboard/usuarios/<int:pk>/editar/', views.dash_usuario_editar, name='dash_usuario_editar'),
     path('dashboard/usuarios/<int:pk>/excluir/', views.dash_usuario_excluir, name='dash_usuario_excluir'),
+
 ]

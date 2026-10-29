@@ -13,8 +13,9 @@ from django.contrib.auth.views import redirect_to_login
 from django.db.models import Count, Q
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import (CadastroUsuarioForm, FotoPerfilForm, EnderecoForm,
-                    ServicoForm, PlanoForm, UsuarioAdminForm)
+from .forms import (CadastroUsuarioForm, FotoPerfilForm, EnderecoForm, ServicoForm, PlanoForm, UsuarioAdminForm)
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 def homeview(request):
     return render(request, 'home.html')
@@ -281,3 +282,111 @@ def dash_usuario_excluir(request, pk):
         'aviso': 'Todas as compras deste usuário também serão excluídas. Se só quiser bloquear o acesso, desmarque "Conta ativa" na edição.',
         'voltar': 'dash_usuarios',
     })
+
+# ==========================================
+# CARRINHO
+# ==========================================
+
+def _get_or_create_carrinho(user):
+    """Garante que o usuário tenha um carrinho. Retorna (carrinho, criado)."""
+    carrinho, _ = Carrinho.objects.get_or_create(usuario=user)
+    return carrinho
+
+
+@login_required
+def carrinho_view(request):
+    """Página do carrinho: lista itens, subtotal, total, etc."""
+    carrinho = _get_or_create_carrinho(request.user)
+    itens = carrinho.itens.select_related('servico', 'plano').all()
+
+    return render(request, 'carrinho.html', {
+        'carrinho': carrinho,
+        'itens': itens,
+    })
+
+
+@login_required
+@require_POST
+def carrinho_adicionar_servico(request, servico_id):
+    """
+    Adiciona 1 serviço ao carrinho.
+    - Se o mesmo serviço já estiver no carrinho, não duplica.
+    - Faz snapshot de nome/preço/capa no momento da adição.
+    """
+    servico = get_object_or_404(Servico, pk=servico_id)
+    carrinho = _get_or_create_carrinho(request.user)
+
+    ja_existe = carrinho.itens.filter(tipo='servico', servico=servico).exists()
+
+    if ja_existe:
+        messages.info(request, 'Este serviço já está no seu carrinho.')
+    else:
+        ItemCarrinho.objects.create(
+            carrinho=carrinho,
+            tipo='servico',
+            servico=servico,
+        )
+        messages.success(request, f'"{servico.nome}" adicionado ao carrinho.')
+
+    # Resposta AJAX (se o botão usar fetch) ou redirect normal
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'ok': True,
+            'quantidade': carrinho.quantidade_itens,
+        })
+    return redirect(request.META.get('HTTP_REFERER') or 'services')
+
+
+@login_required
+@require_POST
+def carrinho_adicionar_plano(request, plano_id):
+    """
+    Adiciona 1 plano ao carrinho.
+    Regras:
+    - Não duplica o mesmo plano.
+    - Se o serviço principal do plano já está no carrinho como 'servico',
+      bloqueia (evita comprar serviço avulso + plano dele).
+    """
+    plano = get_object_or_404(Plano.objects.select_related('servico'), pk=plano_id)
+    carrinho = _get_or_create_carrinho(request.user)
+
+    ja_existe_plano = carrinho.itens.filter(tipo='plano', plano=plano).exists()
+    servico_no_carrinho = carrinho.itens.filter(
+        tipo='servico', servico=plano.servico
+    ).exists()
+
+    if ja_existe_plano:
+        messages.info(request, 'Este plano já está no seu carrinho.')
+    elif servico_no_carrinho:
+        messages.warning(
+            request,
+            'Você já adicionou o serviço principal deste plano. '
+            'Remova-o antes de escolher um plano específico.'
+        )
+    else:
+        ItemCarrinho.objects.create(
+            carrinho=carrinho,
+            tipo='plano',
+            plano=plano,
+        )
+        messages.success(request, f'"{plano.nome}" adicionado ao carrinho.')
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'ok': True,
+            'quantidade': carrinho.quantidade_itens,
+        })
+    return redirect(request.META.get('HTTP_REFERER') or 'services')
+
+
+@login_required
+@require_POST
+def carrinho_remover(request, item_id):
+    """Remove um item específico do carrinho do usuário logado."""
+    carrinho = _get_or_create_carrinho(request.user)
+    item = get_object_or_404(ItemCarrinho, pk=item_id, carrinho=carrinho)
+
+    nome = str(item)
+    item.delete()
+    messages.success(request, f'"{nome}" removido do carrinho.')
+    return redirect('carrinho')
