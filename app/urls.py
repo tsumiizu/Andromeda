@@ -20,6 +20,7 @@ urlpatterns = [
     path('carrinho/adicionar/servico/<int:servico_id>/', views.carrinho_adicionar_servico, name='carrinho_add_servico'),
     path('carrinho/adicionar/plano/<int:plano_id>/', views.carrinho_adicionar_plano, name='carrinho_add_plano'),
     path('carrinho/remover/<int:item_id>/', views.carrinho_remover, name='carrinho_remover'),
+    
 
     # Dashboard: gerenciamento (superuser)
     path('dashboard/servicos/', views.dash_servicos, name='dash_servicos'),
@@ -36,4 +37,10 @@ urlpatterns = [
     path('dashboard/usuarios/<int:pk>/editar/', views.dash_usuario_editar, name='dash_usuario_editar'),
     path('dashboard/usuarios/<int:pk>/excluir/', views.dash_usuario_excluir, name='dash_usuario_excluir'),
 
+    path('dashboard/carrinhos/', views.dash_carrinhos, name='dash_carrinhos'),
+    path('dashboard/carrinhos/<int:pk>/', views.dash_carrinho_detalhe, name='dash_carrinho_detalhe'),
+    path('dashboard/comprovantes/<int:pk>/<str:acao>/', views.dash_comprovante_acao, name='dash_comprovante_acao'),
+    path('dashboard/carrinhos/<int:pk>/promover/', views.dash_carrinho_promover, name='dash_carrinho_promover'),
+    path('dashboard/assinaturas/', views.dash_assinaturas, name='dash_assinaturas'),
+    path('dashboard/assinaturas/<int:pk>/toggle/', views.dash_assinatura_toggle, name='dash_assinatura_toggle'),
 ]

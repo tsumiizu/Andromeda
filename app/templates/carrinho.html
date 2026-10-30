@@ -75,6 +75,116 @@
           </a>
         </aside>
       </div>
+
+      <div class="cart-proof-grid">
+
+        {# ---- COLUNA ESQUERDA: formulário de envio ---- #}
+        <div class="cart-proof-card">
+          <div class="cart-proof-head">
+            <h2 class="cart-proof-title">Já pagou? Envie o comprovante</h2>
+            <p class="cart-proof-sub">
+              Anexe o comprovante do PIX (imagem ou PDF). Assim que nosso
+              time conferir, liberamos o pedido.
+            </p>
+          </div>
+
+          <form method="post" enctype="multipart/form-data" class="cart-proof-form">
+            {% csrf_token %}
+
+            {% if form_comprovante.non_field_errors %}
+              <div class="cart-msg cart-msg-error">
+                {{ form_comprovante.non_field_errors|join:", " }}
+              </div>
+            {% endif %}
+
+            <div class="cart-proof-field">
+              <label for="{{ form_comprovante.arquivo.id_for_label }}">
+                {{ form_comprovante.arquivo.label }}
+              </label>
+              {{ form_comprovante.arquivo }}
+              {% if form_comprovante.arquivo.help_text %}
+                <small>{{ form_comprovante.arquivo.help_text }}</small>
+              {% endif %}
+              {% if form_comprovante.arquivo.errors %}
+                <div class="cart-proof-error">{{ form_comprovante.arquivo.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="cart-proof-row">
+              <div class="cart-proof-field">
+                <label for="{{ form_comprovante.valor.id_for_label }}">
+                  {{ form_comprovante.valor.label }}
+                </label>
+                {{ form_comprovante.valor }}
+                {% if form_comprovante.valor.errors %}
+                  <div class="cart-proof-error">{{ form_comprovante.valor.errors|join:", " }}</div>
+                {% endif %}
+              </div>
+              <div class="cart-proof-field">
+                <label for="{{ form_comprovante.identificador_pix.id_for_label }}">
+                  {{ form_comprovante.identificador_pix.label }}
+                </label>
+                {{ form_comprovante.identificador_pix }}
+                {% if form_comprovante.identificador_pix.errors %}
+                  <div class="cart-proof-error">{{ form_comprovante.identificador_pix.errors|join:", " }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="cart-proof-field">
+              <label for="{{ form_comprovante.observacao_cliente.id_for_label }}">
+                {{ form_comprovante.observacao_cliente.label }}
+              </label>
+              {{ form_comprovante.observacao_cliente }}
+              {% if form_comprovante.observacao_cliente.errors %}
+                <div class="cart-proof-error">{{ form_comprovante.observacao_cliente.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <button type="submit" class="btn-primary cart-proof-submit">
+              Enviar comprovante ✦
+            </button>
+          </form>
+        </div>
+
+        {# ---- COLUNA DIREITA: histórico de comprovantes ---- #}
+        <div class="cart-proof-card">
+          <div class="cart-proof-head">
+            <h2 class="cart-proof-title">Comprovantes enviados</h2>
+            <p class="cart-proof-sub">
+              Acompanhe aqui o status de cada comprovante.
+            </p>
+          </div>
+
+          {% with comprovantes=carrinho.comprovantes.all %}
+            {% if comprovantes %}
+              <ul class="cart-proof-list">
+                {% for c in comprovantes %}
+                  <li class="cart-proof-item">
+                    <div class="cart-proof-item-info">
+                      <strong>R$ {{ c.valor }}</strong>
+                      <span>{{ c.enviado_em|date:"d/m/Y H:i" }}</span>
+                    </div>
+                    <span class="cart-proof-badge
+                      {% if c.status == 'aprovado' %}is-ok
+                      {% elif c.status == 'rejeitado' %}is-off
+                      {% elif c.status == 'promovido' %}is-done
+                      {% endif %}">
+                      {{ c.get_status_display }}
+                    </span>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <div class="cart-proof-empty">
+                Nenhum comprovante enviado ainda.
+              </div>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+      </div>
+
     {% else %}
       <div class="cart-empty">
         <div class="cart-empty-icon">✦</div>

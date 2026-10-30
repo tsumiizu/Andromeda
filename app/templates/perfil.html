@@ -149,28 +149,44 @@
                 </div>
             </section>
 
-            <!-- ABA 3: PEDIDOS -->
+                        <!-- ABA 3: PEDIDOS -->
             <section class="ali-tab-content" id="tab-pedidos">
                 <h3 class="ali-section-title">Meus Pedidos</h3>
-                <div class="ali-placeholder-box">
-                    <p>Você ainda não possui pedidos recentes.</p>
-                </div>
+                
+                {% if compras %}
+                    <div class="user-orders-list">
+                        {% for compra in compras %}
+                        <div class="user-order-card">
+                            <div class="user-order-head">
+                                <div>
+                                    <span class="user-order-id">Pedido #{{ compra.id }}</span>
+                                    <span class="user-order-date">{{ compra.data_compra|date:"d/m/Y \à\s H:i" }}</span>
+                                </div>
+                                <span class="user-order-status {% if compra.ativo %}is-active{% else %}is-inactive{% endif %}">
+                                    {% if compra.ativo %}Ativo{% else %}Encerrado{% endif %}
+                                </span>
+                            </div>
+                            
+                            <div class="user-order-body">
+                                <div class="user-order-title">
+                                    {{ compra.nome_servico }}
+                                    {% if compra.nome_plano %}
+                                        <span class="user-order-plan">/ {{ compra.nome_plano }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="user-order-price">
+                                    R$ {{ compra.preco }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="ali-placeholder-box">
+                        <p>Você ainda não possui pedidos recentes.</p>
+                    </div>
+                {% endif %}
             </section>
-
-            <!-- ABA 4: SEGURANÇA -->
-            <section class="ali-tab-content" id="tab-seguranca">
-                <h3 class="ali-section-title">Segurança & Autenticação</h3>
-                <div class="ali-placeholder-box">
-                    <p>Configurações de redefinição de senha e autenticação de dois fatores.</p>
-                </div>
-            </section>
-
-            <!-- BOTÃO FIXO DE SALVAR -->
-            <div class="profile-submit-wrapper">
-                <button class="btn-profile-save" type="submit">
-                    Salvar Alterações
-                </button>
-            </div>
 
         </main>
     </form>

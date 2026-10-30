@@ -236,6 +236,81 @@ class Carrinho(models.Model):
     def vazio(self):
         return not self.itens.exists()
 
+        # ---------- PROMOÇÃO PARA COMPRA ----------
+    def promover_para_compra(self, admin_user, comprovante=None):
+        """
+        Converte todos os itens do carrinho em uma Compra por item.
+        Regras:
+          - Só executa se houver itens.
+          - Se `comprovante` for passado, ele precisa estar 'aprovado'
+            e pertencer a este carrinho.
+          - Ao final: itens do carrinho são apagados (carrinho "limpo"),
+            comprovante é religado à Compra gerada e marcado 'promovido'.
+        Retorna a lista de Compra criadas (uma por item).
+        """
+        from django.db import transaction
+        from django.utils import timezone
+
+        itens = list(self.itens.all())
+        if not itens:
+            raise ValueError('Não é possível promover um carrinho vazio.')
+
+        if comprovante is not None:
+            if comprovante.carrinho_id != self.pk:
+                raise ValueError('O comprovante não pertence a este carrinho.')
+            if comprovante.status != 'aprovado':
+                raise ValueError('Só comprovantes aprovados podem ser promovidos.')
+
+        compras_criadas = []
+
+        with transaction.atomic():
+            for item in itens:
+                # Compra exige servico (PROTECT). Se o serviço foi
+                # deletado do catálogo, o snapshot ainda existe no item,
+                # mas o Compra model atual não permite servico=NULL.
+                # Aqui avisamos em vez de estourar silenciosamente.
+                if not item.servico_id:
+                    raise ValueError(
+                        f'O item "{item.nome_servico}" não tem mais um Servico '
+                        f'vinculado no catálogo. Recadastre o serviço antes de promover.'
+                    )
+
+                compra = Compra.objects.create(
+                    usuario=self.usuario,
+                    servico=item.servico,
+                    plano=item.plano,
+                    tipo=item.tipo,
+                    nome_servico=item.nome_servico,
+                    nome_plano=item.nome_plano,
+                    preco=item.preco,
+                    ativo=True,
+                )
+                compras_criadas.append(compra)
+
+            # Limpa o carrinho (os snapshots já foram para Compra)
+            self.itens.all().delete()
+
+            # Promove o comprovante (se houver)
+            if comprovante is not None:
+                comprovante.compra = compras_criadas[0]  # liga à primeira compra
+                comprovante.carrinho = None
+                comprovante.status = 'promovido'
+                comprovante.promovido_em = timezone.now()
+                comprovante.promovido_por = admin_user
+                comprovante.save(update_fields=[
+                    'compra', 'carrinho', 'status',
+                    'promovido_em', 'promovido_por',
+                ])
+
+            # Qualquer outro comprovante pendente do carrinho (se o admin
+            # mandou vários) também fica órfão do carrinho — mas mantém
+            # o vínculo via `usuario`, então não some do histórico.
+            self.comprovantes.filter(status__in=['pendente', 'rejeitado']).update(
+                carrinho=None
+            )
+
+        return compras_criadas
+
     def __str__(self):
         return f"Carrinho de {self.usuario} ({self.quantidade_itens} itens)"
 
@@ -367,3 +442,174 @@ class ItemCarrinho(models.Model):
         if self.tipo == 'plano':
             return f"{self.nome_servico} / {self.nome_plano}"
         return self.nome_servico
+
+class Comprovante(models.Model):
+    """
+    Comprovante de pagamento PIX enviado pelo cliente.
+
+    Ciclo de vida:
+        pendente  → cliente enviou, aguardando análise
+        aprovado  → admin confirmou que o PIX caiu
+        rejeitado → admin recusou (valor errado, ilegível, etc.)
+        promovido → o carrinho foi convertido em Compra (estado final)
+
+    Um comprovante nasce ligado a um Carrinho. Quando o admin promove
+    o carrinho a Compra, o comprovante é religado à Compra gerada
+    (carrinho fica NULL) e o arquivo permanece acessível como
+    histórico/auditoria.
+    """
+    STATUS_CHOICES = [
+        ('pendente',  'Aguardando análise'),
+        ('aprovado',  'Aprovado'),
+        ('rejeitado', 'Rejeitado'),
+        ('promovido', 'Promovido a compra'),
+    ]
+
+    # Vínculos (um dos dois deve estar preenchido)
+    carrinho = models.ForeignKey(
+        'Carrinho',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comprovantes',
+        help_text='Carrinho ao qual o comprovante pertence enquanto pendente.',
+    )
+    compra = models.ForeignKey(
+        'Compra',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comprovantes',
+        help_text='Compra gerada após a promoção do carrinho.',
+    )
+
+    # Quem enviou (FK pro usuário, pra ter histórico mesmo se o carrinho sumir)
+    usuario = models.ForeignKey(
+        Usuario,
+        on_delete=models.PROTECT,
+        related_name='comprovantes',
+    )
+
+    # ---------- ARQUIVO ----------
+    arquivo = CloudinaryField(
+        'comprovante',
+        folder='comprovantes/',
+        resource_type='auto',   # aceita imagem E pdf
+        null=False,
+        blank=False,
+    )
+
+    # ---------- SNAPSHOT DO PAGAMENTO ----------
+    valor = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.00'))],
+        help_text='Valor efetivamente pago (snapshot no momento do envio).',
+    )
+
+    # ---------- METADADOS DO PIX (opcionais, para conferência) ----------
+    identificador_pix = models.CharField(
+        max_length=120,
+        blank=True,
+        null=True,
+        help_text='ID/E2E do PIX (ex.: E123456789...).',
+    )
+    observacao_cliente = models.TextField(
+        blank=True,
+        null=True,
+        help_text='Mensagem opcional enviada pelo cliente.',
+    )
+
+    # ---------- ESTADO ----------
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pendente',
+        db_index=True,
+    )
+    motivo_rejeicao = models.TextField(
+        blank=True,
+        null=True,
+        help_text='Preenchido pelo admin em caso de rejeição.',
+    )
+
+    # ---------- AUDITORIA ----------
+    enviado_em = models.DateTimeField(auto_now_add=True)
+    analisado_em = models.DateTimeField(null=True, blank=True)
+    analisado_por = models.ForeignKey(
+        Usuario,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comprovantes_analisados',
+    )
+    promovido_em = models.DateTimeField(null=True, blank=True)
+    promovido_por = models.ForeignKey(
+        Usuario,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comprovantes_promovidos',
+    )
+
+    class Meta:
+        ordering = ['-enviado_em']
+        verbose_name = 'Comprovante PIX'
+        verbose_name_plural = 'Comprovantes PIX'
+        constraints = [
+            # Precisa estar ligado a um carrinho OU a uma compra
+            models.CheckConstraint(
+                condition=(
+                    models.Q(carrinho__isnull=False) |
+                    models.Q(compra__isnull=False)
+                ),
+                name='comprovante_vinculo_obrigatorio',
+            ),
+        ]
+        indexes = [
+            models.Index(fields=['status', 'enviado_em']),
+        ]
+
+    # ---------- HELPERS ----------
+    @property
+    def arquivo_url(self):
+        """URL segura do arquivo no Cloudinary (funciona para imagem e PDF)."""
+        if not self.arquivo:
+            return None
+        if hasattr(self.arquivo, 'url') and self.arquivo.url:
+            return self.arquivo.url
+        url, _ = cloudinary_url(
+            str(self.arquivo),
+            secure=True,
+            resource_type='auto',
+        )
+        return url
+
+    @property
+    def pode_promover(self):
+        """Só comprovantes aprovados e ainda ligados a um carrinho."""
+        return self.status == 'aprovado' and self.carrinho_id is not None
+
+    def marcar_aprovado(self, admin_user):
+        from django.utils import timezone
+        self.status = 'aprovado'
+        self.analisado_em = timezone.now()
+        self.analisado_por = admin_user
+        self.motivo_rejeicao = None
+        self.save(update_fields=[
+            'status', 'analisado_em', 'analisado_por', 'motivo_rejeicao',
+        ])
+
+    def marcar_rejeitado(self, admin_user, motivo=''):
+        from django.utils import timezone
+        self.status = 'rejeitado'
+        self.analisado_em = timezone.now()
+        self.analisado_por = admin_user
+        self.motivo_rejeicao = motivo
+        self.save(update_fields=[
+            'status', 'analisado_em', 'analisado_por', 'motivo_rejeicao',
+        ])
+
+    def __str__(self):
+        origem = self.compra_id and f"Compra #{self.compra_id}" or f"Carrinho #{self.carrinho_id}"
+        return f"Comprovante {self.get_status_display()} — {origem} (R$ {self.valor})"

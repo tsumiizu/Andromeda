@@ -13,7 +13,7 @@ from django.contrib.auth.views import redirect_to_login
 from django.db.models import Count, Q
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import (CadastroUsuarioForm, FotoPerfilForm, EnderecoForm, ServicoForm, PlanoForm, UsuarioAdminForm)
+from .forms import (CadastroUsuarioForm, FotoPerfilForm, EnderecoForm, ServicoForm, PlanoForm, UsuarioAdminForm, ComprovanteForm)
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
@@ -81,24 +81,18 @@ def perfil_view(request):
     user = request.user
 
     if request.method == 'POST':
-        form_dados = CadastroUsuarioForm(request.POST, instance=user)
-        form_foto = FotoPerfilForm(request.POST, request.FILES, instance=user)
-        form_endereco = EnderecoForm(request.POST, instance=user)
-        form_dados.fields['senha'].required = False
-        if form_dados.is_valid() and form_foto.is_valid() and form_endereco.is_valid():
-            form_dados.save()
-            form_foto.save()
-            form_endereco.save()
-            if form_dados.cleaned_data.get('senha'):
-                update_session_auth_hash(request, user)
-
-            messages.success(request, 'Seus dados foram atualizados com sucesso!')
-            return redirect('perfil')
+        # ... seu código de POST existente ...
+        pass # (Mantenha o código original aqui)
     else:
         form_dados = CadastroUsuarioForm(instance=user)
         form_dados.fields['senha'].required = False
         form_foto = FotoPerfilForm(instance=user)
         form_endereco = EnderecoForm(instance=user)
+
+    # --- NOVO: Buscar compras do usuário ---
+    # Trazendo em ordem decrescente (mais recentes primeiro) por padrão, 
+    # pois o model Compra já tem ordering=['-data_compra']
+    compras = user.compras.all()
 
     context = {
         'form_dados': form_dados,
@@ -106,6 +100,7 @@ def perfil_view(request):
         'form_endereco': form_endereco,
         'foto': user.foto,
         'user': user,
+        'compras': compras, # <--- Adicione isso
     }
     return render(request, 'perfil.html', context)
 
@@ -292,16 +287,43 @@ def _get_or_create_carrinho(user):
     carrinho, _ = Carrinho.objects.get_or_create(usuario=user)
     return carrinho
 
-
 @login_required
 def carrinho_view(request):
-    """Página do carrinho: lista itens, subtotal, total, etc."""
+    """
+    Página do carrinho com itens, resumo E envio de comprovante na
+    mesma tela. O POST do comprovante é tratado aqui, então não é
+    mais necessário o usuário ir pra outra URL.
+    """
     carrinho = _get_or_create_carrinho(request.user)
     itens = carrinho.itens.select_related('servico', 'plano').all()
+
+    # POST do comprovante vem do form da própria página
+    if request.method == 'POST':
+        # Se o carrinho está vazio, nem tenta — avisa e volta
+        if carrinho.vazio:
+            messages.error(request, 'Seu carrinho está vazio.')
+            return redirect('carrinho')
+
+        form_comprovante = ComprovanteForm(request.POST, request.FILES)
+        if form_comprovante.is_valid():
+            comprovante = form_comprovante.save(commit=False)
+            comprovante.usuario = request.user
+            comprovante.carrinho = carrinho
+            comprovante.status = 'pendente'
+            comprovante.save()
+            messages.success(
+                request,
+                'Comprovante enviado! Aguarde a análise do nosso time.'
+            )
+            return redirect('carrinho')
+        # se o form tem erros, cai no render lá embaixo com o form inválido
+    else:
+        form_comprovante = ComprovanteForm(initial={'valor': carrinho.total})
 
     return render(request, 'carrinho.html', {
         'carrinho': carrinho,
         'itens': itens,
+        'form_comprovante': form_comprovante,
     })
 
 
@@ -390,3 +412,186 @@ def carrinho_remover(request, item_id):
     item.delete()
     messages.success(request, f'"{nome}" removido do carrinho.')
     return redirect('carrinho')
+
+# ---------- CARRINHOS ----------
+@superuser_required
+def dash_carrinhos(request):
+    q = request.GET.get('q', '').strip()
+    status = request.GET.get('status', '').strip()
+
+    # Anota contagens para ordenar/priorizar na tela
+    carrinhos = (
+        Carrinho.objects
+        .select_related('usuario')
+        .annotate(
+            qtd_itens=Count('itens', distinct=True),
+            qtd_pendentes=Count(
+                'comprovantes',
+                filter=Q(comprovantes__status='pendente'),
+                distinct=True,
+            ),
+            qtd_aprovados=Count(
+                'comprovantes',
+                filter=Q(comprovantes__status='aprovado'),
+                distinct=True,
+            ),
+        )
+        .filter(qtd_itens__gt=0)  # ignora carrinhos vazios
+    )
+
+    if q:
+        carrinhos = carrinhos.filter(
+            Q(usuario__email__icontains=q) |
+            Q(usuario__first_name__icontains=q) |
+            Q(usuario__last_name__icontains=q)
+        )
+
+    # Filtro rápido por status do comprovante
+    if status == 'pendente':
+        carrinhos = carrinhos.filter(qtd_pendentes__gt=0)
+    elif status == 'aprovado':
+        carrinhos = carrinhos.filter(qtd_aprovados__gt=0)
+    elif status == 'sem_comprovante':
+        carrinhos = carrinhos.filter(qtd_pendentes=0, qtd_aprovados=0)
+
+    # PRIORIZAÇÃO:
+    # 1) carrinhos com comprovante aprovado (prontos para promover)
+    # 2) carrinhos com comprovante pendente (aguardando análise)
+    # 3) demais, mais recentes primeiro
+    carrinhos = carrinhos.annotate(
+        prioridade=(
+            models.Case(
+                models.When(qtd_aprovados__gt=0, then=models.Value(0)),
+                models.When(qtd_pendentes__gt=0, then=models.Value(1)),
+                default=models.Value(2),
+                output_field=models.IntegerField(),
+            )
+        )
+    ).order_by('prioridade', '-atualizado_em')
+
+    # Totais pra cabeçalho
+    total_pendentes = Comprovante.objects.filter(status='pendente').count()
+    total_aprovados = Comprovante.objects.filter(status='aprovado').count()
+
+    return render(request, 'dash_carrinhos.html', {
+        'carrinhos': carrinhos,
+        'q': q,
+        'status': status,
+        'ativo': 'carrinhos',
+        'total_pendentes': total_pendentes,
+        'total_aprovados': total_aprovados,
+    })
+
+# ---------- DETALHE E AÇÕES DO CARRINHO (ADMIN) ----------
+@superuser_required
+def dash_carrinho_detalhe(request, pk):
+    carrinho = get_object_or_404(Carrinho.objects.select_related('usuario'), pk=pk)
+    itens = carrinho.itens.select_related('servico', 'plano').all()
+    comprovantes = carrinho.comprovantes.all().order_by('-enviado_em')
+
+    # Verifica se há algum comprovante aprovado pronto para promoção
+    comprovante_aprovado = comprovantes.filter(status='aprovado').first()
+
+    return render(request, 'dash_carrinho_detalhe.html', {
+        'carrinho': carrinho,
+        'itens': itens,
+        'comprovantes': comprovantes,
+        'comprovante_aprovado': comprovante_aprovado,
+        'ativo': 'carrinhos',
+    })
+
+
+@superuser_required
+@require_POST
+def dash_comprovante_acao(request, pk, acao):
+    """Aprova ou rejeita um comprovante."""
+    comprovante = get_object_or_404(Comprovante, pk=pk)
+    carrinho_id = comprovante.carrinho_id
+
+    if not carrinho_id:
+        messages.error(request, 'Este comprovante não está vinculado a um carrinho ativo.')
+        return redirect('dash_carrinhos')
+
+    if acao == 'aprovar':
+        comprovante.marcar_aprovado(request.user)
+        messages.success(request, f'Comprovante de R$ {comprovante.valor} aprovado com sucesso.')
+    elif acao == 'rejeitar':
+        motivo = request.POST.get('motivo', 'Rejeitado via painel.')
+        comprovante.marcar_rejeitado(request.user, motivo=motivo)
+        messages.warning(request, 'Comprovante rejeitado.')
+    else:
+        messages.error(request, 'Ação inválida.')
+    
+    return redirect('dash_carrinho_detalhe', pk=carrinho_id)
+
+
+@superuser_required
+@require_POST
+def dash_carrinho_promover(request, pk):
+    """Converte o carrinho em Compra(s) e limpa o carrinho."""
+    carrinho = get_object_or_404(Carrinho, pk=pk)
+    comprovante_id = request.POST.get('comprovante_id')
+    
+    comprovante = None
+    if comprovante_id:
+        comprovante = get_object_or_404(Comprovante, pk=comprovante_id, carrinho=carrinho)
+
+    try:
+        compras = carrinho.promover_para_compra(request.user, comprovante=comprovante)
+        messages.success(
+            request, 
+            f'Carrinho promovido com sucesso! {len(compras)} compra(s) gerada(s).'
+        )
+        # Redireciona para a lista de carrinhos (pois este ficará vazio e sumirá da lista)
+        return redirect('dash_carrinhos')
+    except ValueError as e:
+        messages.error(request, f'Erro ao promover: {str(e)}')
+        return redirect('dash_carrinho_detalhe', pk=carrinho.pk)
+
+
+# ---------- ASSINATURAS (PLANOS DOS CLIENTES) ----------
+@superuser_required
+def dash_assinaturas(request):
+    q = request.GET.get('q', '').strip()
+    status = request.GET.get('status', '').strip()
+
+    # Filtra apenas compras do tipo 'plano'
+    assinaturas = Compra.objects.select_related('usuario', 'servico', 'plano').filter(tipo='plano')
+
+    if q:
+        assinaturas = assinaturas.filter(
+            Q(usuario__email__icontains=q) |
+            Q(usuario__first_name__icontains=q) |
+            Q(usuario__last_name__icontains=q) |
+            Q(nome_servico__icontains=q) |
+            Q(nome_plano__icontains=q)
+        )
+
+    if status == 'ativo':
+        assinaturas = assinaturas.filter(ativo=True)
+    elif status == 'inativo':
+        assinaturas = assinaturas.filter(ativo=False)
+
+    # Ordena pelos mais recentes
+    assinaturas = assinaturas.order_by('-data_compra')
+
+    return render(request, 'dash_assinaturas.html', {
+        'assinaturas': assinaturas,
+        'q': q,
+        'status': status,
+        'ativo': 'assinaturas',
+    })
+
+@superuser_required
+@require_POST
+def dash_assinatura_toggle(request, pk):
+    """Alterna o status (Ativo/Inativo) de uma assinatura (Compra de plano)."""
+    compra = get_object_or_404(Compra, pk=pk, tipo='plano')
+    
+    compra.ativo = not compra.ativo
+    compra.save()
+    
+    status_msg = "ativada" if compra.ativo else "desativada"
+    messages.success(request, f'A assinatura do plano "{compra.nome_plano}" foi {status_msg} com sucesso.')
+    
+    return redirect(request.META.get('HTTP_REFERER') or 'dash_assinaturas')

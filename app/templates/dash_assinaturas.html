@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' with ativo='assinaturas' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / Assinaturas</div>
+        <h1 class="adm-title">Planos dos Clientes</h1>
+      </div>
+    </header>
+
+    <div class="adm-panel">
+      <div class="adm-panel-head">
+        <h2>{{ assinaturas|length }} assinatura{{ assinaturas|length|pluralize }}</h2>
+        <form method="get" class="adm-search">
+          <input type="search" name="q" value="{{ q }}" placeholder="Buscar cliente ou plano...">
+          <select name="status" class="adm-select">
+            <option value="" {% if not status %}selected{% endif %}>Todos</option>
+            <option value="ativo" {% if status == 'ativo' %}selected{% endif %}>Ativos</option>
+            <option value="inativo" {% if status == 'inativo' %}selected{% endif %}>Inativos / Vencidos</option>
+          </select>
+          <button type="submit" class="adm-btn">Filtrar</button>
+        </form>
+      </div>
+
+      <table class="adm-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Plano</th>
+            <th>Data da Compra</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th class="adm-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in assinaturas %}
+          <tr>
+            <td class="adm-strong">
+              <div class="adm-cell">
+                <img class="adm-thumb adm-thumb-round" src="{{ a.usuario.foto_url }}" alt="" loading="lazy">
+                <span>
+                  {{ a.usuario.get_full_name|default:a.usuario.username }}
+                  <small>{{ a.usuario.email }}</small>
+                </span>
+              </div>
+            </td>
+            <td data-label="Plano">
+              <strong>{{ a.nome_plano }}</strong><br>
+              <small style="color: var(--adm-muted);">{{ a.nome_servico }}</small>
+            </td>
+            <td data-label="Data da Compra">{{ a.data_compra|date:"d/m/Y H:i" }}</td>
+            <td data-label="Valor">R$ {{ a.preco }}</td>
+            <td data-label="Status">
+              {% if a.ativo %}
+                <span class="adm-badge is-ok">Ativo</span>
+              {% else %}
+                <span class="adm-badge is-off">Inativo</span>
+              {% endif %}
+            </td>
+            <td class="adm-right">
+              <form method="post" action="{% url 'dash_assinatura_toggle' a.pk %}" style="display:inline;">
+                {% csrf_token %}
+                {% if a.ativo %}
+                  <button type="submit" class="adm-btn adm-btn-danger">Desativar</button>
+                {% else %}
+                  <button type="submit" class="adm-btn adm-btn-primary">Reativar</button>
+                {% endif %}
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="adm-empty">Nenhuma assinatura encontrada.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

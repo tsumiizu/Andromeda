@@ -1,7 +1,7 @@
 import re
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Usuario, Servico, Plano
+from .models import Usuario, Servico, Plano, Comprovante
 
 class CadastroUsuarioForm(forms.ModelForm):
     nome_completo = forms.CharField(
@@ -114,3 +114,48 @@ class PlanoForm(forms.ModelForm):
     class Meta:
         model = Plano
         fields = ['servico', 'nome', 'descricao', 'preco', 'capa']
+
+class ComprovanteForm(forms.ModelForm):
+    class Meta:
+        model = Comprovante
+        fields = ['arquivo', 'valor', 'identificador_pix', 'observacao_cliente']
+        widgets = {
+            'arquivo': forms.ClearableFileInput(attrs={
+                'accept': 'image/*,application/pdf',
+                'class': 'profile-input',
+            }),
+            'valor': forms.NumberInput(attrs={
+                'step': '0.01', 'min': '0.00',
+                'class': 'profile-input',
+            }),
+            'identificador_pix': forms.TextInput(attrs={
+                'class': 'profile-input',
+                'placeholder': 'Opcional — ID/E2E do PIX',
+            }),
+            'observacao_cliente': forms.Textarea(attrs={
+                'class': 'profile-input',
+                'rows': 3,
+                'placeholder': 'Opcional',
+            }),
+        }
+        labels = {
+            'arquivo': 'Comprovante (imagem ou PDF)',
+            'valor': 'Valor pago (R$)',
+            'identificador_pix': 'ID do PIX (opcional)',
+            'observacao_cliente': 'Observação (opcional)',
+        }
+        help_texts = {
+            'arquivo': 'Aceita imagem (PNG/JPG) ou PDF, até 10 MB.',
+        }
+
+    def clean_arquivo(self):
+        arquivo = self.cleaned_data.get('arquivo')
+        if arquivo and hasattr(arquivo, 'size') and arquivo.size > 10 * 1024 * 1024:
+            raise forms.ValidationError('O arquivo deve ter no máximo 10 MB.')
+        return arquivo
+
+    def clean_valor(self):
+        valor = self.cleaned_data.get('valor')
+        if valor is not None and valor <= 0:
+            raise forms.ValidationError('O valor deve ser maior que zero.')
+        return valor

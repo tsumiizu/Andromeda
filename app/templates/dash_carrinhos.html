@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' with ativo='carrinhos' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / Carrinhos</div>
+        <h1 class="adm-title">Carrinhos</h1>
+      </div>
+      <div class="adm-status">
+        <span class="adm-dot"></span>
+        {{ total_pendentes }} pendente{{ total_pendentes|pluralize }} · {{ total_aprovados }} aprovado{{ total_aprovados|pluralize }}
+      </div>
+    </header>
+    <!-- FILTROS -->
+    <div class="adm-panel" style="margin-bottom:20px;">
+      <div class="adm-panel-head">
+        <h2>{{ carrinhos|length }} carrinho{{ carrinhos|length|pluralize }}</h2>
+        <form method="get" class="adm-search">
+          <input type="search" name="q" value="{{ q }}" placeholder="Buscar por cliente...">
+          <select name="status" class="adm-select">
+            <option value=""            {% if not status %}selected{% endif %}>Todos</option>
+            <option value="aprovado"    {% if status == 'aprovado' %}selected{% endif %}>Com aprovado (pronto)</option>
+            <option value="pendente"    {% if status == 'pendente' %}selected{% endif %}>Com pendente</option>
+            <option value="sem_comprovante" {% if status == 'sem_comprovante' %}selected{% endif %}>Sem comprovante</option>
+          </select>
+          <button type="submit" class="adm-btn">Filtrar</button>
+        </form>
+      </div>
+
+      <table class="adm-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Itens</th>
+            <th>Total</th>
+            <th>Comprovantes</th>
+            <th class="adm-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in carrinhos %}
+          <tr>
+            <td class="adm-strong">
+              <div class="adm-cell">
+                <img class="adm-thumb adm-thumb-round" src="{{ c.usuario.foto_url }}" alt="" loading="lazy">
+                <span>
+                  {{ c.usuario.get_full_name|default:c.usuario.username }}
+                  <small>{{ c.usuario.email }}</small>
+                </span>
+              </div>
+            </td>
+            <td data-label="Itens">{{ c.qtd_itens }}</td>
+            <td data-label="Total">R$ {{ c.total }}</td>
+            <td data-label="Comprovantes">
+              {% if c.qtd_aprovados %}
+                <span class="adm-badge is-ok">{{ c.qtd_aprovados }} aprovado{{ c.qtd_aprovados|pluralize }}</span>
+              {% endif %}
+              {% if c.qtd_pendentes %}
+                <span class="adm-badge is-pending">{{ c.qtd_pendentes }} pendente{{ c.qtd_pendentes|pluralize }}</span>
+              {% endif %}
+              {% if not c.qtd_aprovados and not c.qtd_pendentes %}
+                <span class="adm-badge">—</span>
+              {% endif %}
+            </td>
+            <td class="adm-right">
+              <a href="{% url 'dash_carrinho_detalhe' c.pk %}" class="adm-btn">Ver carrinho</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="adm-empty">Nenhum carrinho encontrado.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user.is_authenticated %}
+<section class="adm fade-in">
+  {% include '_dash_side.html' with ativo='carrinhos' %}
+  <div class="adm-main">
+
+    <header class="adm-head">
+      <div>
+        <div class="adm-crumb">Andromeda / Carrinhos / #{{ carrinho.pk }}</div>
+        <h1 class="adm-title">Carrinho de {{ carrinho.usuario.get_full_name|default:carrinho.usuario.username }}</h1>
+      </div>
+      <div class="adm-status">
+        <span class="adm-dot"></span>
+        Atualizado em {{ carrinho.atualizado_em|date:"d/m/Y H:i" }}
+      </div>
+    </header>
+
+    {% include '_dash_msgs.html' %}
+
+    <div class="adm-grid-2col">
+      
+      <!-- COLUNA ESQUERDA: ITENS DO CARRINHO -->
+      <div>
+        <div class="adm-panel" style="margin-bottom: 24px;">
+          <div class="adm-panel-head">
+            <h2>Itens no carrinho</h2>
+            <span>{{ itens|length }} item{{ itens|length|pluralize }}</span>
+          </div>
+          <table class="adm-table">
+            <thead>
+              <tr><th>Item</th><th>Preço</th></tr>
+            </thead>
+            <tbody>
+              {% for item in itens %}
+              <tr>
+                <td class="adm-strong">
+                  <div class="adm-cell">
+                    <img class="adm-thumb" src="{{ item.capa_url }}" alt="">
+                    <span>
+                      {% if item.tipo == 'plano' %}
+                        {{ item.nome_servico }} <small>/ {{ item.nome_plano }}</small>
+                      {% else %}
+                        {{ item.nome_servico }}
+                      {% endif %}
+                    </span>
+                  </div>
+                </td>
+                <td>R$ {{ item.preco }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td class="adm-strong" style="text-align: right;">Total:</td>
+                <td class="adm-strong" style="color: #00d4ff;">R$ {{ carrinho.total }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        {% if comprovante_aprovado %}
+        <!-- BOTÃO PROMOVER -->
+        <div class="adm-panel" style="border-color: rgba(34, 197, 94, 0.4); background: rgba(34, 197, 94, 0.05);">
+          <div class="adm-panel-head">
+            <h2 style="color: #86efac;">Pronto para promover</h2>
+          </div>
+          <div style="padding: 24px 30px;">
+            <p style="margin-top: 0; margin-bottom: 20px; color: #e8f4ff;">
+              O comprovante foi aprovado. Clique no botão abaixo para converter os itens deste carrinho em Compras oficiais e liberar o acesso do cliente.
+            </p>
+            <form method="post" action="{% url 'dash_carrinho_promover' carrinho.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="comprovante_id" value="{{ comprovante_aprovado.pk }}">
+              <button type="submit" class="adm-btn adm-btn-primary" style="width: 100%; padding: 16px; font-size: 1.05rem;">
+                ✦ Promover a Compra ✦
+              </button>
+            </form>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- COLUNA DIREITA: COMPROVANTES -->
+      <div>
+        <div class="adm-panel">
+          <div class="adm-panel-head">
+            <h2>Comprovantes</h2>
+          </div>
+          
+          <div style="padding: 20px;">
+            {% for c in comprovantes %}
+              <div class="adm-comprovante-card">
+                <div class="adm-comprovante-header">
+                  <span class="adm-badge 
+                    {% if c.status == 'aprovado' %}is-ok
+                    {% elif c.status == 'rejeitado' %}is-off
+                    {% elif c.status == 'promovido' %}is-super
+                    {% else %}is-pending{% endif %}">
+                    {{ c.get_status_display }}
+                  </span>
+                  <span style="font-size: 0.8rem; color: var(--adm-muted);">{{ c.enviado_em|date:"d/m/Y H:i" }}</span>
+                </div>
+                
+                <div style="margin: 12px 0;">
+                  <div style="font-size: 1.2rem; font-weight: bold; color: #fff;">R$ {{ c.valor }}</div>
+                  {% if c.identificador_pix %}
+                    <div style="font-size: 0.8rem; color: var(--adm-muted);">ID PIX: {{ c.identificador_pix }}</div>
+                  {% endif %}
+                  {% if c.observacao_cliente %}
+                    <div style="font-size: 0.85rem; color: #cbd5e1; margin-top: 8px; font-style: italic;">
+                      "{{ c.observacao_cliente }}"
+                    </div>
+                  {% endif %}
+                </div>
+
+                <a href="{{ c.arquivo_url }}" target="_blank" class="adm-btn" style="width: 100%; margin-bottom: 16px; box-sizing: border-box; text-align: center;">
+                  📄 Ver Anexo
+                </a>
+
+                {% if c.status == 'pendente' %}
+                  <div style="display: flex; gap: 8px;">
+                    <form method="post" action="{% url 'dash_comprovante_acao' c.pk 'aprovar' %}" style="flex: 1;">
+                      {% csrf_token %}
+                      <button type="submit" class="adm-btn adm-btn-primary" style="width: 100%;">Aprovar</button>
+                    </form>
+                    <form method="post" action="{% url 'dash_comprovante_acao' c.pk 'rejeitar' %}" style="flex: 1;">
+                      {% csrf_token %}
+                      <button type="submit" class="adm-btn adm-btn-danger" style="width: 100%;">Rejeitar</button>
+                    </form>
+                  </div>
+                {% elif c.status == 'rejeitado' %}
+                  <div style="font-size: 0.85rem; color: #fca5a5;">
+                    <strong>Motivo:</strong> {{ c.motivo_rejeicao }}
+                  </div>
+                {% endif %}
+              </div>
+            {% empty %}
+              <div class="adm-empty">Nenhum comprovante enviado ainda.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
